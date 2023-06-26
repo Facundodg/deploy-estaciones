@@ -1,8 +1,7 @@
 package com.dim.servicio;
 
-import com.dim.entidad.Usuario;
+import com.dim.entidad.Cusi;
 import com.dim.repositorio.InterfaseCusi;
-import com.dim.repositorio.InterfaseUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +14,16 @@ public class ServicioCusi {
     @Autowired
     private InterfaseCusi interfaseCusi;
 
-    public Usuario saveCusi(Usuario usuario){
+    public Cusi saveCusi(Cusi usuario){
         return interfaseCusi.save(usuario);
     }
 
-    public Optional<Usuario> findByIdCusi(Long id){
+    public Optional<Cusi> findByIdCusi(Long id){
         return interfaseCusi.findById(id);
     }
 
 
-    public List<Usuario> findAllCusi(){
+    public List<Cusi> findAllCusi(){
         return interfaseCusi.findAll();
     }
 
