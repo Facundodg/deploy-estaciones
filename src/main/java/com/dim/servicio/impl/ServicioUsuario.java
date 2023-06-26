@@ -1,4 +1,4 @@
-package com.dim.servicio;
+package com.dim.servicio.impl;
 
 import com.dim.entidad.Usuario;
 import com.dim.repositorio.InterfaseUsuario;
