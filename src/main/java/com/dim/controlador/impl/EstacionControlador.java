@@ -1,6 +1,7 @@
 package com.dim.controlador.impl;
 
 import com.dim.controlador.interfaz.EstacionApi;
+import com.dim.entidad.Departamento;
 import com.dim.entidad.Estacion;
 import com.dim.servicio.interfaz.EstacionServicio;
 import lombok.RequiredArgsConstructor;
@@ -15,26 +16,29 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class EstacionControlador implements EstacionApi {
 
-    private EstacionServicio estacionServicio;
-
+    private final EstacionServicio estacionServicio;
 
     @Override
     public ResponseEntity<Estacion> guardar(Estacion entidad) throws Exception {
-        return null;
+        log.info(("[EstacionControlador - Guardar: Iniciada con estacion={}"), entidad.getHostName());
+        return ResponseEntity.ok(estacionServicio.guardar(entidad));
     }
 
     @Override
     public ResponseEntity<Estacion> modificar(Long id, Estacion entidad) throws Exception {
-        return null;
+        log.info(("[EstacionControlador - Modificar: Iniciada con id_estacion={}"), entidad.getIdStacion());
+        return ResponseEntity.ok(estacionServicio.guardar(entidad));
     }
 
     @Override
     public ResponseEntity<Estacion> buscarPorId(Long id) throws Exception {
-        return null;
+        log.info("[EstacionControlador - BuscarPorId: Iniciada con id_estacion={}]", id);
+        return ResponseEntity.ok(estacionServicio.buscarPorId(id));
     }
 
     @Override
     public ResponseEntity<Collection<Estacion>> buscarTodos() throws Exception {
-        return null;
+        log.info("[EstacionControlador - BuscarTodos]");
+        return ResponseEntity.ok(estacionServicio.buscarTodos());
     }
 }

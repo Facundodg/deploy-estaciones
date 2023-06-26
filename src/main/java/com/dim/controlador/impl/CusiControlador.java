@@ -1,8 +1,7 @@
-package com.dim.controlador;
+package com.dim.controlador.impl;
 
-import com.dim.entidad.Usuario;
-import com.dim.servicio.ServicioCusi;
-import com.dim.servicio.ServicioUsuario;
+import com.dim.entidad.Cusi;
+import com.dim.servicio.impl.ServicioCusi;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,26 +9,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/cusi")
-public class ControladorCusi {
+public class CusiControlador {
 
     @Autowired
     private ServicioCusi servicioCusi;
 
     //listo
     @PostMapping
-    @Operation(summary = "Guardar Usuario")
-    public ResponseEntity<Usuario> GuardarUsuario(@RequestBody Usuario usuario){
+    @Operation(summary = "Guardar Cusi")
+    public ResponseEntity<Cusi> GuardarCusi(@RequestBody Cusi usuario){
         return ResponseEntity.status(HttpStatus.CREATED).body(servicioCusi.saveCusi(usuario));
     }
 
     //listo
     @DeleteMapping(value = "/{id}")
-    @Operation(summary = "Guardar Usuario")
+    @Operation(summary = "Guardar Cusi")
     public ResponseEntity deleteStudent(@PathVariable("id") Long id){
         servicioCusi.deleteCusi(id);
         return ResponseEntity.ok(!servicioCusi.existByIdCusi(id));
@@ -38,14 +36,13 @@ public class ControladorCusi {
 
     //listo
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Optional<Usuario>> findByIdUsuario(@PathVariable ("id") Long id){
+    public ResponseEntity<Cusi> findByIdCusi(@PathVariable ("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(servicioCusi.findByIdCusi(id));
     }
 
     //listo
-
     @GetMapping
-    public ResponseEntity<List<Usuario>> findAllUsuario(){
+    public ResponseEntity<List<Cusi>> findAllCusi(){
         return ResponseEntity.status(HttpStatus.OK).body(servicioCusi.findAllCusi());
     }
 

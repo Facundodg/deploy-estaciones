@@ -1,10 +1,8 @@
-package com.dim.controlador;
+package com.dim.controlador.impl;
 
 import com.dim.entidad.Monitor;
-import com.dim.entidad.Usuario;
-import com.dim.servicio.ServicioMonitor;
-import com.dim.servicio.ServicioUsuario;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.dim.servicio.impl.ServicioMonitor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +12,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/monitor")
-public class ControladorMonitor {
+@RequiredArgsConstructor
+public class MonitorControlador {
 
-    @Autowired
-    private ServicioMonitor servicioMonitor;
+    private final ServicioMonitor servicioMonitor;
 
     //listo
     @PostMapping

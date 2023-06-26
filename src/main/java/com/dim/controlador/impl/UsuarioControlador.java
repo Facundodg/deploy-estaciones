@@ -1,7 +1,7 @@
-package com.dim.controlador;
+package com.dim.controlador.impl;
 
 import com.dim.entidad.Usuario;
-import com.dim.servicio.ServicioUsuario;
+import com.dim.servicio.impl.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuario")
-public class ControladorUsuario {
+public class UsuarioControlador {
 
     @Autowired
     private ServicioUsuario servicioUsuario;

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ServicioCusi {
@@ -18,8 +17,8 @@ public class ServicioCusi {
         return interfaseCusi.save(usuario);
     }
 
-    public Optional<Cusi> findByIdCusi(Long id){
-        return interfaseCusi.findById(id);
+    public Cusi findByIdCusi(Long id){
+        return interfaseCusi.findById(id).orElseThrow();
     }
 
 
