@@ -1,9 +1,13 @@
 package com.dim.entidad;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -27,11 +31,23 @@ public class Estacion {
     @Column(name = "puerto")
     private Long puerto;
 
-    @Column(name = "id_departamento")
-    private Long idDepartamento;
+    @JoinColumn(name = "id_cusi")
+    @OneToOne(fetch = FetchType.LAZY)
+    private Cusi cusi;
 
-    @Column(name = "id_monitor")
-    private Long idMonitor;
+    @JoinColumn(name = "id_monitor")
+    @OneToOne(fetch = FetchType.LAZY)
+    private Monitor monitor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_departamento")
+    private Departamento departamento;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "estacion_usuario",
+            joinColumns = {@JoinColumn(name = "id_usuario")},
+            inverseJoinColumns = {@JoinColumn(name = "id_estacion")})
+    private Set<Usuario> usuarios;
 
     @Override
     public boolean equals(Object o) {

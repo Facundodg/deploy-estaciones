@@ -1,18 +1,31 @@
 package com.dim.entidad;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "monitor")
 public class Monitor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_monitor;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_monitor", nullable = false)
+    private Long idMonitor;
+
+    @Column(name = "modelo")
     private String modelo;
-    private int numeroserie;
+
+    @Column(name = "numero_serie")
+    private int numeroSerie;
+
+    @Column(name = "marca")
     private String marca;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Estacion estacion;
 
 }

@@ -1,28 +1,55 @@
 package com.dim.entidad;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
-@Data
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "usuario")
 public class Usuario {
 
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_usuario;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_usuario", nullable = false)
+    private Long idUsuario;
+
+    @Column(name = "nombre")
     private String nombre;
+
+    @Column(name = "apellido")
     private String apellido;
+
+    @Column(name = "cuenta")
     private String cuenta;
-    private String contraseña;
 
+    @Column(name = "contraseña")
+    private String clave;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<EstacionUsuario> estacionUsuarios;
+    @Column(name = "num_afiliado", updatable = false, nullable = false)
+    private Long numAfiliado;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_departamento")
+    private Departamento departamento;
 
+    @ManyToMany(mappedBy = "usuarios")
+    private Set<Estacion> estaciones;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Usuario usuario)) return false;
+
+        return getIdUsuario().equals(usuario.getIdUsuario());
+    }
+
+    @Override
+    public int hashCode() {
+        return getIdUsuario().hashCode();
+    }
 }

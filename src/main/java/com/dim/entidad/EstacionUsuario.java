@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "estacionusuario")
+@Table(name = "estacion_usuario")
 public class EstacionUsuario {
 
     @Id
-    @Column(name = "id_estacionusuario", updatable = false, nullable = false)
+    @Column(name = "id_estacion_usuario", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idStacion;
 
