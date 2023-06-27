@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  box-sizing: border-box;
+}
+
+body , html
+{
+  margin: 0px;
+  height: 100%;
+  font-family: 'Oswald', sans-serif;
+}
+
+
+.app-contiener{
+  display: grid;
+  margin: 0px;
+  min-height: 100vh;
+  width: 100%;
+  
+  /* background-color: lightblue; */
+  grid-template: 
+  "area-header area-header" 10%
+  "area-filtro area-filtro" 10%
+  "area-formulario  area-tabla" 1fr /
+       25%            75%
+  ;
+
+}
+
+
+
+section {
+  border: .1px darkgray solid;
+  border-radius: 7px;
+  margin: 2px;
+}
+
+
+
+
+
+
+
+.section-tabla{
+  grid-area: area-tabla;
+  /* background-color: yellowgreen; */
+}
+
+
+
+/* Definicion areas*/
+
+
+
+
+
+
+
+

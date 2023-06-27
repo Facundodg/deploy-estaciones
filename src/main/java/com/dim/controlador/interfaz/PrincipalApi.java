@@ -17,7 +17,6 @@ public interface PrincipalApi {
 
 
     @Operation(summary = "Búsqueda general", description = "Retorna estaciones, departamentos y más informarción")
-    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<Departamento> buscarTodos() throws Exception;
 }

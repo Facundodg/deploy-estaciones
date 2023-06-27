@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<!-- cusi 1 
+puerto 2
+usuario 3 -->
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="./estilos/estilos.css">
+  <link rel="stylesheet" href="./estilos/header.css">
+  <link rel="stylesheet" href="./estilos/filtro.css">
+  <link rel="stylesheet" href="./estilos/tabla.css">
+
+
+  <title>Document</title>
+</head>
+
+<body class="bg-gray-900">
+  <div class="app-contiener">
+    <section class="section-header bg-blue-500">
+      <h1 class="header-h1 ">Gestion Estaciones</h1>
+    </section>
+    <section class="section-filtro">
+      <div class="conteiner-form">
+        <h2 class="text-white h2-filtrado">Filtrar: </h2>
+        <div>
+          <form>
+            <select name="" class="select-busqueda" id="">
+              <option value="0">CUSI</option>
+              <option value="1">PUERTO</option>
+              <option value="3">USUARIO</option>
+            </select>
+            <select name="" class="select-departamento" id="">
+              <option value="1">Actividad Economica</option>
+              <option value="2">Sub Direccion de informatica</option>
+              <option value="3">Libre Deuda</option>
+              <option value="4">Cesion de Haberes</option>
+              <option value="5">Otros Tributos</option>
+              <option value="6">Juridico</option>
+              <option value="7">Contro Bancario</option>
+              <option value="8">Administrativa</option>
+              <option value="9">Personal</option>
+              <option value="10">Fiscalizacion</option>
+
+            </select>
+            <input type="text" class="input-busqueda" placeholder="Ingrese sus datos">
+            <button class="btn-buscar bg-blue-500 text-white">Buscar</button>
+          </form>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="section-formulario text-white">
+      <form class="mt-8 space-y-6">
+        <div class="rounded-md shadow-sm -space-y-px">
+          <div>
+            <label htmlFor="email-address" class="">
+              Departamento
+            </label>
+            <input type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+            placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500
+            focus:border-indigo-500 focus:z-10 sm:text-sm" autoComplete="current-password" />
+          </div>
+          <div>
+            <label htmlFor="estacion" class="">
+              Estacion
+            </label>
+            <input type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+            placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500
+            focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="" autoComplete="current-password" />
+          </div>
+          <div>
+            <label htmlFor="cusi" class="">
+              Cusi
+            </label>
+            <input type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+            placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500
+            focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="" />
+          </div>
+          <div>
+            <label htmlFor="cusi" class="">
+              Monitor
+            </label>
+            <input type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+            placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500
+            focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="" />
+          </div>
+        </div>
+        <div>
+          <button
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Insertar
+          </button>
+          <button
+            class="group relative mt-2 w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </section>
+    <section class="section-tabla text-white overflow-auto touch-pan-x dark">
+      <div className="w-full h-full flex flex-col px-8 py-8">
+        <div className="w-full flex flex-col min-h-[50vh] justify-center items-center">
+          <div className="sm:-mx-6 lg:-mx-8">
+            <div className="py-4 inline-block min-w-full sm:px-6 lg:px-8">
+
+              <div class="relative ">
+                <table class="w-full text-sm text-left text-gray-900 dark:text-gray-800">
+                  <thead class="text-xs text-gray-900 uppercase bg-gray-300 dark:bg-gray-900 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" class="px-6 py-3">
+                        Orden
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Product name
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Color
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Category
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Price
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Opciones
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        1
+                      </th>
+                      <td scope="row" class="px-6 py-4">
+                        Apple MacBook Pro 17"
+                      </td>
+                      <td class="px-6 py-4">
+                        Silver
+                      </td>
+                      <td class="px-6 py-4">
+                        Laptop
+                      </td>
+                      <td class="px-6 py-4">
+                        $2999
+                      </td>
+                      <td className="flex justify-center items-center px-6 py-4 space-x-4 whitespace-nowrap mt-1">
+
+                        <!-- Modal toggle -->
+                        <button data-modal-target="modalMasInfoStatic" data-modal-toggle="modalMasInfoStatic"
+                          class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          type="button">
+                          Ver Mas
+                        </button>
+
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                
+     
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+
+
+  <!-- Modales -->
+ 
+  
+<!-- MODAL STATICAAAAAAAAAA -->
+
+
+<!-- Modal toggle -->
+<button data-modal-target="modalMasInfoStatic" data-modal-toggle="modalMasInfoStatic" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+  Toggle modal
+</button>
+
+<!-- Main modal -->
+<div id="modalMasInfoStatic" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Static modal
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="modalMasInfoStatic">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-6 space-y-6">
+                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+                </p>
+                <div class="conteiner-detalles">
+                  <fieldset class="filset-Cusi">
+                    <legend class="text-white legend-cusi">Cusi</legend>
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis necessitatibus dolor expedita suscipit dicta harum corrupti libero tenetur earum error. Debitis repellat aut quam reprehenderit impedit saepe, nemo sequi culpa!
+                    </p>
+                  </fieldset>
+                  <fieldset class="filset-Cusi">
+                    <legend class="text-white legend-cusi">Monitor</legend>
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis necessitatibus dolor expedita suscipit dicta harum corrupti libero tenetur earum error. Debitis repellat aut quam reprehenderit impedit saepe, nemo sequi culpa!
+                    </p>
+                  </fieldset>
+                  <fieldset class="filset-Cusi">
+                    <legend class="text-white legend-cusi">Estacion</legend>
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis necessitatibus dolor expedita suscipit dicta harum corrupti libero tenetur earum error. Debitis repellat aut quam reprehenderit impedit saepe, nemo sequi culpa!
+                    </p>
+                  </fieldset> 
+                  <fieldset class="filset-Cusi">
+                    <legend class="text-white legend-cusi">Usuarios</legend>
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis necessitatibus dolor expedita suscipit dicta harum corrupti libero tenetur earum error. Debitis repellat aut quam reprehenderit impedit saepe, nemo sequi culpa!
+                    </p>
+                  </fieldset> 
+                </div>
+                
+            </div>
+            <!-- Modal footer -->
+            <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button data-modal-hide="modalMasInfoStatic" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
+                <button data-modal-hide="modalMasInfoStatic" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            Montserrat: ["Montserrat", "sans-serif"],
+            Mulish: ["Mullish", "sans-serif"],
+            Anton: ["Anton", "sans-serif"],
+            Gotham: ["Ghothan", "sans-serif"],
+          },
+          colors: {
+            gray: {
+              200: "#121212",
+              400: "808080",
+              800: "#272727",
+            },
+            blue: {
+              400: "#1977f3",
+              700: "#15174D",
+            },
+            indigo: {
+              600: "#4C50AD",
+            },
+            orange: {
+              100: "rgb(255 237 213)",
+            },
+            yellow: {
+              600: "#FCB541",
+            }
+          }
+        }
+      },
+      plugins: [],
+    }
+
+  </script>
+
+  //busquedasEstaciones
+
+  <script src="./cargarEstaciones.js" type="application/javascript"></script>
+  <script src="./busquedasEstaciones.js" type="application/javascript"></script>
+
+</body>
+
+</html>

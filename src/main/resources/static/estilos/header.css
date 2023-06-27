@@ -1,0 +1,16 @@
+.section-header{
+  grid-area: area-header;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #1465bb; */
+  color: white;  
+}
+
+
+.header-h1{
+  font-size: 40px;
+
+}
+
+

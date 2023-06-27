@@ -13,10 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@RequestMapping("/principal")
 @RequiredArgsConstructor
 public class PrincipalControlador implements PrincipalApi {
 
@@ -30,7 +32,7 @@ public class PrincipalControlador implements PrincipalApi {
         return null;
     }
 
-    @GetMapping()
+    @GetMapping
     @Operation(summary = "Buscar por Cusi o Puerto Estacion o Usuario")
     public ResponseEntity<?> findByIdUsuario(@RequestBody BuscadorDto buscadorCusiPuertoUsuario) {
 

@@ -52,7 +52,7 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-        <!--        DEPENDENCIAS SPRING SEGURIDAD-->
+        <!--
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -64,7 +64,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!--        SPRING DOC SWAGGER-->
+       -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -119,6 +119,12 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>1.10.5</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
