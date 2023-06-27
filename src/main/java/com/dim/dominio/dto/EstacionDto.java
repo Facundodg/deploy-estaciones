@@ -14,11 +14,17 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class EstacionDto {
 
+    private String nombre;
+
+    private String apellido;
+
     private Long puerto;
 
-    private Long numCusi;
+    private String hostname;
+
+    private Long num_cusi;
 
     private String so;
 
-    private String hostname;
+    private String nombre_depto;
 }
