@@ -43,4 +43,6 @@ public interface ServicioCrud<E>{
      * @param id            id del objeto que se desea eliminar
      */
     void eliminar(final Long id);
+
+    boolean existePorId(final Long id);
 }

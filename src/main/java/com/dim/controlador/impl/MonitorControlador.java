@@ -1,48 +1,42 @@
 package com.dim.controlador.impl;
 
 import com.dim.dominio.entidad.Monitor;
-import com.dim.servicio.impl.ServicioMonitor;
+import com.dim.servicio.interfaz.MonitorServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/monitor")
 @RequiredArgsConstructor
 public class MonitorControlador {
 
-    private final ServicioMonitor servicioMonitor;
+    private final MonitorServicio monitorServicio;
 
     //listo
     @PostMapping
-    public ResponseEntity<Monitor> GuardarUsuario(@RequestBody Monitor monitor){
-        return ResponseEntity.status(HttpStatus.CREATED).body(servicioMonitor.saveMonitor(monitor));
+    public ResponseEntity<Monitor> guardar(@RequestBody Monitor monitor) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(monitorServicio.guardar(monitor));
     }
 
     //listo
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity deleteStudent(@PathVariable ("id") Long id){
-        servicioMonitor.deleteMonitor(id);
-        return ResponseEntity.ok(!servicioMonitor.existByIdMonitor(id));
+    public ResponseEntity<?> eliminar(@PathVariable("id") Long id) {
+        monitorServicio.eliminar(id);
+        return ResponseEntity.ok(monitorServicio.existePorId(id));
     }
 
 
-    //listo
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Optional<Monitor>> findByIdUsuario(@PathVariable ("id") Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(servicioMonitor.findByIdMonitor(id));
+    public ResponseEntity<Monitor> buscarPorId(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(monitorServicio.buscarPorId(id));
     }
-
-    //listo
 
     @GetMapping
-    public ResponseEntity<List<Monitor>> findAllUsuario(){
-        return ResponseEntity.status(HttpStatus.OK).body(servicioMonitor.findAllMonitor());
+    public ResponseEntity<Collection<Monitor>> buscarTodos() {
+        return ResponseEntity.status(HttpStatus.OK).body(monitorServicio.buscarTodos());
     }
-
-
 }

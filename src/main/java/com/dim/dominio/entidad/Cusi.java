@@ -43,7 +43,7 @@ public class Cusi {
     @Column(name = "dvd")
     private boolean dvd;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "cusi", fetch = FetchType.LAZY)
     private Estacion estacion;
 
     @Override

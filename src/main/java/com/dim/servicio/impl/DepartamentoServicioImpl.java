@@ -12,7 +12,7 @@ import java.util.Collection;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DepartamentoServicioImpl implements DepartamentoServicio{
+public class DepartamentoServicioImpl implements DepartamentoServicio {
 
     private final DepartamentoRepositorio departamentoRepositorio;
 
@@ -23,7 +23,7 @@ public class DepartamentoServicioImpl implements DepartamentoServicio{
 
     @Override
     public Departamento actualizar(Long id, Departamento entidad) {
-        return departamentoRepositorio.save(entidad);
+        return departamentoRepositorio.findById(id).map(u -> departamentoRepositorio.save(entidad)).orElseThrow();
     }
 
     @Override
@@ -44,5 +44,10 @@ public class DepartamentoServicioImpl implements DepartamentoServicio{
     @Override
     public void eliminar(Long id) {
         departamentoRepositorio.deleteById(id);
+    }
+
+    @Override
+    public boolean existePorId(Long id) {
+        return departamentoRepositorio.existsById(id);
     }
 }

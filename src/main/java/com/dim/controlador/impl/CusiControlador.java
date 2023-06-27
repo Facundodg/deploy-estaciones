@@ -1,49 +1,45 @@
 package com.dim.controlador.impl;
 
 import com.dim.dominio.entidad.Cusi;
-import com.dim.servicio.impl.ServicioCusi;
+import com.dim.servicio.impl.CusiServicioImpl;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Collection;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/cusi")
+@RequiredArgsConstructor
 public class CusiControlador {
 
-    @Autowired
-    private ServicioCusi servicioCusi;
+    private final CusiServicioImpl servicioCusi;
 
-    //listo
     @PostMapping
     @Operation(summary = "Guardar Cusi")
-    public ResponseEntity<Cusi> GuardarCusi(@RequestBody Cusi usuario){
-        return ResponseEntity.status(HttpStatus.CREATED).body(servicioCusi.saveCusi(usuario));
+    public ResponseEntity<Cusi> guardar(@RequestBody Cusi usuario) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(servicioCusi.guardar(usuario));
     }
 
-    //listo
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "Guardar Cusi")
-    public ResponseEntity deleteStudent(@PathVariable("id") Long id){
-        servicioCusi.deleteCusi(id);
-        return ResponseEntity.ok(!servicioCusi.existByIdCusi(id));
+    public ResponseEntity eliminar(@PathVariable("id") Long id) {
+        servicioCusi.eliminar(id);
+        return ResponseEntity.ok(!servicioCusi.existePorId(id));
     }
 
 
-    //listo
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Cusi> findByIdCusi(@PathVariable ("id") Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(servicioCusi.findByIdCusi(id));
+    public ResponseEntity<Cusi> buscarPorId(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(servicioCusi.buscarPorId(id));
     }
 
-    //listo
     @GetMapping
-    public ResponseEntity<List<Cusi>> findAllCusi(){
-        return ResponseEntity.status(HttpStatus.OK).body(servicioCusi.findAllCusi());
+    public ResponseEntity<Collection<Cusi>> buscarTodos() {
+        return ResponseEntity.status(HttpStatus.OK).body(servicioCusi.buscarTodos());
     }
-
 }

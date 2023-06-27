@@ -1,5 +1,6 @@
 package com.dim.servicio.impl;
 
+import com.dim.dominio.dto.EstacionDto;
 import com.dim.dominio.entidad.Estacion;
 import com.dim.repositorio.EstacionRepositorio;
 import com.dim.servicio.interfaz.EstacionServicio;
@@ -16,6 +17,7 @@ public class EstacionServicioImpl implements EstacionServicio {
 
     private final EstacionRepositorio estacionRepositorio;
 
+
     @Override
     public Estacion guardar(Estacion entidad) {
         return estacionRepositorio.save(entidad);
@@ -23,7 +25,7 @@ public class EstacionServicioImpl implements EstacionServicio {
 
     @Override
     public Estacion actualizar(Long id, Estacion entidad) {
-        return estacionRepositorio.save(entidad);
+        return estacionRepositorio.findById(id).map(u -> estacionRepositorio.save(entidad)).orElseThrow();
     }
 
     @Override
@@ -44,5 +46,15 @@ public class EstacionServicioImpl implements EstacionServicio {
     @Override
     public void eliminar(Long id) {
         estacionRepositorio.deleteById(id);
+    }
+
+    @Override
+    public boolean existePorId(Long id) {
+        return estacionRepositorio.existsById(id);
+    }
+
+    @Override
+    public Collection<EstacionDto> buscarDatosGenerales() {
+        return estacionRepositorio.buscarDatosGenerales();
     }
 }

@@ -25,7 +25,7 @@ public class Monitor {
     @Column(name = "marca")
     private String marca;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "monitor", fetch = FetchType.LAZY)
     private Estacion estacion;
 
 }

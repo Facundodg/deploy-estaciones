@@ -1,47 +1,42 @@
 package com.dim.controlador.impl;
 
 import com.dim.dominio.entidad.Usuario;
-import com.dim.servicio.impl.ServicioUsuario;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.dim.servicio.interfaz.UsuarioServicio;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/usuario")
+@RequiredArgsConstructor
 public class UsuarioControlador {
 
-    @Autowired
-    private ServicioUsuario servicioUsuario;
+    private final UsuarioServicio servicioUsuario;
 
     //listo
     @PostMapping
     public ResponseEntity<Usuario> GuardarUsuario(@RequestBody Usuario usuario){
-        return ResponseEntity.status(HttpStatus.CREATED).body(servicioUsuario.saveUsuario(usuario));
+        return ResponseEntity.status(HttpStatus.CREATED).body(servicioUsuario.guardar(usuario));
     }
 
-    //listo
     @DeleteMapping(value = "/{id}")
     public ResponseEntity deleteStudent(@PathVariable ("id") Long id){
-        servicioUsuario.deleteUsuario(id);
-        return ResponseEntity.ok(!servicioUsuario.existByIdUsuario(id));
+        servicioUsuario.eliminar(id);
+        return ResponseEntity.ok(!servicioUsuario.existePorId(id));
     }
 
 
-    //listo
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Optional<Usuario>> findByIdUsuario(@PathVariable ("id") Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(servicioUsuario.findByIdUsuario(id));
+    public ResponseEntity<Usuario> findByIdUsuario(@PathVariable ("id") Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(servicioUsuario.buscarPorId(id));
     }
-
-    //listo
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> findAllUsuario(){
-        return ResponseEntity.status(HttpStatus.OK).body(servicioUsuario.findAllUsuario());
+    public ResponseEntity<Collection<Usuario>> findAllUsuario(){
+        return ResponseEntity.status(HttpStatus.OK).body(servicioUsuario.buscarTodos());
     }
 
     /*
