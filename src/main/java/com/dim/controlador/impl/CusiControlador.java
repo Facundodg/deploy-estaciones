@@ -1,6 +1,6 @@
 package com.dim.controlador.impl;
 
-import com.dim.entidad.Cusi;
+import com.dim.dominio.entidad.Cusi;
 import com.dim.servicio.impl.ServicioCusi;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

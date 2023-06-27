@@ -1,6 +1,6 @@
 package com.dim.servicio.impl;
 
-import com.dim.entidad.Estacion;
+import com.dim.dominio.entidad.Estacion;
 import com.dim.repositorio.EstacionRepositorio;
 import com.dim.servicio.interfaz.EstacionServicio;
 import lombok.RequiredArgsConstructor;

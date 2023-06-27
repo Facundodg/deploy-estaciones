@@ -1,6 +1,6 @@
 package com.dim.controlador.impl;
 
-import com.dim.entidad.Usuario;
+import com.dim.dominio.entidad.Usuario;
 import com.dim.servicio.impl.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package com.dim.controlador.interfaz;
 
-import com.dim.entidad.Departamento;
+import com.dim.dominio.entidad.Departamento;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;

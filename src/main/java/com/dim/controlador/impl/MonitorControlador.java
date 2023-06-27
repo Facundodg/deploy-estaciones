@@ -1,6 +1,6 @@
 package com.dim.controlador.impl;
 
-import com.dim.entidad.Monitor;
+import com.dim.dominio.entidad.Monitor;
 import com.dim.servicio.impl.ServicioMonitor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,10 +1,9 @@
 package com.dim.servicio.impl;
 
-import com.dim.entidad.Usuario;
-import com.dim.repositorio.InterfaseUsuario;
+import com.dim.dominio.entidad.Usuario;
+import com.dim.repositorio.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,28 +12,33 @@ import java.util.Optional;
 public class ServicioUsuario {
 
     @Autowired
-    private InterfaseUsuario interfaseUsuario;
+    private UsuarioRepositorio usuarioRepositorio;
 
     public Usuario saveUsuario(Usuario usuario){
-        return interfaseUsuario.save(usuario);
+        return usuarioRepositorio.save(usuario);
     }
 
     public Optional<Usuario> findByIdUsuario(Long id){
-        return interfaseUsuario.findById(id);
+        return usuarioRepositorio.findById(id);
     }
 
 
     public List<Usuario> findAllUsuario(){
-        return interfaseUsuario.findAll();
+        return usuarioRepositorio.findAll();
     }
 
 
     public void deleteUsuario(Long id){
-        interfaseUsuario.deleteById(id);
+        usuarioRepositorio.deleteById(id);
     }
 
     public boolean existByIdUsuario(Long id) {
-        return interfaseUsuario.existsById(id);
+        return usuarioRepositorio.existsById(id);
     }
 
+    public List<Usuario> findByNumAfiliadoUsuario(long numAfiliado){
+
+        return usuarioRepositorio.finByNumeroAfiliado(numAfiliado);
+
+    }
 }

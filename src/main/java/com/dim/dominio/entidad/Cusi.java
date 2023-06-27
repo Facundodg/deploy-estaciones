@@ -1,4 +1,4 @@
-package com.dim.entidad;
+package com.dim.dominio.entidad;
 
 import jakarta.persistence.*;
 import lombok.*;

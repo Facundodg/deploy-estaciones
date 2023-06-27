@@ -1,6 +1,6 @@
 package com.dim.servicio.impl;
 
-import com.dim.entidad.Departamento;
+import com.dim.dominio.entidad.Departamento;
 import com.dim.repositorio.DepartamentoRepositorio;
 import com.dim.servicio.interfaz.DepartamentoServicio;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.dim.servicio.impl;
 
-import com.dim.entidad.Cusi;
-import com.dim.repositorio.InterfaseCusi;
+import com.dim.dominio.entidad.Cusi;
+import com.dim.repositorio.CusiRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,28 +11,28 @@ import java.util.List;
 public class ServicioCusi {
 
     @Autowired
-    private InterfaseCusi interfaseCusi;
+    private CusiRepositorio cusiRepositorio;
 
     public Cusi saveCusi(Cusi usuario){
-        return interfaseCusi.save(usuario);
+        return cusiRepositorio.save(usuario);
     }
 
     public Cusi findByIdCusi(Long id){
-        return interfaseCusi.findById(id).orElseThrow();
+        return cusiRepositorio.findById(id).orElseThrow();
     }
 
 
     public List<Cusi> findAllCusi(){
-        return interfaseCusi.findAll();
+        return cusiRepositorio.findAll();
     }
 
 
     public void deleteCusi(Long id){
-        interfaseCusi.deleteById(id);
+        cusiRepositorio.deleteById(id);
     }
 
     public boolean existByIdCusi(Long id) {
-        return interfaseCusi.existsById(id);
+        return cusiRepositorio.existsById(id);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.dim.servicio.impl;
 
-import com.dim.entidad.Monitor;
-import com.dim.repositorio.InterfaseMonitor;
+import com.dim.dominio.entidad.Monitor;
+import com.dim.repositorio.MonitorRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,28 +12,28 @@ import java.util.Optional;
 public class ServicioMonitor {
 
     @Autowired
-    private InterfaseMonitor interfaseMonitor;
+    private MonitorRepositorio monitorRepositorio;
 
     public Monitor saveMonitor(Monitor monitor){
-        return interfaseMonitor.save(monitor);
+        return monitorRepositorio.save(monitor);
     }
 
     public Optional<Monitor> findByIdMonitor(Long id){
-        return interfaseMonitor.findById(id);
+        return monitorRepositorio.findById(id);
     }
 
 
     public List<Monitor> findAllMonitor(){
-        return interfaseMonitor.findAll();
+        return monitorRepositorio.findAll();
     }
 
 
     public void deleteMonitor(Long id){
-        interfaseMonitor.deleteById(id);
+        monitorRepositorio.deleteById(id);
     }
 
     public boolean existByIdMonitor(Long id) {
-        return interfaseMonitor.existsById(id);
+        return monitorRepositorio.existsById(id);
     }
 
 

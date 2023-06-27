@@ -1,6 +1,6 @@
 package com.dim.controlador.interfaz;
 
-import com.dim.entidad.Estacion;
+import com.dim.dominio.entidad.Estacion;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

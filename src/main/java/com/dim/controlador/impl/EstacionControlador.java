@@ -1,8 +1,7 @@
 package com.dim.controlador.impl;
 
 import com.dim.controlador.interfaz.EstacionApi;
-import com.dim.entidad.Departamento;
-import com.dim.entidad.Estacion;
+import com.dim.dominio.entidad.Estacion;
 import com.dim.servicio.interfaz.EstacionServicio;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
