@@ -22,8 +22,8 @@ import java.util.Collection;
 @Tag(name = "Principal", description = "Principal API")
 public interface PrincipalApi {
 
-    @Operation(summary = "Búsqueda filtrada por tipo", description = "Retorna departamento, cusi o estación")
     @GetMapping("/")
+    @Operation(summary = "Búsqueda filtrada por tipo", description = "Retorna departamento, cusi o estación")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<?> filtrarBusqueda(
             @NotNull

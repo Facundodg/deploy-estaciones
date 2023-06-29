@@ -1,0 +1,52 @@
+
+.section-filtro{
+  grid-area: area-filtro;
+  /* background-color: aqua; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  
+}
+
+
+.conteiner-form{
+  /* background-color: blue; */
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+
+.h2-filtrado{
+  font-size: 25px;
+  padding: 5px;
+  /* background-color: red; */
+}
+
+.input-busqueda{
+  width: 200px;  
+}
+
+.btn-buscar{
+  height: 100%;
+  padding: 10px;
+  border-radius: 7px;  
+  width: 200px;
+}
+
+
+/* select */
+
+.select-busqueda{
+  height: 42px;
+  width: 200px;
+}
+
+.select-departamento{
+  height: 42px;
+  width: 200px;
+}
