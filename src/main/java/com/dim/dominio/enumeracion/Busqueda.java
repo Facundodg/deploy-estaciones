@@ -10,7 +10,10 @@ public enum Busqueda {
     USUARIO("Usuario"),
 
     @JsonProperty("Estación")
-    ESTACION("Estacion");
+    ESTACION("Estacion"),
+
+    @JsonProperty("Puerto")
+    PUERTO("Puerto");
 
     private final String nombre;
 

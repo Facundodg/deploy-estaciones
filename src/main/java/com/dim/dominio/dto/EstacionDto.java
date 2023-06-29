@@ -20,7 +20,7 @@ public class EstacionDto {
 
     private Long puerto;
 
-    private String hostname;
+   private String hostname;
 
     private Long num_cusi;
 
