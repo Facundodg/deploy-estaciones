@@ -1,16 +1,14 @@
 package com.dim.dominio.entidad;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,11 +30,11 @@ public class Estacion {
     private Long puerto;
 
     @JoinColumn(name = "id_cusi")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Cusi cusi;
 
     @JoinColumn(name = "id_monitor")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Monitor monitor;
 
     @ManyToOne(fetch = FetchType.LAZY)

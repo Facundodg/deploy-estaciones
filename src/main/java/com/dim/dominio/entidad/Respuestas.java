@@ -1,6 +1,5 @@
 package com.dim.dominio.entidad;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
 @Data

@@ -1,4 +1,4 @@
-package com.dim.dominio.dto;
+package com.dim.dominio.dto.monitor;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -12,19 +12,11 @@ import lombok.Data;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class EstacionDto {
+public class MonitorAlta {
 
-    private String nombre;
+    private String marca;
 
-    private String apellido;
+    private String modelo;
 
-    private Long puerto;
-
-   private String hostname;
-
-    private Long num_cusi;
-
-    private String so;
-
-    private String nombre_depto;
+    private long numeroSerie;
 }

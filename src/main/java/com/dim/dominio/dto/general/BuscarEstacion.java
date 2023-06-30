@@ -1,6 +1,6 @@
-package com.dim.dominio.dto;
+package com.dim.dominio.dto.general;
 
-import com.dim.dominio.enumeracion.Busqueda;
+import com.dim.dominio.enumeracion.TipoBusqueda;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -17,11 +17,11 @@ import lombok.Data;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class BusquedaDto {
+public class BuscarEstacion {
 
     @NotNull(message = "BuscarPor no debe ser nulo")
     @Enumerated(EnumType.STRING)
-    private Busqueda buscarPor;
+    private TipoBusqueda buscarPor;
 
     @NotNull(message = "Buscar no debe ser nulo")
     @Size(min = 1, max = 10, message = "Buscar debe tener entre 1 y 10 caracteres")

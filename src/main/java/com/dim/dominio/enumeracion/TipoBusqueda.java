@@ -2,7 +2,7 @@ package com.dim.dominio.enumeracion;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public enum Busqueda {
+public enum TipoBusqueda {
     @JsonProperty("Cusi")
     CUSI("Cusi"),
 
@@ -17,7 +17,7 @@ public enum Busqueda {
 
     private final String nombre;
 
-    Busqueda(final String nombre) {
+    TipoBusqueda(final String nombre) {
         this.nombre = nombre;
     }
 

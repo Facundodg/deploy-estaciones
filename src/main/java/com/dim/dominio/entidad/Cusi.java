@@ -43,7 +43,11 @@ public class Cusi {
     @Column(name = "dvd")
     private boolean dvd;
 
-    @OneToOne(mappedBy = "cusi", fetch = FetchType.LAZY)
+    @Column(name = "ip")
+    private String ip;
+
+    @OneToOne(mappedBy = "cusi", fetch = FetchType.EAGER)
+    @JoinTable(inverseJoinColumns = {@JoinColumn(name="id_estacion")})
     private Estacion estacion;
 
     @Override
