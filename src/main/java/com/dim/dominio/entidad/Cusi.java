@@ -47,7 +47,7 @@ public class Cusi {
     private String ip;
 
     @OneToOne(mappedBy = "cusi", fetch = FetchType.EAGER)
-    @JoinTable(inverseJoinColumns = {@JoinColumn(name="id_estacion")})
+    @JoinTable(name = "estacion", inverseJoinColumns = {@JoinColumn(name="id_estacion")})
     private Estacion estacion;
 
     @Override

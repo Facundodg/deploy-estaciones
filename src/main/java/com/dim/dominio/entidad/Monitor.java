@@ -26,7 +26,7 @@ public class Monitor {
     private String marca;
 
     @OneToOne(mappedBy = "monitor", fetch = FetchType.EAGER)
-    @JoinTable(/*inverseJoinColumns = {@JoinColumn(name = "id_estacion")}, */foreignKey = @ForeignKey(name = "id_estacion"))
+    @JoinTable(name = "estacion",/*inverseJoinColumns = {@JoinColumn(name = "id_estacion")}, */foreignKey = @ForeignKey(name = "id_estacion"))
     private Estacion estacion;
 
 }

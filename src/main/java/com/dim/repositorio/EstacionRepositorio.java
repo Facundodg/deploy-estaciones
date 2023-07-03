@@ -16,6 +16,6 @@ public interface EstacionRepositorio extends JpaRepository<Estacion, Long> {
     @Query(value = "select * from fn_buscar_datos_generales()", nativeQuery = true)
     Collection<EstacionPropiedades> buscarEstacionesPropiedades();
 
-    List<Usuario> finByNumeroAfiliado(long numafiliado); //prueba
+    //List<Usuario> finByNumeroAfiliado(long numafiliado); //prueba
 
 }

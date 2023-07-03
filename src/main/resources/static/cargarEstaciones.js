@@ -95,7 +95,63 @@ async function mostrarDatosDepto(depto){
 
 }
 
-var selectElementDeptos = document.getElementById('selector');
+async function mostrarDatosBuscadosPorCusiPuertoUsuario(){
+
+        var selectElementBusqueda = document.getElementById('selectorBusqueda');
+        console.log('busqueda por:', selectElementBusqueda.value);
+
+        var input = document.getElementById("buscador");
+        var value = input.value;
+
+        console.log("--data--")
+        console.log(selectElementBusqueda.value)
+        console.log(value)
+
+        /*
+
+        const request = await fetch('/main/buscadorCusiPuertoUsuario', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ buscarPor: selectElementBusqueda.value, buscar: value })
+
+        });
+        */
+
+        let headersList = {
+         'Accept': 'application/json',
+         "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+         "Content-Type": "application/json"
+        }
+
+        let request = await fetch("http://localhost:4040/main/buscadorCusiPuertoUsuario", {
+          method: "POST",
+          body: JSON.stringify({ buscarPor: selectElementBusqueda.value, buscar: value }),
+          headers: headersList
+        });
+
+        const estaciones = await request.json();
+
+
+        console.log(estaciones);
+
+        const row = document.querySelector(".tablita")
+
+        removerChildNodes(row);
+
+
+        for (let estacion of estaciones) {
+
+               cargarEstaciones(estacion);
+
+        }
+
+
+}
+
+var selectElementDeptos = document.getElementById('selectorDepto');
 
 selectElementDeptos.addEventListener('change', function() {
 

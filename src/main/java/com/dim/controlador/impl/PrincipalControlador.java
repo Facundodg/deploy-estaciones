@@ -97,7 +97,7 @@ public class PrincipalControlador implements PrincipalApi {
             estacion.setMonitor(monitor);
         }
 
-        return ResponseEntity.ok().body(modelMapper.map(estacionServicio.guardar(estacion), EstacionPropiedades.class);
+        return ResponseEntity.ok().body(modelMapper.map(estacionServicio.guardar(estacion), EstacionPropiedades.class));
     }
 
 }
