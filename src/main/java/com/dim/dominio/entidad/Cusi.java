@@ -3,6 +3,8 @@ package com.dim.dominio.entidad;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.net.InetAddress;
+
 @Entity
 @Getter
 @Builder
@@ -44,11 +46,14 @@ public class Cusi {
     private boolean dvd;
 
     @Column(name = "ip")
-    private String ip;
+    private InetAddress ip;
 
-    @OneToOne(mappedBy = "cusi", fetch = FetchType.EAGER)
-    @JoinTable(name = "estacion", inverseJoinColumns = {@JoinColumn(name="id_estacion")})
-    private Estacion estacion;
+    @Column(name = "mac")
+    private String mac;
+
+//    @OneToOne(mappedBy = "cusi", fetch = FetchType.EAGER)
+//    @JoinTable(name = "estacion", inverseJoinColumns = {@JoinColumn(name="id_estacion")})
+//    private Estacion estacion;
 
     @Override
     public boolean equals(Object o) {

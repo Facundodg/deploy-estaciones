@@ -37,19 +37,7 @@ public class Usuario {
     @JoinColumn(name = "id_departamento")
     private Departamento departamento;
 
-    @ManyToMany(mappedBy = "usuarios")
+    @ManyToMany(mappedBy = "usuarios", fetch = FetchType.LAZY)
     private Set<Estacion> estaciones;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Usuario usuario)) return false;
-
-        return getIdUsuario().equals(usuario.getIdUsuario());
-    }
-
-    @Override
-    public int hashCode() {
-        return getIdUsuario().hashCode();
-    }
 }

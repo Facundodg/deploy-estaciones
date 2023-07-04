@@ -15,7 +15,8 @@ const estacion = {
         "ip": "",
         "dvd": "",
         "mouse": "",
-        "teclado": ""
+        "teclado": "",
+        "num_cusi": ""
     },
     "monitor": {
         "marca": "",
@@ -79,7 +80,7 @@ function subirUsuario() {
     usuario = {
 
         "usuario": usuario.value,
-        "contraseña": contraseña.value
+        "clave": contraseña.value
 
     }
 
@@ -100,23 +101,29 @@ depto.addEventListener('change', function () {
 
 });
 
-
 async function subirEstaciones() {
 
     var puertoCusInput = document.getElementById('estacionInput');
     estacion.estacion.puerto = puertoCusInput.value;
 
+
+    var numcusi = document.getElementById('cusiInput');
+
+    estacion.cusi.num_cusi = numcusi.value;
+
     estacion.departamento = depto.value;
+
+    //cusiInput
 
     let headersList = {
         'Accept': 'application/json',
-        "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+        "User-Agent": "Thunder Client (https://www.thunderclient.com/)",
         "Content-Type": "application/json"
     }
 
     let request = await fetch("http://localhost:4040/main", {
         method: "POST",
-        body: JSON.stringify({ estacion }),
+        body: JSON.stringify(estacion),
         headers: headersList
     });
 

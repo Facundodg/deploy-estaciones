@@ -9,9 +9,6 @@ public enum TipoBusqueda {
     @JsonProperty("Usuario")
     USUARIO("Usuario"),
 
-    @JsonProperty("Estación")
-    ESTACION("Estacion"),
-
     @JsonProperty("Puerto")
     PUERTO("Puerto");
 

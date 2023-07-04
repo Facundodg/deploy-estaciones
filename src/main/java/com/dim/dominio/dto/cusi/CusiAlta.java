@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.net.InetAddress;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -25,12 +27,16 @@ public class CusiAlta {
     private String disco;
 
     private String so;
+    
+    private String hostName;
+
+    private String ip;
+
+    private String mac;
 
     private boolean mouse;
 
     private boolean teclado;
 
     private boolean dvd;
-
-    private String ip;
 }

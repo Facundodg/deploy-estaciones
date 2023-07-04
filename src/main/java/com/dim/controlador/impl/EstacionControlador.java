@@ -19,7 +19,7 @@ public class EstacionControlador implements EstacionApi {
 
     @Override
     public ResponseEntity<Estacion> guardar(Estacion entidad) throws Exception {
-        log.info(("[EstacionControlador - Guardar: Iniciada con estacion={}"), entidad.getHostName());
+        log.info(("[EstacionControlador - Guardar: Iniciada con estacion={}"), entidad);
         return ResponseEntity.ok(estacionServicio.guardar(entidad));
     }
 

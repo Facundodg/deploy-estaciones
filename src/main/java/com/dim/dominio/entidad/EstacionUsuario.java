@@ -6,12 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "estacion_usuario")
+//@Entity
+//@Getter
+//@Builder
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Table(name = "estacion_usuario")
 public class EstacionUsuario {
 
     @Id

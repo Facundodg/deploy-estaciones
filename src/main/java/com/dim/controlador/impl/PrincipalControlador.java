@@ -4,9 +4,11 @@ import com.dim.controlador.interfaz.PrincipalApi;
 import com.dim.dominio.dto.general.ConjuntoAlta;
 import com.dim.dominio.dto.general.BuscarEstacion;
 import com.dim.dominio.dto.estacion.EstacionPropiedades;
+import com.dim.dominio.dto.usuario.UsuarioAlta;
 import com.dim.dominio.entidad.*;
 import com.dim.repositorio.RespuestaRepo;
 import com.dim.servicio.interfaz.CusiServicio;
+import com.dim.servicio.interfaz.DepartamentoServicio;
 import com.dim.servicio.interfaz.EstacionServicio;
 import com.dim.servicio.interfaz.UsuarioServicio;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.webjars.NotFoundException;
 
+import java.io.NotActiveException;
 import java.util.*;
 
 import static com.dim.dominio.enumeracion.TipoBusqueda.*;
@@ -30,6 +34,7 @@ public class PrincipalControlador implements PrincipalApi {
     private final EstacionServicio estacionServicio;
     private final CusiServicio servicioCusi;
     private final UsuarioServicio servicioUsuario;
+    private final DepartamentoServicio departamentoServicio;
 
     private final ModelMapper modelMapper;
 
@@ -45,29 +50,23 @@ public class PrincipalControlador implements PrincipalApi {
         return repositorio.ejecutarProcedimientoPorDepto(depto);
     }
 
-
-    //---------------------------------------------------
-
     @Override
     public ResponseEntity<?> filtrarBusqueda(BuscarEstacion buscarEstacion) throws Exception {
-        final Long idBuscado = Long.parseLong(buscarEstacion.getBuscar());
+        final long idBuscado = Long.parseLong(buscarEstacion.getBuscar());
 
         log.info("[PrincipalControlar - FiltrarBúsqueda: Iniciada por id_busqueda={}]", idBuscado);
 
-        if (buscarEstacion.getBuscarPor() == CUSI) {
-
-            return ResponseEntity.status(HttpStatus.OK).body(repositorio.ejecutarProcedimientoPorCusi(idBuscado));
-
-        } else if (buscarEstacion.getBuscarPor() == PUERTO) {
-
-            return ResponseEntity.status(HttpStatus.OK).body(repositorio.ejecutarProcedimientoPorPuerto(idBuscado));
-
-        } else if (buscarEstacion.getBuscarPor() == USUARIO) {
-
-            return ResponseEntity.status(HttpStatus.OK).body(repositorio.ejecutarProcedimientoPorUsuario(idBuscado));
-
-        } else {
-            return null;
+        switch (buscarEstacion.getBuscarPor()){
+            case CUSI -> {
+                return ResponseEntity.status(HttpStatus.OK).body(repositorio.ejecutarProcedimientoPorCusi(idBuscado));
+            }
+            case USUARIO -> {
+                return ResponseEntity.status(HttpStatus.OK).body(repositorio.ejecutarProcedimientoPorUsuario(idBuscado));
+            }
+            case PUERTO -> {
+                return ResponseEntity.status(HttpStatus.OK).body(repositorio.ejecutarProcedimientoPorPuerto(idBuscado));
+            }
+            default -> throw new NotFoundException("[No es válida el tipo de búsqueda, comprobar el campo BuscarPor]");
         }
     }
 
@@ -83,18 +82,29 @@ public class PrincipalControlador implements PrincipalApi {
         final Estacion estacion = modelMapper.map(conjuntoAlta.getEstacion(), Estacion.class);
         final Cusi cusi = modelMapper.map(conjuntoAlta.getCusi(), Cusi.class);
         final Monitor monitor = modelMapper.map(conjuntoAlta.getMonitor(), Monitor.class);
-        final Usuario usuario = modelMapper.map(conjuntoAlta, Usuario.class);
+        final Collection<UsuarioAlta> usuarios = conjuntoAlta.getUsuario();
+
+        final Departamento departamento = departamentoServicio.buscarPorId(conjuntoAlta.getDepartamento());
+
+        final Collection<Usuario> usuariosFinales = new ArrayList<>();
+        for (UsuarioAlta usuario : usuarios) {
+            usuariosFinales.add(modelMapper.map(usuario, Usuario.class));
+        }
 
         if (cusi != null) {
             estacion.setCusi(cusi);
         }
 
-        if (usuario != null) {
-            estacion.setUsuarios(Set.of(usuario));
+        if (!usuarios.isEmpty()) {
+            estacion.setUsuarios(new HashSet<Usuario>(usuariosFinales));
         }
 
         if (monitor != null) {
             estacion.setMonitor(monitor);
+        }
+
+        if(departamento != null){
+            estacion.setDepartamento(departamento);
         }
 
         return ResponseEntity.ok().body(modelMapper.map(estacionServicio.guardar(estacion), EstacionPropiedades.class));

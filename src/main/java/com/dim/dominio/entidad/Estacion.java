@@ -20,12 +20,6 @@ public class Estacion {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idStacion;
 
-    @Column(name = "hostname")
-    private String hostName;
-
-    @Column(name = "mac")
-    private String mac;
-
     @Column(name = "puerto")
     private Long puerto;
 
@@ -41,7 +35,7 @@ public class Estacion {
     @JoinColumn(name = "id_departamento")
     private Departamento departamento;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "estacion_usuario",
             joinColumns = {@JoinColumn(name = "id_usuario")},
             inverseJoinColumns = {@JoinColumn(name = "id_estacion")})

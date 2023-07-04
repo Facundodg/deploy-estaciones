@@ -55,6 +55,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Override
     public Collection<Usuario> buscarPorNumAfiliado(Long numAfiliado) {
-        return usuarioRepositorio.finByNumeroAfiliado(numAfiliado);
+        return usuarioRepositorio.findByNumAfiliado(numAfiliado);
     }
 }

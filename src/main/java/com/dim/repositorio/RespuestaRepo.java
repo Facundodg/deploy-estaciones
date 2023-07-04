@@ -3,14 +3,13 @@ package com.dim.repositorio;
 import com.dim.dominio.entidad.Respuestas;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-
-@Repository
+@Component
 public class RespuestaRepo {
 
     private final JdbcTemplate jdbcTemplate;
@@ -22,7 +21,7 @@ public class RespuestaRepo {
     //LLAMA A PROCEDIMIENTO ALMACENADO QUE TRAE TODAS LAS ESTACIONES
     public List<Respuestas> ejecutarProcedimiento() {
 
-        String sql = "select * from mostrar()";
+        String sql = "select * from fn_buscar_estaciones_propiedades()";
 
         return jdbcTemplate.query(sql, new RowMapper<Respuestas>() {
             @Override
@@ -46,7 +45,7 @@ public class RespuestaRepo {
     //LLAMA A LAS ESTACIONES RELACIONADAS A UN DEPARTAMENTO
     public List<Respuestas> ejecutarProcedimientoPorDepto(long numDepto) {
 
-        String sql = "select * from mostrarPorDepto("+numDepto+")";
+        String sql = "select * from fn_buscar_estacion_por_departamento("+numDepto+")";
 
         return jdbcTemplate.query(sql, new RowMapper<Respuestas>() {
             @Override
@@ -70,7 +69,7 @@ public class RespuestaRepo {
     //LLAMA A LA ESTACION POR CUSI (NUMERO DE CUSI)
     public List<Respuestas> ejecutarProcedimientoPorCusi(long cusi) {
 
-        String sql = "select * from mostrarPorCusi("+cusi+")";
+        String sql = "select * from fn_buscar_estacion_por_cusi("+cusi+")";
 
         return jdbcTemplate.query(sql, new RowMapper<Respuestas>() {
             @Override
@@ -94,7 +93,7 @@ public class RespuestaRepo {
     //LLAMA A LA ESTACION POR PUERTO (PUERTO)
     public List<Respuestas> ejecutarProcedimientoPorPuerto(long puerto) {
 
-        String sql = "select * from mostrarPorPuerto("+puerto+")";
+        String sql = "select * from fn_buscar_estacion_por_puerto("+puerto+")";
 
         return jdbcTemplate.query(sql, new RowMapper<Respuestas>() {
             @Override
@@ -118,7 +117,7 @@ public class RespuestaRepo {
 
     public List<Respuestas> ejecutarProcedimientoPorUsuario(long usuario) {
 
-        String sql = "select * from mostrarPorUsuario("+usuario+")";
+        String sql = "select * from fn_buscar_estacion_por_usuario("+usuario+")";
 
         return jdbcTemplate.query(sql, new RowMapper<Respuestas>() {
             @Override

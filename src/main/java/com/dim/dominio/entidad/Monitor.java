@@ -5,6 +5,7 @@ import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,8 +26,8 @@ public class Monitor {
     @Column(name = "marca")
     private String marca;
 
-    @OneToOne(mappedBy = "monitor", fetch = FetchType.EAGER)
-    @JoinTable(name = "estacion",/*inverseJoinColumns = {@JoinColumn(name = "id_estacion")}, */foreignKey = @ForeignKey(name = "id_estacion"))
-    private Estacion estacion;
+//    @OneToOne(mappedBy = "monitor", fetch = FetchType.EAGER)
+//    @JoinTable(name = "estacion",/*inverseJoinColumns = {@JoinColumn(name = "id_estacion")}, */foreignKey = @ForeignKey(name = "id_estacion"))
+//    private Estacion estacion;
 
 }
