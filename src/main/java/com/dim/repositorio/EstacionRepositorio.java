@@ -14,10 +14,12 @@ public interface EstacionRepositorio extends JpaRepository<Estacion, Long> {
     @Query(value = "select * from fn_buscar_estaciones_propiedades()", nativeQuery = true)
     Collection<EstacionPropiedades> buscarEstacionesPropiedades();
 
-    //List<Usuario> finByNumeroAfiliado(long numafiliado); //prueba
-    @Query(value = "select * from fn_buscar_estacion_por_puerto()", nativeQuery = true)
-    Collection<EstacionPropiedades> buscarEstacionPorPuerto();
+    @Query(value = "select * from fn_buscar_estacion_por_puerto(?1)", nativeQuery = true)
+    Collection<EstacionPropiedades> buscarEstacionPorPuerto(final long puerto);
 
-    @Query(value = "select * from fn_buscar_estacion_por_usuario()", nativeQuery = true)
-    Collection<EstacionPropiedades> buscarEstacionPorUsuario();
+    @Query(value = "select * from fn_buscar_estacion_por_usuario(?1)", nativeQuery = true)
+    Collection<EstacionPropiedades> buscarEstacionPorUsuario(final long usuario);
+
+    @Query(value = "select * from fn_buscar_estacion_por_departamento(?1)", nativeQuery = true)
+    Collection<EstacionPropiedades> buscarEstacionesPorDepartamento(final long departamento);
 }

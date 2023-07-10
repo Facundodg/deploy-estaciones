@@ -23,9 +23,9 @@ public class EstacionPropiedades {
 
     private Long puerto;
 
-   private String hostname;
+    private String hostname;
 
-   @Column(name = "num_cusi")
+    @Column(name = "num_cusi")
     private Long numCusi;
 
     private String so;

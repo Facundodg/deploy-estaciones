@@ -22,8 +22,6 @@ import java.util.List;
 public class EstacionServicioImpl implements EstacionServicio {
 
     private final EstacionRepositorio estacionRepositorio;
-    private final JdbcTemplate jdbcTemplate;
-
 
     @Override
     public Estacion guardar(Estacion entidad) {
@@ -61,56 +59,13 @@ public class EstacionServicioImpl implements EstacionServicio {
     }
 
     @Override
-    public Collection<EstacionPropiedades> buscarEstacionesSimplificadas() {
+    public Collection<EstacionPropiedades> buscarTodosConPropiedades() {
         return estacionRepositorio.buscarEstacionesPropiedades();
     }
 
-    //LLAMA A PROCEDIMIENTO ALMACENADO QUE TRAE TODAS LAS ESTACIONES
-    public List<Respuestas> ejecutarProcedimiento() {
-
-        String sql = "select * from mostrar()";
-
-        return jdbcTemplate.query(sql, new RowMapper<Respuestas>() {
-            @Override
-            public Respuestas mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-
-
-                Respuestas entidadResultado = new Respuestas();
-                entidadResultado.setNombre(resultSet.getString("nombre"));
-                entidadResultado.setApellido(resultSet.getString("apellido"));
-                entidadResultado.setPuerto(resultSet.getLong("puerto"));
-                entidadResultado.setHostname(resultSet.getString("hostname"));
-                entidadResultado.setNum_cusi(resultSet.getLong("num_cusi"));
-                entidadResultado.setSo(resultSet.getString("so"));
-                entidadResultado.setNombre_depto(resultSet.getString("nombre_depto"));
-
-                return entidadResultado;
-            }
-        });
-    }
-
     //LLAMA A LAS ESTACIONES RELACIONADAS A UN DEPARTAMENTO
-    public List<Respuestas> ejecutarProcedimientoPorDepto(long numDepto) {
-
-        String sql = "select * from mostrarPorDepto("+numDepto+")";
-
-        return jdbcTemplate.query(sql, new RowMapper<Respuestas>() {
-            @Override
-            public Respuestas mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-
-
-                Respuestas entidadResultado = new Respuestas();
-                entidadResultado.setNombre(resultSet.getString("nombre"));
-                entidadResultado.setApellido(resultSet.getString("apellido"));
-                entidadResultado.setPuerto(resultSet.getLong("puerto"));
-                entidadResultado.setHostname(resultSet.getString("hostname"));
-                entidadResultado.setNum_cusi(resultSet.getLong("num_cusi"));
-                entidadResultado.setSo(resultSet.getString("so"));
-                entidadResultado.setNombre_depto(resultSet.getString("nombre_depto"));
-
-                return entidadResultado;
-            }
-        });
+    public Collection<EstacionPropiedades> buscarEstacionesPorDepartamento(final long numeroDepartamento) {
+        return estacionRepositorio.buscarEstacionesPorDepartamento(numeroDepartamento);
     }
 
     //LLAMA A LA ESTACION POR CUSI (NUMERO DE CUSI)

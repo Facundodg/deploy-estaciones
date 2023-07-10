@@ -7,5 +7,5 @@ import java.util.Collection;
 
 public interface EstacionServicio extends ServicioCrud<Estacion> {
 
-    Collection<EstacionPropiedades> buscarEstacionesSimplificadas();
+    Collection<EstacionPropiedades> buscarTodosConPropiedades();
 }
