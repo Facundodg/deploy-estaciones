@@ -1,11 +1,21 @@
 #!groovy
 
+def VERSION_PROYECTO
+def VERSION_DOCKER
+def VERSION_MAVEN
+
+
 pipeline {
     agent any
     tools {
         jdk 'Java 11'
         maven 'Maven 3.6.3'
         docker 'Docker'
+
+        environment{
+            PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+
+        }
     }
     stages {
         stage('Build Maven') {
@@ -15,6 +25,7 @@ pipeline {
                 sh 'mvn clean package install -DskipTests'
             }
         }
+       
         stage('Build Docker Images') {
             steps {
                 script {
@@ -24,10 +35,6 @@ pipeline {
 
                     // Obtiene la lista de subcarpetas en el directorio actual
                     def subdirectorios = sh(returnStdout: true, script: 'ls -d */').trim().split('\n')
-
-                    // Comprueba versión del proyecto
-                    def versionProyecto = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
-                    echo "Versión de proyecto: ${versionProyecto}"
 
                     // Iterar sobre cada subcarpeta
                     for (subdirectorio in subdirectorios) {
@@ -45,13 +52,21 @@ pipeline {
 
 
                             // Construye la imagen de Docker usando el nombre y la versión obtenidos
-//                            docker.build("${artifactId}:${versionProyecto}", "${subdirectorio}")
-                            sh "docker build -t ${artifactId}:${versionProyecto} ${subdirectorio}"
+//                            docker.build("${artifactId}:${PROYECTO_VERSION}", "${subdirectorio}")
+                            sh "docker build -t ${artifactId}:${PROYECTO_VERSION} ${subdirectorio}"
                         }
                     }
                 }
             }
         }
 
+        stage('Test'){
+
+        }
+
+        stage('Deploy Kubernetes0'){
+
+        }
     }
+
 }
