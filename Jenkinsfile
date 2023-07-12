@@ -4,7 +4,6 @@ pipeline {
     agent any
     tools {
         jdk 'Java 11'
-        maven 'Maven 3.6.3'
         dockerTool 'Docker latest'
     }
 
@@ -12,16 +11,16 @@ pipeline {
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
         PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
         // DOCKER_VERSION = sh(returnStdout: true, script: 'sudo docker version')
-        MAVEN_VERSION = sh(returnStdout: true, script: 'mvn --version')
+        MAVEN_VERSION = sh(returnStdout: true, script: "${env.MAVEN_HOME} --version")
         JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
     }
 
     stages {
         stage('Tools initialization') {
             steps{
-                // sh $ { env.DOCKER_VERSION }
-                sh "echo ${ env.MAVEN_VERSION }"
-                sh "echo ${ env.JAVA_VERSION }"
+                // sh "${env.DOCKER_VERSION}"
+                sh "echo ${env.MAVEN_HOME}"
+                sh "echo ${env.JAVA_VERSION}"
             }
         }
 
