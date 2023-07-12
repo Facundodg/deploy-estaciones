@@ -5,7 +5,7 @@ pipeline {
     tools {
         jdk 'Java 11'
         maven 'Maven 3.6.3'
-        docker 'Docker latest'
+        dockerTool 'Docker latest'
     }
 
     environment {
