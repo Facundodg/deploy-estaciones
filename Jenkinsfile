@@ -17,9 +17,11 @@ pipeline {
     }
     stages {
         stage('Tools initialization') {
-            sh $ { env.DOCKER_VERSION }
-            sh $ { env.MAVEN_VERSION }
-            sh $ { env.JAVA_VERSION }
+            steps{
+                sh $ { env.DOCKER_VERSION }
+                sh $ { env.MAVEN_VERSION }
+                sh $ { env.JAVA_VERSION }
+            }
         }
 
         stage('Build Maven') {
