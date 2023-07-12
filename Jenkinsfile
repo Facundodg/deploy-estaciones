@@ -10,7 +10,7 @@ pipeline {
 
     environment {
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
-        PROYECTO_VERSION = sh(returnStdout: true, script: '${env.MAVEN_PATH} help:evaluate -Dexpression=project.version -q -DforceStdout')
+        PROYECTO_VERSION = sh(returnStdout: true, script: "${env.MAVEN_PATH} help:evaluate -Dexpression=project.version -q -DforceStdout")
         // DOCKER_VERSION = sh(returnStdout: true, script: 'sudo docker version')
         MAVEN_VERSION = sh(returnStdout: true, script: "${env.MAVEN_PATH} --version")
         JAVA_VERSION = sh(returnStdout: true, script: "${env.JAVA_PATH} -version")
