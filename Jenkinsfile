@@ -8,13 +8,13 @@ pipeline {
         maven 'Maven latest'
     }
 
-    // environment {
-        // HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
+    environment {
+        HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
         // PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
         // DOCKER_VERSION = sh(returnStdout: true, script: 'sudo docker version')
         // MAVEN_VERSION = sh(returnStdout: true, script: 'mvn --version')
         // JAVA_VERSION = sh(returnStdout: true, script: "${env.JAVA_PATH} -version")
-    // }
+    }
 
     stages {
         stage('Tools initialization') {
