@@ -51,10 +51,14 @@ pipeline {
         }
 
         stage('Test') {
-            // TODO
+            steps{
+                // TODO
+            }
         }
 
         stage('Deploy Kubernetes0') {
-            // TODO
+            steps{
+                // TODO
+            }
         }
     }
