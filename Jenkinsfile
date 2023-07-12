@@ -20,8 +20,8 @@ pipeline {
         stage('Tools initialization') {
             steps{
                 // sh $ { env.DOCKER_VERSION }
-                sh $ { env.MAVEN_VERSION }
-                sh $ { env.JAVA_VERSION }
+                sh "echo ${ env.MAVEN_VERSION }"
+                sh "echo ${ env.JAVA_VERSION }"
             }
         }
 
