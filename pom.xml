@@ -17,6 +17,7 @@
 
     <properties>
         <java.version>20</java.version>
+        <revision>0.0.1</revision>
     </properties>
 
     <dependencies>
@@ -161,6 +162,10 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <finalName>${artifactId}-${revision}</finalName>
+
     </build>
 
 </project>
+
