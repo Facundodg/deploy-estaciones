@@ -15,6 +15,7 @@ pipeline {
             JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
         }
     }
+    
     stages {
         stage('Tools initialization') {
             steps{
@@ -50,7 +51,6 @@ pipeline {
                     }
                 }
             }
-        }
 
         stage('Test') {
             steps{
@@ -64,3 +64,4 @@ pipeline {
             }
         }
     }
+}
