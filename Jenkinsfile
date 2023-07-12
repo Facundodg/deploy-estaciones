@@ -25,7 +25,6 @@ pipeline {
         stage('Build Maven') {
             steps {
                 checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'dim-github', url: 'https://github.com/dim-desarrollo/gestor-estaciones']])
-                // sh 'mvn clean package install -X -DskipTests'
                 sh 'mvn clean package install -DskipTests'
             }
         }
@@ -36,12 +35,15 @@ pipeline {
                         // Verifica si existe un archivo Dockerfile en la subcarpeta actual
                         if (fileExists("Dockerfile")) {
 
-                            // Obtiene artifactId de los pom hijos
-                            def artifactId = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
-                            echo "Proyecto hijo: ${artifactId}"
+                            // Obtiene artifact_id del proyecto
+                            def artifact_id = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
+                            echo "Proyecto: ${artifact_id}"
 
                             // Construye la imagen de Docker usando el nombre y la versión obtenidos
-                            sh "docker build -t ${artifactId}:${PROYECTO_VERSION} ${subdirectorio}"
+                            sh "docker build -t ${artifact_id}:${PROYECTO_VERSION} ."
+                        }
+                        else{
+                            sh 'echo Dockerfile not found';
                         }
                     }
                 }
@@ -49,12 +51,10 @@ pipeline {
         }
 
         stage('Test') {
-
+            #TODO
         }
 
         stage('Deploy Kubernetes0') {
-
+            #TODO
         }
     }
-
-}
