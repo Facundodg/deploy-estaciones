@@ -11,7 +11,7 @@ pipeline {
     environment {
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
         PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
-        DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
+        DOCKER_VERSION = sh(returnStdout: true, script: 'sudo docker version')
         MAVEN_VERSION = sh(returnStdout: true, script: 'mvn --version')
         JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
     }
@@ -43,7 +43,7 @@ pipeline {
                             echo "Proyecto: ${artifact_id}"
 
                             // Construye la imagen de Docker usando el nombre y la versión obtenidos
-                            sh "docker build -t ${artifact_id}:${PROYECTO_VERSION} ."
+                            sh "sudo docker build -t ${artifact_id}:${PROYECTO_VERSION} ."
                         }
                         else{
                             sh 'echo Dockerfile not found';
