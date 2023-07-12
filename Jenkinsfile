@@ -2,11 +2,11 @@
 
 pipeline {
     agent any
-    tools {
+    // tools {
         // jdk 'Java 11'
         // dockerTool 'Docker latest'
         // maven 'Maven 3.6.3'
-    }
+    // }
 
     environment {
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
