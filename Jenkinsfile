@@ -6,16 +6,16 @@ pipeline {
         jdk 'Java 11'
         maven 'Maven 3.6.3'
         docker 'Docker'
-
-        environment {
-            HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
-            PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
-            DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
-            MAVEN_VERSION = sh(returnStdout: true, script: 'mvn --version')
-            JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
-        }
     }
-    
+
+    environment {
+        HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
+        PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+        DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
+        MAVEN_VERSION = sh(returnStdout: true, script: 'mvn --version')
+        JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
+    }
+
     stages {
         stage('Tools initialization') {
             steps{
@@ -52,16 +52,16 @@ pipeline {
                 }
             }
 
-        stage('Test') {
-            steps{
-                // TODO
-            }
-        }
+        // stage('Test') {
+        //     steps{
+        //         // TODO
+        //     }
+        // }
 
-        stage('Deploy Kubernetes0') {
-            steps{
-                // TODO
-            }
-        }
+        // stage('Deploy Kubernetes0') {
+        //     steps{
+        //         // TODO
+        //     }
+        // }
     }
 }
