@@ -12,7 +12,7 @@ pipeline {
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
         // PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
         DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
-        MAVEN_VERSION = sh(returnStdout: true, script: 'mvn --version')
+        MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
         JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
     }
 
