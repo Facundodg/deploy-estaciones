@@ -1,6 +1,6 @@
 #!groovy
 
-def PROYECTO_VERSION
+def PROYECTO_VERSION = ""
 
 pipeline {
 
