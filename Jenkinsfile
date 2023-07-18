@@ -10,7 +10,7 @@ pipeline {
 
     environment {
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
-        // PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+        PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
         // DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
         // MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
         // JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
@@ -19,7 +19,7 @@ pipeline {
     stages {
         stage('Tools initialization') {
             steps{
-                sh "echo ${HORA_DESPLIEGUE}"
+                sh "echo 'HORA DESPLIEGUE: ${HORA_DESPLIEGUE}'"
                 // sh "echo ${DOCKER_VERSION}"
                 // sh "echo ${MAVEN_VERSION}"
                 // sh "echo ${JAVA_VERSION}"
