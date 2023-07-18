@@ -29,10 +29,12 @@ pipeline {
 
         stage('Build Maven') {
             steps {
-                // checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'dim-github', url: 'https://github.com/dim-desarrollo/gestor-estaciones']])
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/dim-desarrollo/gestor-estaciones']])
-                sh 'mvn clean package install -DskipTests'
-                env.PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+                script{
+                    // checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'dim-github', url: 'https://github.com/dim-desarrollo/gestor-estaciones']])
+                    checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/dim-desarrollo/gestor-estaciones']])
+                    sh 'mvn clean package install -DskipTests'
+                    env.PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+                }
             }
         }
 
@@ -47,7 +49,7 @@ pipeline {
                             echo "Proyecto: ${artifact_id}"
 
                             // Construye la imagen de Docker usando el nombre y la versión obtenidos
-                            sh "docker build -t ${artifact_id}:${PROYECTO_VERSION} ."
+                            sh "docker build -t ${artifact_id}:${env.PROYECTO_VERSION} ."
                         }
                         else{
                             error "Dockerfile not found"
