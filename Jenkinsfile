@@ -19,7 +19,7 @@ pipeline {
     stages {
         stage('Tools initialization') {
             steps{
-                sh "echo 'HORA DESPLIEGUE: ${HORA_DESPLIEGUE}'"
+                sh "echo 'HORA DESPLIEGUE: ${HORA_DESPLIEGUE}"
                 // sh "echo ${DOCKER_VERSION}"
                 // sh "echo ${MAVEN_VERSION}"
                 // sh "echo ${JAVA_VERSION}"
@@ -28,7 +28,8 @@ pipeline {
 
         stage('Build Maven') {
             steps {
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'dim-github', url: 'https://github.com/dim-desarrollo/gestor-estaciones']])
+                // checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'dim-github', url: 'https://github.com/dim-desarrollo/gestor-estaciones']])
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/dim-desarrollo/gestor-estaciones']])
                 sh 'mvn clean package install -DskipTests'
             }
         }
