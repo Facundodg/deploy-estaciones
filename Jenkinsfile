@@ -19,7 +19,7 @@ pipeline {
     stages {
         stage('Tools initialization') {
             steps{
-                sh "echo 'HORA DESPLIEGUE: ${HORA_DESPLIEGUE}"
+                sh "echo ${HORA_DESPLIEGUE}"
                 // sh "echo ${DOCKER_VERSION}"
                 // sh "echo ${MAVEN_VERSION}"
                 // sh "echo ${JAVA_VERSION}"
