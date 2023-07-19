@@ -1,11 +1,5 @@
 #!groovy
 
-def HORA_DESPLIEGUE
-def PROYECTO_VERSION = "0.0.1"
-def DOCKER_VERSION = "latest"
-def MAVEN_VERSION = "3.9.3"
-def JAVA_VERSION = "20"
-
 pipeline {
 
     agent any
@@ -17,6 +11,12 @@ pipeline {
 
     environment {
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
+
+        PROYECTO_VERSION = "0.0.1"
+        DOCKER_VERSION = "latest"
+        MAVEN_VERSION = "3.9.3"
+        JAVA_VERSION = "20"
+        
         GITHUB_CREDENCIALES = "github"
         GITHUB_URL = "https://github.com/dim-desarrollo/gestor-estaciones"
         GITHUB_RAMA = "*/master"
