@@ -38,7 +38,7 @@ pipeline {
             }
         }
 
-        stage('Build Docker Images') {
+        stage('Build Docker Image') {
             steps {
                 script {
                         // Verifica si existe un archivo Dockerfile en la subcarpeta actual
