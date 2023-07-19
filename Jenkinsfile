@@ -70,13 +70,17 @@ pipeline {
 
         stage('Test') {
             steps{
-                // TODO
+                script{
+                    echo "TODO - TEST"
+                }
             }
         }
 
         stage('Deploy Kubernetes0') {
             steps{
-                // TODO
+                script{
+                    echo "TODO - KUBERNETES"
+                }
             }
         }
     }
