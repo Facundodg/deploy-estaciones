@@ -63,7 +63,7 @@ pipeline {
                         echo "Proyecto: ${ARTIFACT_ID}"
 
                         // Construye la imagen de Docker usando el nombre y la versión obtenidos
-                        sh "docker build -t ${artifact_id}:${env.PROYECTO_VERSION} ."
+                        sh "docker build -t ${ARTIFACT_ID}:${env.PROYECTO_VERSION} ."
                     }
                 }
             }
