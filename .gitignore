@@ -1,4 +1,5 @@
 ### PROJECT ###
+.idea/
 certs/
 HELP.md
 logs/
@@ -1759,5 +1760,3 @@ abstract.record*
 
 ### GPG template
 secring.*
-
-
