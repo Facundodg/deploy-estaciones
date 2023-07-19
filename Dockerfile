@@ -1,4 +1,4 @@
-FROM openjdk:20-alpine
+FROM eclipse-temurin:20-alpine
 MAINTAINER DIM <correo@dim.com>
 # VOLUME /data/dev
 ARG JAR_FILE=target/*.jar
