@@ -25,15 +25,17 @@ pipeline {
     stages {
         stage('Tools initialization') {
             steps{
-                sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
-                // sh "echo ${DOCKER_VERSION}"
-                // sh "echo ${MAVEN_VERSION}"
-                // sh "echo ${JAVA_VERSION}"
+                script{
+                    sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
+                    // sh "echo ${DOCKER_VERSION}"
+                    // sh "echo ${MAVEN_VERSION}"
+                    // sh "echo ${JAVA_VERSION}"
 
-                env.DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
-                env.JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
-                env.MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
-                env.PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+                    env.DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
+                    env.JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
+                    env.MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
+                    env.PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+                }
             }
         }
 
@@ -42,7 +44,7 @@ pipeline {
                 script{
 
                     // checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'dim-github', url: 'https://github.com/dim-desarrollo/gestor-estaciones']])
-                    checkout scmGit(branches: [[name: "${GITHUB_RAMA}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_URL}"]])
+                    checkout scmGit(branches: [[name: "${env.GITHUB_RAMA}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${env.GITHUB_CREDENCIALES}", url: "${env.GITHUB_URL}"]])
                     sh 'mvn clean package install -DskipTests'
                 }
             }
@@ -57,8 +59,8 @@ pipeline {
                         }
 
                         // Obtiene artifact_id del proyecto
-                        def artifact_id = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
-                        echo "Proyecto: ${artifact_id}"
+                        def ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
+                        echo "Proyecto: ${ARTIFACT_ID}"
 
                         // Construye la imagen de Docker usando el nombre y la versión obtenidos
                         sh "docker build -t ${artifact_id}:${env.PROYECTO_VERSION} ."
