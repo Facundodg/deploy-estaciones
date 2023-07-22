@@ -68,8 +68,8 @@ pipeline {
                         sh "docker build -t ${env.ARTIFACT_ID}:${env.PROYECTO_VERSION} ."
 
                         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                            sh "echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin" 
-                            sh "docker push $DOCKERHUB_USERNAME/${env.ARTIFACT_ID}:${env.PROYECTO_VERSION}"
+                            sh 'echo ${DOCKERHUB_PASSWORD} | docker login -u $DOCKERHUB_USERNAME --password-stdin' 
+                            sh 'docker push ${DOCKERHUB_USERNAME}/${env.ARTIFACT_ID}:${env.PROYECTO_VERSION}'
                         }
                     }
                 }
