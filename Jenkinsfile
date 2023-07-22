@@ -56,15 +56,13 @@ pipeline {
                             error "Dockerfile not found"
                         }
 
-                        // Obtiene artifact_id del proyecto
-                        echo "Proyecto: ${env.ARTIFACT_ID}"
-
-                        // Construye la imagen de Docker usando el nombre y la versión obtenidos
-                        sh "docker build -t ${env.ARTIFACT_ID}:${env.PROYECTO_VERSION} ."
-
                         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+
+                            // Construye la imagen de Docker usando el nombre y la versión obtenidos
+                            sh "docker build -t $DOCKERHUB_USERNAME/${env.ARTIFACT_ID}:${env.PROYECTO_VERSION} ."
+
                             sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin' 
-                            sh "docker push $DOCKERHUB_USERNAME/${env.ARTIFACT_ID}:${env.PROYECTO_VERSION}"
+                            sh "docker push \$DOCKERHUB_USERNAME/${env.ARTIFACT_ID}:${env.PROYECTO_VERSION}"
                         }
                     }
                 }
