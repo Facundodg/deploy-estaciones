@@ -10,14 +10,22 @@ pipeline {
     }
 
     environment {
-        NOMBRE_APLICACION = "gestor-estaciones"
-        HORA_DESPLIEGUE = "00:00"
 
-        PROYECTO_VERSION = "0.0.1"
-        JAVA_VERSION = "20"
-        DOCKER_VERSION = "latest"
-        MAVEN_VERSION = "3.9.3"
-        ARTIFACT_ID = "0.0.1"
+        HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
+        PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+        DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
+        JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
+        MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
+        ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
+        
+        NOMBRE_APLICACION = "gestor-estaciones"
+        // HORA_DESPLIEGUE = "00:00"
+
+        // PROYECTO_VERSION = "0.0.1"
+        // DOCKER_VERSION = "latest"
+        // JAVA_VERSION = "20"
+        // MAVEN_VERSION = "3.9.3"
+        // ARTIFACT_ID = "0.0.1"
 
         GITHUB_CREDENCIALES = "github"
         GITHUB_URL = "https://github.com/dim-desarrollo/${NOMBRE_APLICACION}"
