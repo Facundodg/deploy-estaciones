@@ -36,10 +36,10 @@ pipeline {
                     env.ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
 
 
-                    sh "echo 'Hora despliegue: ${env.HORA_DESPLIEGUE}'"
-                    sh "echo ${DOCKER_VERSION}"
-                    sh "echo ${MAVEN_VERSION}"
-                    sh "echo ${JAVA_VERSION}"
+                    sh "Hora despliegue: ${env.HORA_DESPLIEGUE}'"
+                    sh "Docker version: ${env.DOCKER_VERSION}"
+                    sh "Maven version:  ${env.MAVEN_VERSION}"
+                    sh "Java version: ${env.JAVA_VERSION}"
                 }
             }
         }
