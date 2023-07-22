@@ -29,16 +29,17 @@ pipeline {
         stage('Tools initialization') {
             steps{
                 script{
-                    // sh "echo 'Hora despliegue: ${env.HORA_DESPLIEGUE}'"
-                    // sh "echo ${DOCKER_VERSION}"
-                    // sh "echo ${MAVEN_VERSION}"
-                    // sh "echo ${JAVA_VERSION}"
-
                     env.DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
                     env.JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
                     env.MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
                     env.PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
                     env.ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
+
+
+                    sh "echo 'Hora despliegue: ${env.HORA_DESPLIEGUE}'"
+                    sh "echo ${DOCKER_VERSION}"
+                    sh "echo ${MAVEN_VERSION}"
+                    sh "echo ${JAVA_VERSION}"
                 }
             }
         }
@@ -68,8 +69,8 @@ pipeline {
                         sh "docker build -t ${env.ARTIFACT_ID}:${env.PROYECTO_VERSION} ."
 
                         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                            sh 'echo ${DOCKERHUB_PASSWORD} | docker login -u $DOCKERHUB_USERNAME --password-stdin' 
-                            sh 'docker push ${DOCKERHUB_USERNAME}/${env.ARTIFACT_ID}:${env.PROYECTO_VERSION}'
+                            sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin' 
+                            sh "docker push $DOCKERHUB_USERNAME/${env.ARTIFACT_ID}:${env.PROYECTO_VERSION}"
                         }
                     }
                 }
