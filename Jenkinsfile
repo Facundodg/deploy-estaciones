@@ -31,9 +31,9 @@ pipeline {
 
                     sh "echo 'Hora despliegue: ${env.HORA_DESPLIEGUE}'"
                     sh "echo 'Docker version: ${env.DOCKER_VERSION}'"
-                    sh "echo 'Maven version:  ${env.MAVEN_VERSION}'"
                     sh "echo 'Java version: ${env.JAVA_VERSION}'"
-                    sh "echo 'Java version: ${env.ARTIFACT_ID}'"
+                    sh "echo 'Maven version:  ${env.MAVEN_VERSION}'"
+                    sh "echo 'Maven Artifact ID: ${env.ARTIFACT_ID}'"
                 }
             }
         }
