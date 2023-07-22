@@ -30,6 +30,7 @@ pipeline {
                     env.ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
 
                     sh "echo 'Hora despliegue: ${env.HORA_DESPLIEGUE}'"
+                    sh "echo 'Versión Proyecto: ${env.PROYECTO_VERSION}'"
                     sh "echo 'Docker version: ${env.DOCKER_VERSION}'"
                     sh "echo 'Java version: ${env.JAVA_VERSION}'"
                     sh "echo 'Maven version:  ${env.MAVEN_VERSION}'"
@@ -59,8 +60,9 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
 
                             // Construye la imagen de Docker usando el nombre y la versión obtenidos
-                            sh "docker build -t $DOCKERHUB_USERNAME/${env.ARTIFACT_ID}:${env.PROYECTO_VERSION} ."
+                            sh "docker build -t \$DOCKERHUB_USERNAME/${env.ARTIFACT_ID}:${env.PROYECTO_VERSION} ."
 
+                            // Sube la imagen a DockerHub
                             sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin' 
                             sh "docker push \$DOCKERHUB_USERNAME/${env.ARTIFACT_ID}:${env.PROYECTO_VERSION}"
                         }
