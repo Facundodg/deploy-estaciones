@@ -37,9 +37,9 @@ pipeline {
 
 
                     sh "echo 'Hora despliegue: ${env.HORA_DESPLIEGUE}'"
-                    sh "echo 'Docker version: ${DOCKER_VERSION}'"
-                    sh "echo 'Maven version:  ${MAVEN_VERSION}'"
-                    sh "echo 'Java version: ${JAVA_VERSION}'"
+                    sh "echo 'Docker version: ${env.DOCKER_VERSION}'"
+                    sh "echo 'Maven version:  ${env.MAVEN_VERSION}'"
+                    sh "echo 'Java version: ${env.JAVA_VERSION}'"
                 }
             }
         }
