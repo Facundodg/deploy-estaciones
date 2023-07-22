@@ -11,13 +11,13 @@ pipeline {
 
     environment {
         NOMBRE_APLICACION = "gestor-estaciones"
-        HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
+        HORA_DESPLIEGUE = "00:00"
 
         PROYECTO_VERSION = "0.0.1"
         JAVA_VERSION = "20"
         DOCKER_VERSION = "latest"
         MAVEN_VERSION = "3.9.3"
-        ARTIDACT_ID = "0.0.1"
+        ARTIFACT_ID = "0.0.1"
 
         GITHUB_CREDENCIALES = "github"
         GITHUB_URL = "https://github.com/dim-desarrollo/${NOMBRE_APLICACION}"
@@ -29,6 +29,7 @@ pipeline {
         stage('Tools initialization') {
             steps{
                 script{
+                    env.HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
                     env.DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
                     env.JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
                     env.MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
@@ -40,6 +41,7 @@ pipeline {
                     sh "echo 'Docker version: ${env.DOCKER_VERSION}'"
                     sh "echo 'Maven version:  ${env.MAVEN_VERSION}'"
                     sh "echo 'Java version: ${env.JAVA_VERSION}'"
+                    sh "echo 'Java version: ${env.ARTIFACT_ID}'"
                 }
             }
         }
