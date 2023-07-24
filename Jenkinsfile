@@ -17,6 +17,7 @@ pipeline {
         GITHUB_URL = "https://github.com/dim-desarrollo/${NOMBRE_APLICACION}"
         GITHUB_RAMA = "*/master"
 
+        DOCKERHUB_CREDENCIALES = "dockerhub"
     }
 
     stages {
@@ -57,7 +58,7 @@ pipeline {
                             error "Dockerfile not found"
                         }
 
-                        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
 
                             // Construye la imagen de Docker usando el nombre y la versión obtenidos
                             sh "docker build -t \$DOCKERHUB_USERNAME/${env.ARTIFACT_ID}:${env.PROYECTO_VERSION} ."
@@ -78,7 +79,7 @@ pipeline {
             }
         }
 
-        stage('Deploy Kubernetes0') {
+        stage('Deploy to Kubernetes') {
             steps{
                 script{
                     echo "TODO - KUBERNETES"
