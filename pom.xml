@@ -11,13 +11,12 @@
 
     <groupId>com.dim</groupId>
     <artifactId>gestor-estaciones</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>gestor-estaciones</name>
     <description>gestor-estaciones</description>
 
     <properties>
         <java.version>20</java.version>
-        <revision>0.0.1</revision>
     </properties>
 
     <dependencies>
@@ -163,7 +162,7 @@
             </plugin>
         </plugins>
 
-        <finalName>${artifactId}-${revision}</finalName>
+        <finalName>${artifactId}-${version}</finalName>
 
     </build>
 
