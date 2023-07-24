@@ -22,6 +22,7 @@ import java.util.List;
 public class EstacionServicioImpl implements EstacionServicio {
 
     private final EstacionRepositorio estacionRepositorio;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public Estacion guardar(Estacion entidad) {
