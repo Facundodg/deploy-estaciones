@@ -79,11 +79,9 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Trigger manifedt update') {
             steps{
-                script{
-                    echo "TODO - KUBERNETES"
-                }
+                
             }
         }
     }
@@ -92,5 +90,24 @@ pipeline {
         always{
             sh 'docker logout'
         }
+
+        success {
+            emailext (
+                    to: 'octallanillo@gmail.com',
+                    subject: "[BuildResult][${currentBuild.currentResult}] - Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
+                    body: '''${SCRIPT, template="email.groovy.template"}''',
+                    attachLog: true
+            )
+        }
+
+        failure {
+            emailext (
+                    to: 'octallanillo@gmail.com',
+                    subject: "[BuildResult][${currentBuild.currentResult}] - Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
+                    body: '''${SCRIPT, template="email.groovy.template"}''',
+                    attachLog: true
+            )
+        }
+
     }
 }
