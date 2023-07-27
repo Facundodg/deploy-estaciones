@@ -5,7 +5,7 @@ pipeline {
     agent any
     tools {
         jdk 'Java 20'
-        dockerTool 'Docker 24.0.2'
+        dockerTool 'Docker latest'
         maven 'Maven 3.9.3'
     }
 
@@ -87,7 +87,7 @@ pipeline {
 
                             // Sube la imagen a DockerHub
                             sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin' 
-                            sh "docker push \$DOCKERHUB_USERNAME/${DOCKER_TAG_COMPLETO}"
+                            sh "docker push \$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${PROYECTO_VERSION}.${BUILD_NUMBER}"
                         }
                     }
                 }
