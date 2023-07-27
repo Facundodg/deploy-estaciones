@@ -123,24 +123,25 @@ pipeline {
 post{
     always{
         sh 'docker logout'
+
+        script {
+            def mensaje_medios = "[BuildResult][${currentBuild.currentResult})] - Job '${JOB_NAME}' (${BUILD_NUMBER}) "
+
+            // Mensaje a slack
+            slackSend(channel: '#your-slack-channel', message: slackMessage)
+
+            emailext(to: 'octallanillo@gmail.com',
+                    subject: "[BuildResult][${currentBuild.currentResult}] - Job '${JOB_NAME}' (${BUILD_NUMBER})",
+                    body: '''${SCRIPT, template="email.groovy.template"}''',
+                    attachLog: true)
+        }
+
     }
 
     success {
-        emailext (
-                to: 'octallanillo@gmail.com',
-                subject: "[BuildResult][${currentBuild.currentResult}] - Job '${JOB_NAME}' (${BUILD_NUMBER})",
-                body: '''${SCRIPT, template="email.groovy.template"}''',
-                attachLog: true
-        )
     }
 
     failure {
-        emailext (
-                to: 'octallanillo@gmail.com',
-                subject: "[BuildResult][${currentBuild.currentResult}] - Job '${JOB_NAME}' (${BUILD_NUMBER})",
-                body: '''${SCRIPT, template="email.groovy.template"}''',
-                attachLog: true
-        )
     }
 
 }
