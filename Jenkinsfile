@@ -7,7 +7,6 @@ pipeline {
         jdk 'Java 20'
         dockerTool 'Docker latest'
         maven 'Maven 3.9.3'
-        sonarqube 'SonarQube 4.8.0'
     }
 
     environment {
@@ -68,7 +67,6 @@ pipeline {
                 //         -Dsonar.login=your_sonarqube_token"
                 // }
             }
-        }
 
         stage('Build and push to DockerHub') {
             steps {
@@ -116,6 +114,7 @@ pipeline {
             }
         }
     }
+}
 
 post{
     always{
