@@ -117,28 +117,27 @@ pipeline {
         }
     }
 
-    post{
-        always{
-            sh 'docker logout'
-        }
-
-        success {
-            emailext (
-                    to: 'octallanillo@gmail.com',
-                    subject: "[BuildResult][${currentBuild.currentResult}] - Job '${JOB_NAME}' (${BUILD_NUMBER})",
-                    body: '''${SCRIPT, template="email.groovy.template"}''',
-                    attachLog: true
-            )
-        }
-
-        failure {
-            emailext (
-                    to: 'octallanillo@gmail.com',
-                    subject: "[BuildResult][${currentBuild.currentResult}] - Job '${JOB_NAME}' (${BUILD_NUMBER})",
-                    body: '''${SCRIPT, template="email.groovy.template"}''',
-                    attachLog: true
-            )
-        }
-
+post{
+    always{
+        sh 'docker logout'
     }
+
+    success {
+        emailext (
+                to: 'octallanillo@gmail.com',
+                subject: "[BuildResult][${currentBuild.currentResult}] - Job '${JOB_NAME}' (${BUILD_NUMBER})",
+                body: '''${SCRIPT, template="email.groovy.template"}''',
+                attachLog: true
+        )
+    }
+
+    failure {
+        emailext (
+                to: 'octallanillo@gmail.com',
+                subject: "[BuildResult][${currentBuild.currentResult}] - Job '${JOB_NAME}' (${BUILD_NUMBER})",
+                body: '''${SCRIPT, template="email.groovy.template"}''',
+                attachLog: true
+        )
+    }
+
 }
