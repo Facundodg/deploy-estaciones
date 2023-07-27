@@ -1,7 +1,7 @@
 #!groovy
+// -noinspection GroovyAssignabilityCheck
 
 pipeline {
-
     agent any
     tools {
         jdk 'Java 20'
@@ -10,8 +10,6 @@ pipeline {
     }
 
     environment {
-        SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
-
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
         NOMBRE_PROYECTO_MONOLITO = "gestor-estaciones"
         NOMBRE_PROYECTO_DESPLIEGUE= "${NOMBRE_PROYECTO_MONOLITO}-despliegue"
@@ -57,17 +55,20 @@ pipeline {
         }
 
         stage ('SonarQube Analysis'){
+            environment{
+                SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
+                SONAR_SERVER = 'SonarQube'
+            }
             steps{
-
-            sh "echo 'SonarQube'"
-                // withSonarQube'SonarQube') {
-                //     sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                //         -Dsonar.projectKey=your_project_key \
-                //         -Dsonar.projectName=${NOMBRE_PROYECTO_MONOLITO} \
-                //         -Dsonar.projectVersion=${PROYECTO_VERSION} \
-                //         -Dsonar.host.url=http://localhost:9000 \
-                //         -Dsonar.login=your_sonarqube_token"
-                // }
+            sh "echo ${SONAR_SERVER}"
+                withSonarQubeEnv("${SONAR_SERVER}") {
+                    sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectName=${NOMBRE_PROYECTO_MONOLITO} \
+                        -Dsonar.projectVersion=${PROYECTO_VERSION} \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.sources=src/ "
+                        // -Dsonar.login=your_sonarqube_token"
+                }
             }
         }
 
@@ -110,8 +111,8 @@ pipeline {
                     sh 'pwd' // TODO: Borrar
 
                     withCredentials([string(credentialsId: 'k8s-cluster-config', variable: 'KUBE_CONFIG')]){
-                        // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/basedatos'
-                        // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/general'
+                        // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/basedatos/'
+                        // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/general/'
                     }
                 }
             }
