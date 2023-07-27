@@ -57,6 +57,8 @@ pipeline {
         }
 
         stage ('SonarQube Analysis'){
+            steps{
+
             sh "echo 'SonarQube'"
                 // withSonarQube'SonarQube') {
                 //     sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
@@ -67,6 +69,7 @@ pipeline {
                 //         -Dsonar.login=your_sonarqube_token"
                 // }
             }
+        }
 
         stage('Build and push to DockerHub') {
             steps {
