@@ -82,12 +82,13 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
 
                             // Construye la imagen de Docker usando el nombre y la versión obtenidos
-                            DOCKER_TAG_COMPLETO = "${ARTIFACT_ID}:${PROYECTO_VERSION}.${BUILD_NUMBER}"
+                            // DOCKER_TAG_COMPLETO = "${ARTIFACT_ID}:${PROYECTO_VERSION}.${BUILD_NUMBER}"
+                            DOCKER_TAG_COMPLETO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
                             sh "docker build -t \$DOCKERHUB_USERNAME/${DOCKER_TAG_COMPLETO} ."
 
                             // Sube la imagen a DockerHub
                             sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin' 
-                            sh "docker push \$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${PROYECTO_VERSION}.${BUILD_NUMBER}"
+                            sh "docker push \$DOCKERHUB_USERNAME/${DOCKER_TAG_COMPLETO}"
                         }
                     }
                 }
