@@ -122,20 +122,18 @@ pipeline {
 
 post{
     always{
+        // Desconexión de docker
         sh 'docker logout'
+        
+        // Mensaje para medios de información
+        def mensaje_medios = "[BuildResult][${currentBuild.currentResult})] - Job '${JOB_NAME}' (${BUILD_NUMBER}) "
 
-        script {
-            def mensaje_medios = "[BuildResult][${currentBuild.currentResult})] - Job '${JOB_NAME}' (${BUILD_NUMBER}) "
-
-            // Mensaje a slack
-            slackSend(channel: '#your-slack-channel', message: slackMessage)
-
-            emailext(to: 'octallanillo@gmail.com',
-                    subject: "[BuildResult][${currentBuild.currentResult}] - Job '${JOB_NAME}' (${BUILD_NUMBER})",
-                    body: '''${SCRIPT, template="email.groovy.template"}''',
-                    attachLog: true)
-        }
-
+        slackSend(channel: '#your-slack-channel', message: slackMessage)
+        
+        emailext(to: 'octallanillo@gmail.com',
+                subject: "[BuildResult][${currentBuild.currentResult}] - Job '${JOB_NAME}' (${BUILD_NUMBER})",
+                body: '''${SCRIPT, template="email.groovy.template"}''',
+                attachLog: true)
     }
 
     success {
