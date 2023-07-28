@@ -1,6 +1,8 @@
 #!groovy
 // -noinspection GroovyAssignabilityCheck
+
 def ARTIFACT_ID
+def IDENTIFICADOR_PROYECTO
 
 pipeline {
     agent any
@@ -40,6 +42,7 @@ pipeline {
                     PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
 
                     ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
+                    IDENTIFICADOR_PROYECTO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
 
                     sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
                     sh "echo 'Versión Proyecto: ${PROYECTO_VERSION}'"
@@ -77,8 +80,8 @@ pipeline {
                         -Dsonar.projectName=${ARTIFACT_ID} \
                         -Dsonar.projectVersion=${PROYECTO_VERSION} \
                         -Dsonar.host.url=http://${SONAR_HOST_IP}:${SONAR_PORT} \
-                        -Dsonar.sources=src/ "
-                        // -Dsonar.login="
+                        -Dsonar.sources=src/ \
+                        -Dsonar.projectKey=${IDENTIFICADOR_PROYECTO}"
                 }
             }
         }
@@ -96,18 +99,18 @@ pipeline {
                 script {
                         // Verifica si existe un archivo Dockerfile en la subcarpeta actual
                         if (!fileExists("Dockerfile")) {
-                            error "Dockerfile not found"
+                           error "Dockerfile not found"
                         }
 
                         withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
 
                             // Construye la imagen de Docker usando el nombre y la versión obtenidos
-                            DOCKER_TAG_COMPLETO = "${ARTIFACT_ID}:${PROYECTO_VERSION}.${BUILD_NUMBER}"
-                            sh "docker build -t \$DOCKERHUB_USERNAME/${DOCKER_TAG_COMPLETO} ."
+                            DOCKER_TAG = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
+                            sh "docker build -t \$DOCKERHUB_USERNAME/${DOCKER_TAG} ."
 
                             // Sube la imagen a DockerHub
                             sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin' 
-                            sh "docker push \$DOCKERHUB_USERNAME/${DOCKER_TAG_COMPLETO}"
+                            sh "docker push \$DOCKERHUB_USERNAME/${DOCKER_TAG}"
                         }
                     }
                 }
