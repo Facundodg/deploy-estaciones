@@ -47,7 +47,7 @@ pipeline {
         stage('Build Maven') {
             steps {
                 script{
-                    dir("${ARTIFACT_ID}"){
+                    dir('monolito'){
                         git credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}", branch: "${GITHUB_MONOLITO_RAMA}"
                         // checkout scmGit(branches: [[name: "${GITHUB_MONOLITO_RAMA}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]]) 
                         sh 'mvn clean package install -DskipTests'
@@ -111,11 +111,13 @@ pipeline {
                     sh 'cd ..'
                     sh 'pwd' // TODO: Borrar
 
-                    git credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_RAMA}", branch: "${GITHUB_DESPLIEGUE_RAMA}"
+                    dir('despliegue'){
+                        git credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}", branch: "${GITHUB_DESPLIEGUE_RAMA}"
 
-                    withCredentials([string(credentialsId: 'k8s-cluster-config', variable: 'KUBE_CONFIG')]){
-                        // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/basedatos'
-                        // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/general'
+                        withCredentials([string(credentialsId: 'k8s-cluster-config', variable: 'KUBE_CONFIG')]){
+                            // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/basedatos'
+                            // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/general'
+                        }
                     }
                 }
             }
