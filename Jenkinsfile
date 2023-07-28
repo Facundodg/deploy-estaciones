@@ -60,7 +60,7 @@ pipeline {
                     dir('monolito'){
                         git credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}", branch: "${GITHUB_MONOLITO_RAMA}"
                         // checkout scmGit(branches: [[name: "${GITHUB_MONOLITO_RAMA}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]]) 
-                        sh 'mvn clean package -DskipTests'
+                        sh 'mvn clean package install -DskipTests'
                     }
                 }
             }
