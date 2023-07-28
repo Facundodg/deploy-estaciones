@@ -26,7 +26,7 @@ pipeline {
     stages {
         stage ('Cleanup Workspace'){
             steps{
-                cleanWs();
+               cleanWs();
             }
         }
 
@@ -70,7 +70,7 @@ pipeline {
 
             steps{
             sh "echo 'TODO - SonarQube, Server: ${SONAR_SERVER}'"
-                withSonarQubeEnv(credentialsId: 'sonarqube'){
+                withSonarQubeEnv(installationName: "${SONAR_SERVER}", credentialsId: 'sonarqube'){
                 // withSonarQubeEnv("${SONAR_SERVER}") {
                     sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
                         -Dsonar.projectName=${NOMBRE_PROYECTO_MONOLITO} \
