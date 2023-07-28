@@ -67,6 +67,8 @@ pipeline {
             environment{
                 SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
                 SONAR_SERVER = 'SonarQube'
+                SONAR_HOST_IP = '172.25.0.3'
+                SONAR_PORT = '9000'
             }
 
             steps{
@@ -74,8 +76,8 @@ pipeline {
                     sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
                         -Dsonar.projectName=${ARTIFACT_ID} \
                         -Dsonar.projectVersion=${PROYECTO_VERSION} \
+                        -Dsonar.host.url=http://${SONAR_HOST_IP}:${SONAR_PORT} \
                         -Dsonar.sources=src/ "
-                        // -Dsonar.host.url=http://172.20.255.16:9000\
                         // -Dsonar.login="
                 }
             }
