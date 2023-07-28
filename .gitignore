@@ -1,4 +1,6 @@
 ### PROJECT ###
+src/pipeline.gdsl
+gestor-estaciones.iml
 .jpb/
 .idea/
 certs/

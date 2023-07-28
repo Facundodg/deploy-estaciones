@@ -1,9 +1,8 @@
 #!groovy
-
+// -noinspection GroovyAssignabilityCheck
 def ARTIFACT_ID
 
 pipeline {
-
     agent any
     tools {
         jdk 'Java 20'
@@ -12,8 +11,6 @@ pipeline {
     }
 
     environment {
-        SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
-
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
 
         GITHUB_MONOLITO_URL = "https://github.com/dim-desarrollo/gestor-estaciones"
@@ -60,16 +57,20 @@ pipeline {
         }
 
         stage ('SonarQube Analysis'){
+            environment{
+                SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
+                SONAR_SERVER = 'SonarQube'
+            }
             steps{
-
-            sh "echo 'TODO - SonarQube'"
-                // withSonarQube'SonarQube') {
-                //     sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                //         -Dsonar.projectKey=your_project_key \
-                //         -Dsonar.projectName=${ARTIFACT-ID}-monolito \
-                //         -Dsonar.projectVersion=${PROYECTO_VERSION} \
-                //         -Dsonar.host.url=http://localhost:9000 \
-                //         -Dsonar.login=your_sonarqube_token"
+            sh "echo 'TODO - SonarQube, Server: ${SONAR_SERVER}'"
+                withSonarQubeEnv("${SONAR_SERVER}") {
+                    // sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
+                    //     -Dsonar.projectName=${NOMBRE_PROYECTO_MONOLITO} \
+                    //     -Dsonar.projectVersion=${PROYECTO_VERSION} \
+                    //     -Dsonar.host.url=http://localhost:9000 \
+                    //     -Dsonar.sources=src/ "
+                        // -Dsonar.login=your_sonarqube_token"
+                }
                 // }
             }
         }
@@ -113,7 +114,6 @@ pipeline {
                     dir("${ARTIFACT_ID}-despliegue"){
                         git credentialsId: "${GITHUB_CREDENCIALES}", url: "${}", branch: "${GITHUB_DESPLIEGUE_RAMA}"
 
-
                         withCredentials([string(credentialsId: 'k8s-cluster-config', variable: 'KUBE_CONFIG')]){
                             // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/basedatos'
                             // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/general'
@@ -126,26 +126,25 @@ pipeline {
 }
 
 post{
-    always{
+    always {
+        // Desconexión de h 'docker logout'
         sh 'docker logout'
+
+        def mensaje_slack = "Mensaje de Slack"
+        slackSend(channel: '#your-slack-channel', message: "${mensaje_slack}")
+        
+        emailext (
+                to: 'octallanillo@gmail.com',
+                subject: "[BuildResult][${currentBuild.currentResult}] - Job '${env.JOB_NAME}' (${BUILD_NUMBER})",
+                body: '''${SCRIPT, template="email.groovy.template"}''',
+                attachLog: true
+            )
     }
 
     success {
-        emailext (
-                to: 'octallanillo@gmail.com',
-                subject: "[BuildResult][${currentBuild.currentResult}] - Job '${JOB_NAME}' (${BUILD_NUMBER})",
-                body: '''${SCRIPT, template="email.groovy.template"}''',
-                attachLog: true
-        )
     }
 
     failure {
-        emailext (
-                to: 'octallanillo@gmail.com',
-                subject: "[BuildResult][${currentBuild.currentResult}] - Job '${JOB_NAME}' (${BUILD_NUMBER})",
-                body: '''${SCRIPT, template="email.groovy.template"}''',
-                attachLog: true
-        )
     }
 
 }
