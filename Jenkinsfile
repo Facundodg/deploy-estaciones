@@ -26,7 +26,8 @@ pipeline {
     stages {
         stage ('Cleanup Workspace'){
             steps{
-               cleanWs();
+            //    cleanWs();
+                echo 'TODO - Clean workspace'
             }
         }
 
