@@ -81,7 +81,10 @@ pipeline {
                         -Dsonar.projectVersion=${PROYECTO_VERSION} \
                         -Dsonar.host.url=http://${SONAR_HOST_IP}:${SONAR_PORT} \
                         -Dsonar.sources=src/ \
-                        -Dsonar.projectKey=${IDENTIFICADOR_PROYECTO}"
+                        -Dsonar.projectKey=${IDENTIFICADOR_PROYECTO} \
+                        -Dsonar.language=java \
+                        -Dsonar.java.binariaes=target/classes \
+                        -Dsonar.sourceEncoding=UTF-8"
                 }
             }
         }
