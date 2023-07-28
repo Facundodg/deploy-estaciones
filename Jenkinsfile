@@ -70,13 +70,12 @@ pipeline {
             }
 
             steps{
-            sh "echo 'TODO - SonarQube, Server: ${SONAR_SERVER}'"
                 withSonarQubeEnv(installationName: "${SONAR_SERVER}", credentialsId: 'sonarqube'){
                     sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
                         -Dsonar.projectName=${ARTIFACT_ID} \
                         -Dsonar.projectVersion=${PROYECTO_VERSION} \
-                        // -Dsonar.host.url=http://172.20.255.16:9000\
                         -Dsonar.sources=src/ "
+                        // -Dsonar.host.url=http://172.20.255.16:9000\
                         // -Dsonar.login="
                 }
             }
