@@ -76,7 +76,7 @@ pipeline {
                     sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
                         -Dsonar.projectName=${ARTIFACT_ID} \
                         -Dsonar.projectVersion=${PROYECTO_VERSION} \
-                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.host.url=http://172.20.255.16:9000\
                         -Dsonar.sources=src/ "
                         // -Dsonar.login="
                 }
