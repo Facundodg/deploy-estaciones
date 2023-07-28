@@ -16,8 +16,8 @@ pipeline {
         GITHUB_MONOLITO_URL = "https://github.com/dim-desarrollo/gestor-estaciones"
         GITHUB_MONOLITO_RAMA = "master"
 
-        GITHUB_DESPLIEGUE_URL = "master"
-        GITHUB_DESPLIEGUE_RAMA = "https://github.com/dim-desarrollo/gestor-estaciones-despliegue"
+        GITHUB_DESPLIEGUE_RAMA = "master"
+        GITHUB_DESPLIEGUE_URL = "https://github.com/dim-desarrollo/gestor-estaciones-despliegue"
 
         GITHUB_CREDENCIALES = "github"
         DOCKERHUB_CREDENCIALES = "dockerhub"
