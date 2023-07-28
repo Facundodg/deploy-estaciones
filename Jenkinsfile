@@ -1,5 +1,7 @@
 #!groovy
 
+def ARTIFACT_ID
+
 pipeline {
 
     agent any
@@ -13,10 +15,8 @@ pipeline {
         SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
 
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
-        NOMBRE_PROYECTO_MONOLITO = "gestor-estaciones"
-        NOMBRE_PROYECTO_DESPLIEGUE= "${NOMBRE_PROYECTO_MONOLITO}-despliegue"
 
-        GITHUB_MONOLITO_URL = "https://github.com/dim-desarrollo/${NOMBRE_PROYECTO_MONOLITO}"
+        GITHUB_MONOLITO_URL = "https://github.com/dim-desarrollo/gestor-estaciones"
         GITHUB_MONOLITO_RAMA = "master"
 
         GITHUB_DESPLIEGUE_URL = "master"
@@ -34,6 +34,7 @@ pipeline {
                     JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
                     MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
                     PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+
                     ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
 
                     sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
@@ -49,9 +50,11 @@ pipeline {
         stage('Build Maven') {
             steps {
                 script{
-                    git credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}", branch: "${GITHUB_MONOLITO_RAMA}", directory: "${NOMBRE_PROYECTO_MONOLITO}"
-                    // checkout scmGit(branches: [[name: "${GITHUB_MONOLITO_RAMA}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]]) 
-                    sh 'mvn clean package install -DskipTests'
+                    dir("${ARTIFACT_ID}-monolito"){
+                        git credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}", branch: "${GITHUB_MONOLITO_RAMA}"
+                        // checkout scmGit(branches: [[name: "${GITHUB_MONOLITO_RAMA}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]]) 
+                        sh 'mvn clean package install -DskipTests'
+                    }
                 }
             }
         }
@@ -59,11 +62,11 @@ pipeline {
         stage ('SonarQube Analysis'){
             steps{
 
-            sh "echo 'SonarQube'"
+            sh "echo 'TODO - SonarQube'"
                 // withSonarQube'SonarQube') {
                 //     sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
                 //         -Dsonar.projectKey=your_project_key \
-                //         -Dsonar.projectName=${NOMBRE_PROYECTO_MONOLITO} \
+                //         -Dsonar.projectName=${ARTIFACT-ID}-monolito \
                 //         -Dsonar.projectVersion=${PROYECTO_VERSION} \
                 //         -Dsonar.host.url=http://localhost:9000 \
                 //         -Dsonar.login=your_sonarqube_token"
@@ -105,13 +108,16 @@ pipeline {
             steps{
                 script{
                     sh 'cd ..'
-                    git credentialsId: "${GITHUB_CREDENCIALES}", url: "${}", branch: "${GITHUB_DESPLIEGUE_RAMA}", directory: "${NOMBRE_PROYECTO_DESPLIEGUE}"
-
                     sh 'pwd' // TODO: Borrar
 
-                    withCredentials([string(credentialsId: 'k8s-cluster-config', variable: 'KUBE_CONFIG')]){
-                        // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/basedatos'
-                        // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/general'
+                    dir("${ARTIFACT_ID}-despliegue"){
+                        git credentialsId: "${GITHUB_CREDENCIALES}", url: "${}", branch: "${GITHUB_DESPLIEGUE_RAMA}"
+
+
+                        withCredentials([string(credentialsId: 'k8s-cluster-config', variable: 'KUBE_CONFIG')]){
+                            // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/basedatos'
+                            // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/general'
+                        }
                     }
                 }
             }
