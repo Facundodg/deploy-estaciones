@@ -47,7 +47,7 @@ pipeline {
         stage('Build Maven') {
             steps {
                 script{
-                    dir("${ARTIFACT_ID}-monolito"){
+                    dir("${ARTIFACT_ID}"){
                         git credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}", branch: "${GITHUB_MONOLITO_RAMA}"
                         // checkout scmGit(branches: [[name: "${GITHUB_MONOLITO_RAMA}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]]) 
                         sh 'mvn clean package install -DskipTests'
@@ -111,13 +111,11 @@ pipeline {
                     sh 'cd ..'
                     sh 'pwd' // TODO: Borrar
 
-                    dir("${ARTIFACT_ID}-despliegue"){
-                        git credentialsId: "${GITHUB_CREDENCIALES}", url: "${}", branch: "${GITHUB_DESPLIEGUE_RAMA}"
+                    git credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_RAMA}", branch: "${GITHUB_DESPLIEGUE_RAMA}"
 
-                        withCredentials([string(credentialsId: 'k8s-cluster-config', variable: 'KUBE_CONFIG')]){
-                            // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/basedatos'
-                            // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/general'
-                        }
+                    withCredentials([string(credentialsId: 'k8s-cluster-config', variable: 'KUBE_CONFIG')]){
+                        // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/basedatos'
+                        // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/general'
                     }
                 }
             }
@@ -132,7 +130,7 @@ post{
 
         def mensaje_slack = "Mensaje de Slack"
         slackSend(channel: '#your-slack-channel', message: "${mensaje_slack}")
-        
+
         emailext (
                 to: 'octallanillo@gmail.com',
                 subject: "[BuildResult][${currentBuild.currentResult}] - Job '${env.JOB_NAME}' (${BUILD_NUMBER})",
