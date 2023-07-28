@@ -74,7 +74,7 @@ pipeline {
                 withSonarQubeEnv(installationName: "${SONAR_SERVER}", credentialsId: 'sonarqube'){
                 // withSonarQubeEnv("${SONAR_SERVER}") {
                     sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                        -Dsonar.projectName=${NOMBRE_PROYECTO_MONOLITO} \
+                        -Dsonar.projectName=${ARTIFACT_ID} \
                         -Dsonar.projectVersion=${PROYECTO_VERSION} \
                         -Dsonar.host.url=http://localhost:9000 \
                         -Dsonar.sources=src/ "
