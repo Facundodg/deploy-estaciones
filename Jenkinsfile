@@ -25,7 +25,9 @@ pipeline {
 
     stages {
         stage ('Cleanup Workspace'){
-            cleanWs();
+            steps{
+                cleanWs();
+            }
         }
 
         stage('Tools initialization') {
