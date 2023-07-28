@@ -24,6 +24,10 @@ pipeline {
     }
 
     stages {
+        stage ('Cleanup Workspace'){
+            cleanWs();
+        }
+
         stage('Tools initialization') {
             steps{
                 script{
@@ -61,17 +65,26 @@ pipeline {
                 SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
                 SONAR_SERVER = 'SonarQube'
             }
+
             steps{
             sh "echo 'TODO - SonarQube, Server: ${SONAR_SERVER}'"
-                withSonarQubeEnv("${SONAR_SERVER}") {
-                    // sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                    //     -Dsonar.projectName=${NOMBRE_PROYECTO_MONOLITO} \
-                    //     -Dsonar.projectVersion=${PROYECTO_VERSION} \
-                    //     -Dsonar.host.url=http://localhost:9000 \
-                    //     -Dsonar.sources=src/ "
-                        // -Dsonar.login=your_sonarqube_token"
+                withSonarQubeEnv(credentialsId: 'sonarqube'){
+                // withSonarQubeEnv("${SONAR_SERVER}") {
+                    sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectName=${NOMBRE_PROYECTO_MONOLITO} \
+                        -Dsonar.projectVersion=${PROYECTO_VERSION} \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.sources=src/ "
+                        // -Dsonar.login="
                 }
-                // }
+            }
+        }
+
+        stage('SonarQube Quality Gate'){
+            steps{
+                timeout(time: 1, unit: 'HOURS'){
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
 
