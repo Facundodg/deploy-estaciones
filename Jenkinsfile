@@ -1,8 +1,15 @@
 #!groovy
 // -noinspection GroovyAssignabilityCheck
 
+/*
+    CONSIDERACIONES
+    * Se debe configurar como multibranch pipeline
+    * Deben existir las ramas master, develop
+ */
+
 def ARTIFACT_ID
 def IDENTIFICADOR_PROYECTO
+def DOCKER_TAG
 
 pipeline {
     agent any
@@ -15,10 +22,6 @@ pipeline {
     environment {
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
 
-        GITHUB_MONOLITO_URL = "https://github.com/dim-desarrollo/gestor-estaciones"
-        GITHUB_MONOLITO_RAMA = "master"
-
-        GITHUB_DESPLIEGUE_RAMA = "master"
         GITHUB_DESPLIEGUE_URL = "https://github.com/dim-desarrollo/gestor-estaciones-despliegue"
 
         GITHUB_CREDENCIALES = "github"
@@ -26,13 +29,6 @@ pipeline {
     }
 
     stages {
-        stage ('Cleanup Workspace'){
-            steps{
-            //    cleanWs();
-                echo 'TODO - Clean workspace'
-            }
-        }
-
         stage('Tools initialization') {
             steps{
                 script{
@@ -43,13 +39,13 @@ pipeline {
 
                     ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
                     IDENTIFICADOR_PROYECTO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
+                    DOCKER_TAG = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
 
                     sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
                     sh "echo 'Versión Proyecto: ${PROYECTO_VERSION}'"
                     sh "echo 'Docker version: ${DOCKER_VERSION}'"
                     sh "echo 'Java version: ${JAVA_VERSION}'"
                     sh "echo 'Maven version:  ${MAVEN_VERSION}'"
-                    sh "echo 'Maven Artifact ID: ${ARTIFACT_ID}'"
                 }
             }
         }
@@ -58,8 +54,8 @@ pipeline {
             steps {
                 script{
                     dir('monolito'){
-                        git credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}", branch: "${GITHUB_MONOLITO_RAMA}"
-                        // checkout scmGit(branches: [[name: "${GITHUB_MONOLITO_RAMA}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]]) 
+//                        git credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}", branch: "${GITHUB_MONOLITO_RAMA}"
+                        checkout scm
                         sh 'mvn clean package install -DskipTests'
                     }
                 }
@@ -70,7 +66,7 @@ pipeline {
             environment{
                 SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
                 SONAR_SERVER = 'SonarQube'
-                SONAR_HOST_IP = '172.25.0.3'
+                SONAR_HOST_IP = '172.25.0.3'        // IP interna de Docker
                 SONAR_PORT = '9000'
             }
 
@@ -108,7 +104,6 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
 
                             // Construye la imagen de Docker usando el nombre y la versión obtenidos
-                            DOCKER_TAG = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
                             sh "docker build -t \$DOCKERHUB_USERNAME/${DOCKER_TAG} ."
 
                             // Sube la imagen a DockerHub
@@ -129,6 +124,10 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps{
+                environment {
+                    FOLDER = "./dev/general"
+                }
+
                 script{
                     sh 'cd ..'
                     sh 'pwd' // TODO: Borrar
@@ -136,9 +135,10 @@ pipeline {
                     dir('despliegue'){
                         git credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}", branch: "${GITHUB_DESPLIEGUE_RAMA}"
 
-                        withCredentials([string(credentialsId: 'k8s-cluster-config', variable: 'KUBE_CONFIG')]){
-                            // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/basedatos'
-                            // sh 'kubectl --kubeconfig=$KUBE_CONFIG apply -f ./dev/general'
+                        withCredentials([string(credentialsId: 'k8s-jenkins-account', variable: 'KUBE_TOKEN')]){
+                            // sh "kubectl --kubeconfig=$KUBE_CONFIG apply -f ${FOLDER}"
+//                            sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
+                            sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} apply -f ${FOLDER}'
                         }
                     }
                 }
@@ -167,6 +167,7 @@ post{
     }
 
     failure {
+        cleanWs()
     }
 
 }
