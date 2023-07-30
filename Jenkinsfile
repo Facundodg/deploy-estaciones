@@ -1,7 +1,22 @@
 #!groovy
-// -noinspection GroovyAssignabilityCheck
 
 /*
+    CREDENCIALES NECESARIAS
+    - Github        (Usuario y clave)
+    - DockerHub     (Usuario y clave)
+    - Kubernetes    (Token del service account de Jenkins)
+
+    HERRAMIENTAS NECESARIAS
+    - Java 20
+    - Docker 24.0.2 (Cualquier versión que soporte --password-stdin)
+    - Maven 3.9.3
+
+    PLUGINS NECESARIOS
+    - Slack
+    - Docker
+    - Kubernetes
+    - JUnit
+
     CONSIDERACIONES
     * Se debe configurar como multibranch pipeline
     * Deben existir las ramas master y develop
@@ -9,7 +24,7 @@
 
 def ARTIFACT_ID
 def IDENTIFICADOR_PROYECTO
-def DOCKER_TAG
+def IDENTIFICADOR_UNICO_BUILD
 
 pipeline {
     agent any
@@ -33,6 +48,9 @@ pipeline {
         GITHUB_CREDENCIALES = "github"
         DOCKERHUB_CREDENCIALES = "dockerhub"
         KUBERNETES_CREDENCIALES = "k8s-jenkins-account"
+
+        CANAL_SLACK = "#canal-slack"            // TODO: Por reemplazar
+        CORREO_A_NOTIFICAR = "dim@gmail.com"    // TODO: Por reemplazar
     }
 
     stages {
@@ -46,7 +64,7 @@ pipeline {
 
                     ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
                     IDENTIFICADOR_PROYECTO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
-                    DOCKER_TAG = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
+                    IDENTIFICADOR_UNICO_BUILD = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
 
                     sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
                     sh "echo 'Versión Proyecto: ${PROYECTO_VERSION}'"
@@ -73,6 +91,7 @@ pipeline {
 
         stage('Test') {
             steps {
+                // TODO: Test if works
                 sh 'mvn test'
                 sh 'mvn integration-test'
             }
@@ -95,10 +114,9 @@ pipeline {
                     sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
                         -Dsonar.projectName=${ARTIFACT_ID} \
                         -Dsonar.projectVersion=${PROYECTO_VERSION} \
+                        -Dsonar.projectKey=${IDENTIFICADOR_PROYECTO} \
                         -Dsonar.host.url=http://${SONAR_HOST_IP}:${SONAR_PORT} \
                         -Dsonar.sources=src/ \
-                        -Dsonar.projectKey=${IDENTIFICADOR_PROYECTO} \
-                        -Dsonar.language=java \
                         -Dsonar.java.binaries=. \
                         -Dsonar.sourceEncoding=UTF-8"
                 }
@@ -128,11 +146,11 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
 
                         // Construye la imagen de Docker usando el nombre y la versión obtenidos
-                        sh "docker build -t \$DOCKERHUB_USERNAME/${DOCKER_TAG} ."
+                        sh "docker build -t \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD} ."
 
                         // Sube la imagen a DockerHub
                         sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin'
-                        sh "docker push \$DOCKERHUB_USERNAME/${DOCKER_TAG}"
+                        sh "docker push \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD}"
                     }
                 }
             }
@@ -149,21 +167,19 @@ pipeline {
             steps {
                 environment {
                     CARPETA_DESPLIEGUE = BRANCH_NAME == 'master' ? 'prod' : 'dev'
-                    KUBE_SERVIDOR = ""
+                    KUBE_SERVIDOR = "" // TODO: Asignar
                 }
 
                 script {
                     sh 'cd ..'
                     sh 'pwd' // TODO: Borrar
 
-                    dir('despliegue') {
-                        checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'despliegue']], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}"]])
+                    checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'despliegue']], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}"]])
 
-                        withCredentials([string(credentialsId: "${KUBERNETES_CREDENCIALES}", variable: 'KUBE_TOKEN')]) {
-                            // sh "kubectl --kubeconfig=$KUBE_CONFIG apply -f ${FOLDER}"
-//                            sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
-                            sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -f ${CARPETA_DESPLIEGUE}/"
-                        }
+                    withCredentials([string(credentialsId: "${KUBERNETES_CREDENCIALES}", variable: 'KUBE_TOKEN')]) {
+                        // sh "kubectl --kubeconfig=$KUBE_CONFIG apply -f ${FOLDER}"
+                        // sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
+                        sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -f ${CARPETA_DESPLIEGUE}/"
                     }
                 }
             }
@@ -176,29 +192,37 @@ post {
         // Desconexión de Docker
         sh 'docker logout'
 
-        // Mensajes para Slack
-        def mensaje_slack = "Mensaje de Slack"
-        slackSend(channel: '#your-slack-channel', message: "${mensaje_slack}")
 
         // Mensaje por correo
         emailext(
-                to: 'octallanillo@gmail.com',
-                subject: "[BuildResult][${currentBuild.currentResult}] - Job '${env.JOB_NAME}' (${BUILD_NUMBER})",
+                to: "${CORREO_A_NOTIFICAR}",
+                subject: "[BuildResult][${currentBuild.currentResult}] - Job '${IDENTIFICADOR_UNICO_BUILD})",
                 body: '''${SCRIPT, template="email.groovy.template"}''',
                 attachLog: true
         )
 
-        // Almacena test de Maven
-        script{
+
+        // Almacena test de Maven. TODO: Probar si funciona
+        script {
             junit 'target/surefire-reports/*.xml'
         }
     }
 
     success {
+        enviarMensajeSlack('general', "ÉXITO en el Job '${IDENTIFICADOR_UNICO_BUILD}'")
     }
 
     failure {
         cleanWs()
+        enviarMensajeSlack('general', "FALLO en el Job '${IDENTIFICADOR_UNICO_BUILD}'")
     }
+}
 
+
+def enviarMensajeSlack(String canalSlack, String mensaje) {
+    slackSend(
+            channel: "#${canalSlack}",
+            color: "good",              // Color de mensaje (opcciones: good, warning, danger)
+            message: "${mensaje}"
+    )
 }
