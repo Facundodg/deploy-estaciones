@@ -166,11 +166,12 @@ pipeline {
                 }
             }
 
+            environment {
+                CARPETA_DESPLIEGUE = BRANCH_NAME == 'master' ? 'prod' : 'dev'
+                KUBE_SERVIDOR = "172.20.255.15:8445"
+            }
+
             steps {
-                environment {
-                    CARPETA_DESPLIEGUE = BRANCH_NAME == 'master' ? 'prod' : 'dev'
-                    KUBE_SERVIDOR = "172.20.255.15:8445"
-                }
 
                 script {
                     sh 'cd ..'
