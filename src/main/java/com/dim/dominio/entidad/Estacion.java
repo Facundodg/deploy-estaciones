@@ -37,8 +37,8 @@ public class Estacion {
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "estacion_usuario",
-            joinColumns = {@JoinColumn(name = "id_usuario")},
-            inverseJoinColumns = {@JoinColumn(name = "id_estacion")})
+            joinColumns = {@JoinColumn(name = "id_estacion")},
+            inverseJoinColumns = {@JoinColumn(name = "id_usuario")})
     private Set<Usuario> usuarios;
 
     @Override
