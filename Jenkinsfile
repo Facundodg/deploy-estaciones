@@ -47,7 +47,7 @@ pipeline {
 
         GITHUB_CREDENCIALES = "github"
         DOCKERHUB_CREDENCIALES = "dockerhub"
-        KUBERNETES_CREDENCIALES = "k8s-jenkins-account"
+        KUBERNETES_CREDENCIALES = "k8s-jenkins-account-15"
 
         CANAL_SLACK = "#canal-slack"            // TODO: Por reemplazar
         CORREO_A_NOTIFICAR = "dim@gmail.com"    // TODO: Por reemplazar
@@ -76,8 +76,10 @@ pipeline {
         }
 
         stage('Git checkout') {
-            script {
-                checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'monolito']], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
+            step{
+                script {
+                    checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'monolito']], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
+                }
             }
         }
 
@@ -167,19 +169,24 @@ pipeline {
             steps {
                 environment {
                     CARPETA_DESPLIEGUE = BRANCH_NAME == 'master' ? 'prod' : 'dev'
-                    KUBE_SERVIDOR = "" // TODO: Asignar
+                    KUBE_SERVIDOR = "172.20.255.15:8445"
                 }
 
                 script {
                     sh 'cd ..'
-                    sh 'pwd' // TODO: Borrar
 
+                    // Clona el repositorio de despliegue
                     checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'despliegue']], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}"]])
+
+                    // Actualiza el archivo de despliegue
+                    withCredentials([username(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        sh "sed -i 's+\$DOCKERHUB_USERNAME.*+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g' ${CARPETA_DESPLIEGUE}/general/monolito.yaml"
+                    }
 
                     withCredentials([string(credentialsId: "${KUBERNETES_CREDENCIALES}", variable: 'KUBE_TOKEN')]) {
                         // sh "kubectl --kubeconfig=$KUBE_CONFIG apply -f ${FOLDER}"
                         // sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
-                        sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -f ${CARPETA_DESPLIEGUE}/"
+                        sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${CARPETA_DESPLIEGUE}/"
                     }
                 }
             }
