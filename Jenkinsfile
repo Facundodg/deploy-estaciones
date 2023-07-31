@@ -76,7 +76,7 @@ pipeline {
         }
 
         stage('Git checkout') {
-            step{
+            steps{
                 script {
                     checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'monolito']], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
                 }
@@ -167,7 +167,7 @@ pipeline {
             }
 
             environment {
-                CARPETA_DESPLIEGUE = BRANCH_NAME == 'master' ? 'prod' : 'dev'
+                CARPETA_DESPLIEGUE = "${BRANCH_NAME} == 'master' ? 'prod' : 'dev'"
                 KUBE_SERVIDOR = "172.20.255.15:8445"
             }
 
