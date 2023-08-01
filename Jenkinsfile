@@ -65,7 +65,6 @@ pipeline {
                     MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
 
                     sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
-                    sh "echo 'Versión Proyecto: ${PROYECTO_VERSION}'"
                     sh "echo 'Docker version: ${DOCKER_VERSION}'"
                     sh "echo 'Java version: ${JAVA_VERSION}'"
                     sh "echo 'Maven version:  ${MAVEN_VERSION}'"
@@ -89,7 +88,12 @@ pipeline {
                         IDENTIFICADOR_PROYECTO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
                         IDENTIFICADOR_UNICO_BUILD = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
                         PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
-                        
+
+                        sh "echo 'Versión Proyecto: ${PROYECTO_VERSION}'"
+                        sh "echo 'ArtifactID Proyecto: ${ARTIFACT_ID}'"
+                        sh "echo 'Identificador Proyecto: ${IDENTIFICADOR_PROYECTO}'"
+                        sh "echo 'Identificador Único Build: ${IDENTIFICADOR_UNICO_BUILD}'"
+
                         sh 'mvn clean package install -DskipTests'
                     }
                 }
