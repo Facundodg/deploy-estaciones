@@ -78,8 +78,6 @@ pipeline {
             steps{
                 script {
                     checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'monolito']], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
-
-                    ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
                 }
             }
         }
@@ -91,6 +89,7 @@ pipeline {
 
                 dir('monolito'){
                     script {
+                        ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
                         sh 'mvn clean package install -DskipTests'
                     }
                 }
