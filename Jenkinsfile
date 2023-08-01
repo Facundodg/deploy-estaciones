@@ -147,7 +147,7 @@ pipeline {
         }
 
         stage('Build and push to DockerHub') {
-            when{
+        pjjj    when{
                 anyOf{
                     branch 'master'
                     branch 'develop'
@@ -184,7 +184,7 @@ pipeline {
             }
 
             environment {
-                CARPETA_DESPLIEGUE = "${BRANCH_NAME} == 'master' ? 'prod' : 'dev'"
+                RECURSOS_YML = "${BRANCH_NAME} == 'master' ? 'prod' : 'dev'"
                 KUBE_SERVIDOR = "172.20.255.15:8445"
             }
 
@@ -202,7 +202,7 @@ pipeline {
                         withCredentials([string(credentialsId: "${KUBERNETES_CREDENCIALES}", variable: 'KUBE_TOKEN')]) {
                             // sh "kubectl --kubeconfig=$KUBE_CONFIG apply -f ${FOLDER}"
                             // sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
-                            sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${CARPETA_DESPLIEGUE}/"
+                            sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${RECURSOS_YML}/"
                         }
                     }
                 }
