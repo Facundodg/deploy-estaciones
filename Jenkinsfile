@@ -52,7 +52,7 @@ pipeline {
         CANAL_SLACK = "#canal-slack"            // TODO: Por reemplazar
         CORREO_A_NOTIFICAR = "dim@gmail.com"    // TODO: Por reemplazar
 
-        CARPETA_MONOLITO = 'monolito'
+        CARPETA_APLICACION = 'monolito'
         CARPETA_DESPLIEGUE = 'despliegue'
     }
 
@@ -63,10 +63,6 @@ pipeline {
                     DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
                     JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
                     MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
-                    PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
-
-                    IDENTIFICADOR_PROYECTO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
-                    IDENTIFICADOR_UNICO_BUILD = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
 
                     sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
                     sh "echo 'Versión Proyecto: ${PROYECTO_VERSION}'"
@@ -80,16 +76,20 @@ pipeline {
         stage('Git checkout') {
             steps{
                 script {
-                    checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_MONOLITO}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
+                    checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_APLICACION}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
                 }
             }
         }
 
         stage('Build Maven') {
             steps {
-                dir("${CARPETA_MONOLITO}"){
+                dir("${CARPETA_APLICACION}"){
                     script {
                         ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
+                        IDENTIFICADOR_PROYECTO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
+                        IDENTIFICADOR_UNICO_BUILD = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
+                        PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+                        
                         sh 'mvn clean package install -DskipTests'
                     }
                 }
@@ -98,7 +98,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                dir("${CARPETA_MONOLITO}"){
+                dir("${CARPETA_APLICACION}"){
                     sh 'mvn test'
                     sh 'mvn integration-test'
                 }
@@ -118,15 +118,17 @@ pipeline {
             }
 
             steps {
-                withSonarQubeEnv(installationName: "${SONAR_SERVER}", credentialsId: 'sonarqube') {
-                    sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                        -Dsonar.projectName=${ARTIFACT_ID} \
-                        -Dsonar.projectVersion=${PROYECTO_VERSION} \
-                        -Dsonar.projectKey=${IDENTIFICADOR_PROYECTO} \
-                        -Dsonar.host.url=http://${SONAR_HOST_IP}:${SONAR_PORT} \
-                        -Dsonar.sources=src/ \
-                        -Dsonar.java.binaries=. \
-                        -Dsonar.sourceEncoding=UTF-8"
+                dir("${CARPETA_APLICACION}"){
+                    withSonarQubeEnv(installationName: "${SONAR_SERVER}", credentialsId: 'sonarqube') {
+                        sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
+                            -Dsonar.projectName=${ARTIFACT_ID} \
+                            -Dsonar.projectVersion=${PROYECTO_VERSION} \
+                            -Dsonar.projectKey=${IDENTIFICADOR_PROYECTO} \
+                            -Dsonar.host.url=http://${SONAR_HOST_IP}:${SONAR_PORT} \
+                            -Dsonar.sources=src/ \
+                            -Dsonar.java.binaries=. \
+                            -Dsonar.sourceEncoding=UTF-8"
+                    }
                 }
             }
         }
