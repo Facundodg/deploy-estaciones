@@ -51,6 +51,9 @@ pipeline {
 
         CANAL_SLACK = "#canal-slack"            // TODO: Por reemplazar
         CORREO_A_NOTIFICAR = "dim@gmail.com"    // TODO: Por reemplazar
+
+        CARPETA_MONOLITO = 'monolito'
+        CARPETA_DESPLIEGUE = 'despliegue'
     }
 
     stages {
@@ -77,17 +80,14 @@ pipeline {
         stage('Git checkout') {
             steps{
                 script {
-                    checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'monolito']], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
+                    checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_MONOLITO}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
                 }
             }
         }
 
         stage('Build Maven') {
             steps {
-                sh 'pwd'
-                sh 'ls'
-
-                dir('monolito'){
+                dir("${CARPETA_MONOLITO}"){
                     script {
                         ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
                         sh 'mvn clean package install -DskipTests'
@@ -98,9 +98,10 @@ pipeline {
 
         stage('Test') {
             steps {
-                // TODO: Test if works
-                sh 'mvn test'
-                sh 'mvn integration-test'
+                dir("${CARPETA_MONOLITO}"){
+                    sh 'mvn test'
+                    sh 'mvn integration-test'
+                }
             }
         }
 
@@ -182,17 +183,19 @@ pipeline {
                     sh 'cd ..'
 
                     // Clona el repositorio de despliegue
-                    checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'despliegue']], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}"]])
+                    checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}"]])
 
-                    // Actualiza el archivo de despliegue
-                    withCredentials([username(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                        sh "sed -i 's+\$DOCKERHUB_USERNAME.*+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g' ${CARPETA_DESPLIEGUE}/general/monolito.yaml"
-                    }
+                    dir ("${CARPETA_DESPLIEGUE}"){
+                        // Actualiza el archivo de despliegue
+                        withCredentials([username(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                            sh "sed -i 's+\$DOCKERHUB_USERNAME.*+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g' ${CARPETA_DESPLIEGUE}/general/monolito.yaml"
+                        }
 
-                    withCredentials([string(credentialsId: "${KUBERNETES_CREDENCIALES}", variable: 'KUBE_TOKEN')]) {
-                        // sh "kubectl --kubeconfig=$KUBE_CONFIG apply -f ${FOLDER}"
-                        // sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
-                        sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${CARPETA_DESPLIEGUE}/"
+                        withCredentials([string(credentialsId: "${KUBERNETES_CREDENCIALES}", variable: 'KUBE_TOKEN')]) {
+                            // sh "kubectl --kubeconfig=$KUBE_CONFIG apply -f ${FOLDER}"
+                            // sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
+                            sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${CARPETA_DESPLIEGUE}/"
+                        }
                     }
                 }
             }
