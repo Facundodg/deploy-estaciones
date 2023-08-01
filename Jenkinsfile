@@ -147,7 +147,7 @@ pipeline {
         }
 
         stage('Build and push to DockerHub') {
-        pjjj    when{
+            when{
                 anyOf{
                     branch 'master'
                     branch 'develop'
