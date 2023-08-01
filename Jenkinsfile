@@ -84,10 +84,10 @@ pipeline {
             steps {
                 dir("${CARPETA_APLICACION}"){
                     script {
+                        PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
                         ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
                         IDENTIFICADOR_PROYECTO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
                         IDENTIFICADOR_UNICO_BUILD = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
-                        PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
 
                         sh "echo 'Versión Proyecto: ${PROYECTO_VERSION}'"
                         sh "echo 'ArtifactID Proyecto: ${ARTIFACT_ID}'"
