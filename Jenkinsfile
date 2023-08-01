@@ -86,6 +86,7 @@ pipeline {
         stage('Build Maven') {
             steps {
                 sh 'pwd'
+                sh 'ls'
 
                 dir('monolito'){
                     script {
