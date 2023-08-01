@@ -85,8 +85,10 @@ pipeline {
 
         stage('Build Maven') {
             steps {
-                script {
-                    sh 'mvn clean package install -DskipTests'
+                dir('monolito'){
+                    script {
+                        sh 'mvn clean package install -DskipTests'
+                    }
                 }
             }
         }
