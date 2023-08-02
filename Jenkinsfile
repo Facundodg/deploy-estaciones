@@ -191,7 +191,7 @@ pipeline {
             steps {
                 script {
                     // Clona el repositorio de despliegue
-                    checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}"]])
+                    checkout scmGit(branches: [[name: 'master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}"]])
 
                     dir ("${CARPETA_DESPLIEGUE}"){
                         // Actualiza el archivo de despliegue
