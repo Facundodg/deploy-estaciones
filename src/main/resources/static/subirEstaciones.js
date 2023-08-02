@@ -23,9 +23,55 @@ const estacion = {
         "modelo": "",
         "numero_serie": ""
     },
-    "usuario": []
+    "usuario": [
+
+
+
+    ]
 
 }
+
+
+/*
+
+{
+
+    "departamento": "2",
+    "estacion": {
+      "puerto": "12345"
+    },
+    "cusi": {
+      "disco": "dasdas",
+      "micro": "dasdasd",
+      "mother": "asdasdas",
+      "so": "dasdas",
+      "ram": "dasdsa",
+      "hostName": "dasdsa",
+      "mac": "dasdas",
+      "ip": "198.24.10.0/24",
+      "dvd": true,
+      "mouse": true,
+      "teclado": false,
+      "num_cusi":"1234",
+      "mac":"123.123.123"
+    },
+    "monitor": {
+      "marca": "dasdas",
+      "modelo": "asdasd",
+      "numero_serie": "123456"
+    },
+    "usuario": [
+      {
+        "cuenta": "dasdasd",
+        "clave": "dasdasd",
+        "num_afiliado":43221
+      }
+    ]
+
+}
+
+
+*/
 
 
 
@@ -54,6 +100,14 @@ function subirCusi() {
 
     console.log(estacion);
 
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+
 }
 
 
@@ -70,23 +124,44 @@ function subirMonitor() {
 
     console.log(estacion);
 
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+
 }
 
 function subirUsuario() {
 
     var usuario = document.getElementById('usuarioInput');
     var contraseña = document.getElementById("contraseñaInput");
+    var num_afiliado = document.getElementById("numAfiliadoInput");
+
+
+    //numAfiliadoInput
 
     usuario = {
 
         "usuario": usuario.value,
-        "clave": contraseña.value
+        "clave": contraseña.value,
+        "num_afiliado":num_afiliado.value
 
     }
 
     estacion.usuario.push(usuario);
 
     console.log(estacion);
+
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
 
 }
 
@@ -121,7 +196,7 @@ async function subirEstaciones() {
         "Content-Type": "application/json"
     }
 
-    let request = await fetch("http://localhost:4040/main", {
+    let request = await fetch("http://172.20.255.23:4040/main", {
         method: "POST",
         body: JSON.stringify(estacion),
         headers: headersList
@@ -131,4 +206,18 @@ async function subirEstaciones() {
 
     console.log(estacion)
 
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Your work has been saved',
+      showConfirmButton: false,
+      timer: 1500
+    })
+
+    setTimeout(refresco, 1000);
+
+}
+
+function refresco() {
+    location.reload();
 }

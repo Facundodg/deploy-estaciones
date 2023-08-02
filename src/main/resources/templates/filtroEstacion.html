@@ -1,0 +1,29 @@
+<section th:fragment="filtro_estacion" class="section-filtro">
+  <div class="conteiner-form">
+    <h2 class="text-white h2-filtrado">Filtrar: </h2>
+    <div>
+      <form>
+        <select name="" class="select-busqueda" id="selectorBusqueda">
+          <option value="1">CUSI</option>
+          <option value="2">PUERTO</option>
+          <option value="3">USUARIO</option>
+        </select>
+        <select name="" class="select-departamento" id="selectorDepto">
+          <option value="1">Actividad Economica</option>
+          <option value="2">Sub Direccion de informatica</option>
+          <option value="3">Libre Deuda</option>
+          <option value="4">Cesion de Haberes</option>
+          <option value="5">Otros Tributos</option>
+          <option value="6">Juridico</option>
+          <option value="7">Contro Bancario</option>
+          <option value="8">Administrativa</option>
+          <option value="9">Personal</option>
+          <option value="10">Fiscalizacion</option>
+        </select>
+        <input type="text" class="input-busqueda" placeholder="Ingrese sus datos" id="buscador">
+        <button class="btn-buscar bg-blue-500 text-white" onclick="mostrarDatosBuscadosPorCusiPuertoUsuario()" type="button">Buscar</button>
+      </form>
+    </div>
+  </div>
+
+</section>

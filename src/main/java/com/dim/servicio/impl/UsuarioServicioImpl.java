@@ -8,8 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -47,6 +45,14 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     public void eliminar(Long id) {
         usuarioRepositorio.deleteById(id);
     }
+
+    //eliminarUsuarioPorIdYPuerto
+    @Override
+    public boolean eliminarPorPuertoYidUsuario(Long puerto, Long id_usuario) {
+        return usuarioRepositorio.eliminarUsuarioPorIdYPuerto(puerto, id_usuario);
+    }
+
+
 
     @Override
     public boolean existePorId(Long id) {

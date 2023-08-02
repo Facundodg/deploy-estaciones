@@ -24,8 +24,8 @@ public class Usuario {
     @Column(name = "apellido")
     private String apellido;
 
-    @Column(name = "cuenta")
-    private String cuenta;
+    @Column(name = "usuario")
+    private String usuario;
 
     @Column(name = "contraseña")
     private String clave;

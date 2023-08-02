@@ -1,0 +1,72 @@
+<section th:fragment="formulario_estacion" class="section-formulario text-white">
+  <form class="mt-8 space-y-6 p-2">
+    <div class="rounded-md shadow-sm -space-y-px">
+      <div>
+        <label htmlFor="email-address" class="">
+          Departamento
+        </label>
+        <select name="" class="select-departamentoappearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+            placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500
+            focus:border-indigo-500 focus:z-10 sm:text-sm" id="selector" autoComplete="current-password">
+
+          <option value="1">Actividad Economica</option>
+          <option value="2">Sub Direccion de informatica</option>
+          <option value="3">Libre Deuda</option>
+          <option value="4">Cesion de Haberes</option>
+          <option value="5">Otros Tributos</option>
+          <option value="6">Juridico</option>
+          <option value="7">Contro Bancario</option>
+          <option value="8">Administrativa</option>
+          <option value="9">Personal</option>
+          <option value="10">Fiscalizacion</option>
+        </select>
+
+      </div>
+      <div>
+        <label htmlFor="estacion" class="">
+          Puerto Estacion
+        </label>
+        <div class="flex">
+          <input type="number" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+              placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500
+              focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="" id="estacionInput"/>
+
+        </div>
+      </div>
+      <div>
+        <label htmlFor="cusi" class="">
+          Cusi
+        </label>
+        <div class="flex">
+          <input type="number" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+              placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500
+              focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="" id="cusiInput"/>
+          <button data-modal-target="ModalCusi" data-modal-toggle="ModalCusi"
+                  class="bg-blue-500 rounded-r-lg h-auto w-9" type="button">
+            +
+          </button>
+        </div>
+      </div>
+
+    </div>
+    <div class="flex justify-between w-full">
+
+      <button data-modal-target="ModalMonitor" data-modal-toggle="ModalMonitor" type="button"
+              class=" group relative w-[45%] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <span>+</span> Agregar Monitor
+      </button>
+
+      <button data-modal-target="ModalUsuarios" data-modal-toggle="ModalUsuarios" type="button"
+              class=" group relative w-[50%] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <span>+</span> Agregar Usuarios
+      </button>
+    </div>
+    <div>
+      <button
+              class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onclick="subirEstaciones()" type="button">
+        Insertar
+      </button>
+
+    </div>
+  </form>
+</section>

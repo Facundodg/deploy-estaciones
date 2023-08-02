@@ -21,7 +21,7 @@ public class Monitor {
     private String modelo;
 
     @Column(name = "numero_serie")
-    private int numeroSerie;
+    private long numeroSerie;
 
     @Column(name = "marca")
     private String marca;

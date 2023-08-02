@@ -1,4 +1,4 @@
-async function cargarEstaciones(postulante) {
+async function cargarEstaciones(estacion) {
 
     const body = document.querySelector(".tablita");
     
@@ -11,32 +11,50 @@ async function cargarEstaciones(postulante) {
 
     const puerto = document.createElement('td')
     puerto.className = "px-6 py-4"
-    puerto.textContent = postulante.puerto
+    puerto.textContent = estacion.puerto
 
     const hostName = document.createElement('td')
     hostName.className = "px-6 py-4"
-    hostName.textContent = postulante.hostname
+    hostName.textContent = estacion.hostname
 
     const numCusi = document.createElement('td')
     numCusi.className = "px-6 py-4"
-    numCusi.textContent = postulante.num_cusi
+    numCusi.textContent = estacion.num_cusi
 
     const so = document.createElement('td')
     so.className = "px-6 py-4"
-    so.textContent = postulante.so
+    so.textContent = estacion.so
 
     const depto = document.createElement('td')
     depto.className = "px-6 py-4"
-    depto.textContent = postulante.nombre_depto
+    depto.textContent = estacion.nombre_depto
 
     const opciones = document.createElement('td')
     opciones.className = "flex justify-center items-center px-6 py-4 space-x-4 whitespace-nowrap mt-1"
 
-    const boton = document.createElement('button')
-    boton.className = "block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    boton.textContent = "Ver Mas"
-    boton.setAttribute("data-modal-target","modalMasInfoStatic")
-    boton.setAttribute("data-modal-toggle","modalMasInfoStatic")
+    //const boton = document.createElement('button')
+    //boton.setAttribute("data-modal-target","extralarge-modal")
+    //boton.setAttribute("data-modal-toggle","extralarge-modal")
+    //boton.setAttribute("type", "button");
+    //boton.className = "btn-options bg-blue-500 hover:bg-blue-800 focus:ring-4"
+    //boton.textContent = "Ver Mas"
+
+
+    const botonVerMas = document.createElement('a')
+    botonVerMas.setAttribute("href", "#modal"); // Reemplaza la URL con la dirección que desees
+    botonVerMas.setAttribute("id", "show-modal"); // Reemplaza "mi-boton" con el id que desees
+    botonVerMas.setAttribute("onclick",'buscarEstacionPorPuerto(`'+estacion.puerto+'`)') //cambiar por el metodo de consulta
+    botonVerMas.className = "btn-options bg-blue-500 hover:bg-blue-800 focus:ring-4"
+    botonVerMas.textContent = "Ver Mas"
+
+    const botonVerUsuario = document.createElement('a')
+    botonVerUsuario.setAttribute("href", "#modal_usuario"); // Reemplaza la URL con la dirección que desees
+    botonVerUsuario.setAttribute("id", "show-modal"); // Reemplaza "mi-boton" con el id que desees
+    botonVerUsuario.setAttribute("onclick",'buscarUsuarioPorId(`'+ estacion.id_usuario +'`,`' + estacion.puerto + '`)') //cambiar por el metodo de consulta
+    botonVerUsuario.className = "btn-options bg-blue-500 hover:bg-blue-800 focus:ring-4"
+    botonVerUsuario.textContent = "Ver Usuario"
+
+    //+ ',' + estacion.puerto+
 
     body.append(row)
     row.append(puerto)
@@ -45,9 +63,82 @@ async function cargarEstaciones(postulante) {
     row.append(hostName)
     row.append(depto)
     row.append(opciones)
-    opciones.append(boton)
+    opciones.append(botonVerMas)
+    opciones.append(botonVerUsuario)
 
 }
+
+//fn_borrar_usuario(puerto,id_usuario)
+
+async function cargarUsuarios(usuarios, puerto) {
+
+    alert(puerto)
+
+   const body = document.querySelector(".tabla_usuario");
+
+   const row = document.createElement('tr')
+   row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+
+   const puertoEstacion = document.createElement('td')
+   puertoEstacion.className = "px-6 py-4"
+   puertoEstacion.setAttribute("scope", "row");
+   puertoEstacion.textContent = puerto;
+
+   const usuario = document.createElement('td')
+   usuario.className = "px-6 py-4"
+   usuario.setAttribute("scope", "row");
+   usuario.textContent = usuarios.usuario;
+
+
+   const contraseña = document.createElement('td')
+   contraseña.className = "px-6 py-4"
+   contraseña.textContent = usuarios.clave;
+
+  const opciones = document.createElement('td')
+  opciones.className = "flex justify-center items-center px-1 py-1 space-x-2 whitespace-nowrap mt-1"
+
+  const botonEliminar = document.createElement('button')
+  botonEliminar.setAttribute("href", "#modal"); // Reemplaza la URL con la dirección que desees
+  botonEliminar.setAttribute("onclick",'eliminarUsuario(`'+ usuarios.id_usuario +'`,`' + puerto + '`)')
+  botonEliminar.className = "btn-options bg-red-500 hover:bg-red-800 focus:ring-4"
+  botonEliminar.textContent = "Eliminar"
+
+  row.append(puertoEstacion)
+  row.append(usuario)
+  row.append(contraseña)
+  row.append(opciones)
+  opciones.append(botonEliminar)
+  body.append(row)
+
+}
+
+async function eliminarUsuario(id_usuario, puerto){
+
+    console.log(puerto)
+
+    const confirmacion = window.confirm('¿Quieres continuar con esta acción?');
+
+    if (confirmacion) {
+
+          const request = await fetch('/usuario/'+puerto+'/'+id_usuario, {
+              method: 'DELETE',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              }
+
+          });
+          const estaciones = await request.json();
+
+    } else {
+        console.log("no se elimino usuario (cancelado)")
+    }
+
+
+
+}
+
+
 
 async function mostrarDatosInicio(){
 
@@ -95,6 +186,100 @@ async function mostrarDatosDepto(depto){
 
 }
 
+async function buscarEstacionPorPuerto(puerto){
+
+        const request = await fetch('/main/getVerMasEstacionPorPuerto/'+puerto, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+
+        });
+
+        const estaciones = await request.json();
+
+        console.log(estaciones);
+
+        for (let estacion of estaciones) {
+
+               cargarEstacionesEnModal(estacion);
+
+        }
+
+}
+
+async function buscarUsuarioPorId(id_usuario, puerto){
+
+        const request = await fetch('/main/getUsuario/'+id_usuario, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+
+        });
+
+        const usuarios = await request.json();
+
+        console.log("usuarios")
+        console.log(usuarios)
+        console.log("usuarios")
+
+        for (let usuario of usuarios) {
+
+            cargarUsuarios(usuario,puerto);
+
+        }
+
+}
+
+function cargarEstacionesEnModal(estacion){
+
+    console.log(estacion)
+
+    // ---------- CUSI -----------------
+
+    const disco = document.getElementById('disco_id');
+    disco.value = estacion.disco || "NO DATOS";
+    const micro = document.getElementById('micro_id');
+    micro.value = estacion.micro || "NO DATOS";
+    const mother = document.getElementById('mother_id');
+    mother.value = estacion.mother || "NO DATOS";
+    const ram = document.getElementById('ram_id');
+    ram.value = estacion.ram || "NO DATOS";
+    const so = document.getElementById('so_id');
+    so.value = estacion.so || "NO DATOS";
+
+    const dvd = document.getElementById('dvd_id');
+    dvd.checked = estacion.dvd
+    const mouse = document.getElementById('mouse_id');
+    mouse.checked = estacion.mouse
+    const teclado = document.getElementById('teclado_id');
+    teclado.checked = estacion.teclado
+
+    // ----------- MONITOR --------------
+
+    const marca = document.getElementById('marca_id');
+    marca.value = estacion.marca || "NO DATOS";
+    const modelo = document.getElementById('modelo_id');
+    modelo.value = estacion.modelo || "NO DATOS";
+    const numSerieId = document.getElementById('num_serie_id');
+    numSerieId.value = estacion.numero_serie || "NO DATOS";
+
+    // ----------- ESTACION --------------
+
+    const puerto = document.getElementById('puerto_id');
+    puerto.value = estacion.puerto || "NO DATOS";
+    const hostName = document.getElementById('host_name_id');
+    hostName.value = estacion.hostname || "NO DATOS";
+    const mac = document.getElementById('mac_id');
+    mac.value = estacion.mac || "NO DATOS";
+    console.log(hostName)
+
+
+}
+
 async function mostrarDatosBuscadosPorCusiPuertoUsuario(){
 
         var selectElementBusqueda = document.getElementById('selectorBusqueda');
@@ -109,7 +294,7 @@ async function mostrarDatosBuscadosPorCusiPuertoUsuario(){
 
         /*
 
-        const request = await fetch('/main/buscadorCusiPuertoUsuario', {
+        const request = await fetch('/main', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -126,7 +311,7 @@ async function mostrarDatosBuscadosPorCusiPuertoUsuario(){
          "Content-Type": "application/json"
         }
 
-        let request = await fetch("http://localhost:4040/main/buscadorCusiPuertoUsuario", {
+        let request = await fetch("http://172.20.255.23:4040/main/buscadorCusiPuertoUsuario", {
           method: "POST",
           body: JSON.stringify({ buscarPor: selectElementBusqueda.value, buscar: value }),
           headers: headersList
@@ -141,6 +326,7 @@ async function mostrarDatosBuscadosPorCusiPuertoUsuario(){
 
         removerChildNodes(row);
 
+        console.log(estacion)
 
         for (let estacion of estaciones) {
 
@@ -170,6 +356,49 @@ function removerChildNodes(parent){
     while(parent.firstChild){
         parent.removeChild(parent.firstChild)
     }
+
+}
+
+function perromono(){
+
+//      <button
+//    const botonHTML = `
+//        data-modal-target="extralarge-modal"
+//        data-modal-toggle="extralarge-modal"
+//        class="btn-options bg-blue-500 hover:bg-blue-800 focus:ring-4"
+//        type="button"
+//      >
+//        Ver Mas
+//      </button>
+//    `;
+
+    //const boton = document.createElement('button')
+    //boton.setAttribute("data-modal-target","extralarge-modal")
+    //boton.setAttribute("data-modal-toggle","extralarge-modal")
+    //boton.setAttribute("type", "button");
+    //boton.className = "btn-options bg-blue-500 hover:bg-blue-800 focus:ring-4"
+    //boton.textContent = "Ver Mas"
+
+    //<a href="#modal" id="show-modal" class="botons uno"><span>Leer Mas</span></a>
+
+        const boton = document.createElement('a')
+        boton.setAttribute("href", "#modal"); // Reemplaza la URL con la dirección que desees
+        boton.setAttribute("id", "show-modal"); // Reemplaza "mi-boton" con el id que desees
+        boton.className = "btn-options bg-blue-500 hover:bg-blue-800 focus:ring-4"
+        boton.textContent = "Ver Mas"
+
+
+
+
+    const perromono = document.querySelector(".perromono");
+    perromono.append(boton)
+
+
+}
+
+function pepe(){
+
+    alert("hola perro")
 
 }
 

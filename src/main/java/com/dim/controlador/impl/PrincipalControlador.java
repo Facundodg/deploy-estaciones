@@ -11,6 +11,7 @@ import com.dim.servicio.interfaz.CusiServicio;
 import com.dim.servicio.interfaz.DepartamentoServicio;
 import com.dim.servicio.interfaz.EstacionServicio;
 import com.dim.servicio.interfaz.UsuarioServicio;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -35,10 +36,12 @@ public class PrincipalControlador implements PrincipalApi {
     private final CusiServicio servicioCusi;
     private final UsuarioServicio servicioUsuario;
     private final DepartamentoServicio departamentoServicio;
-
     private final ModelMapper modelMapper;
-
     private final RespuestaRepo repositorio;
+    private final RespuestaRepo verMasPuerto;
+
+    private final RespuestaRepo verMasusuario;
+
 
     @GetMapping("/getEstaciones")
     public List<Respuestas> obtenerResultadoProcedimiento() {
@@ -48,6 +51,16 @@ public class PrincipalControlador implements PrincipalApi {
     @GetMapping("/getEstacionesPorDepartamento/{depto}")
     public List<Respuestas> obtenerResultadoProcedimiento(@PathVariable("depto") long depto) {
         return repositorio.ejecutarProcedimientoPorDepto(depto);
+    }
+
+    @GetMapping("/getVerMasEstacionPorPuerto/{puerto}")
+    public List<Puerto> verMasPorPuerto(@PathVariable("puerto") long puerto) {
+        return verMasPuerto.VerMasPorPuerto(puerto);
+    }
+
+    @GetMapping("/getUsuario/{id_usuario}")
+    public List<DataUsuario> verMasUsuario(@PathVariable("id_usuario") long id_usuario) {
+        return verMasusuario.SobreUsuario(id_usuario);
     }
 
     @Override

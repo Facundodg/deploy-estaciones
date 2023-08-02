@@ -14,7 +14,11 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UsuarioAlta {
 
-    private String cuenta;
+    private String apellido;
+
+    private String nombre;
+
+    private String usuario;
 
     private String clave;
 

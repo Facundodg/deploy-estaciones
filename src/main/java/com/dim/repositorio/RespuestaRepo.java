@@ -1,5 +1,7 @@
 package com.dim.repositorio;
 
+import com.dim.dominio.entidad.DataUsuario;
+import com.dim.dominio.entidad.Puerto;
 import com.dim.dominio.entidad.Respuestas;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -36,6 +38,7 @@ public class RespuestaRepo {
                 entidadResultado.setNum_cusi(resultSet.getLong("num_cusi"));
                 entidadResultado.setSo(resultSet.getString("so"));
                 entidadResultado.setNombre_depto(resultSet.getString("nombre_depto"));
+                entidadResultado.setId_usuario(resultSet.getString("id_usuario"));
 
                 return entidadResultado;
             }
@@ -138,4 +141,82 @@ public class RespuestaRepo {
         });}
 
 
+    //LLAMA A LA ESTACION POR PUERTO (PUERTO) PERO ES PARA EL VER MAS DEL BOTON
+    public List<Puerto> VerMasPorPuerto(long puerto) {
+
+        String sql = "select * from fn_buscar_informacion_general_por_puerto("+puerto+")";
+
+        return jdbcTemplate.query(sql, new RowMapper<Puerto>() {
+            @Override
+            public Puerto mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+
+                Puerto puerto = new Puerto();
+
+                puerto.setId_cusi(resultSet.getLong("id_cusi"));
+                puerto.setDisco(resultSet.getString("disco"));
+                puerto.setDvd(resultSet.getBoolean("dvd"));
+                puerto.setMicro(resultSet.getString("micro"));
+                puerto.setMother(resultSet.getString("mother"));
+                puerto.setMouse(resultSet.getBoolean("mouse"));
+                puerto.setRam(resultSet.getString("ram"));
+                puerto.setSo(resultSet.getString("so"));
+                puerto.setTeclado(resultSet.getBoolean("teclado"));
+                puerto.setHostname(resultSet.getString("hostname"));
+                puerto.setId_monitor(resultSet.getLong("id_monitor"));
+                puerto.setMarca(resultSet.getString("marca"));
+                puerto.setModelo(resultSet.getString("modelo"));
+                puerto.setNumero_serie(resultSet.getLong("numero_serie"));
+                puerto.setId_estacion(resultSet.getLong("id_estacion"));
+                puerto.setPuerto(resultSet.getLong("puerto"));
+
+                return puerto;
+            }
+        });}
+
+
+    //LLAMA A LA ESTACION POR PUERTO (PUERTO) PERO ES PARA EL VER MAS DEL BOTON
+    public List<DataUsuario> SobreUsuario(long id_usuario) {
+
+        String sql = "select * from fn_buscar_usuarios_propiedades("+id_usuario+")";
+
+        return jdbcTemplate.query(sql, new RowMapper<DataUsuario>() {
+            @Override
+            public DataUsuario mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+
+                DataUsuario dataUsuario = new DataUsuario();
+
+                dataUsuario.setId_usuario(resultSet.getLong("id_usuario"));
+                dataUsuario.setUsuario(resultSet.getString("usuario"));
+                dataUsuario.setClave(resultSet.getString("clave"));
+
+                return dataUsuario;
+            }
+        });}
+
+
+    //fn_borrar_usuario(puerto,id_usuario)
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
