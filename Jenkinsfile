@@ -97,7 +97,7 @@ pipeline {
                         sh "echo 'Identificador Proyecto: ${IDENTIFICADOR_PROYECTO}'"
                         sh "echo 'Identificador Único Build: ${IDENTIFICADOR_UNICO_BUILD}'"
 
-                        sh 'mvn clean package install -DskipTests'
+                        sh 'mvn clean package -DskipTests'
                     }
                 }
             }
