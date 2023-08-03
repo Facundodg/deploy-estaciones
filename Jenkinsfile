@@ -57,6 +57,13 @@ pipeline {
 
         CARPETA_APLICACION = 'monolito'
         CARPETA_DESPLIEGUE = 'despliegue'
+
+        if (env.BRANCH_NAME){
+            BRANCH_TO_CLONE = env.BRANCH_NAME
+        }
+        else{
+            BRANCH_TO_CLONE = 'develop'
+        }
     }
 
     stages {
@@ -78,7 +85,7 @@ pipeline {
         stage('Git checkout') {
             steps{
                 script {
-                    checkout scmGit(branches: [[name: "${BRANCH_NAME}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_APLICACION}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
+                    checkout scmGit(branches: [[name: "${BRANCH_TO_CLONE}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_APLICACION}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
                 }
             }
         }
@@ -184,7 +191,7 @@ pipeline {
             }
 
             environment {
-                RECURSOS_YML = "${BRANCH_NAME} == 'master' ? 'prod' : 'dev'"
+                RECURSOS_YML = "${BRANCH_TO_CLONE} == 'master' ? 'prod' : 'dev'"
                 KUBE_SERVIDOR = "172.20.255.15:8445"
             }
 
