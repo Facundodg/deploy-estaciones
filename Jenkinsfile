@@ -126,7 +126,7 @@ pipeline {
             environment {
                 SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
                 SONAR_SERVER = 'SonarQube'
-                SONAR_HOST_IP = '172.25.0.2'                    // IP interna de Docker, debido a que SonarQube corre en un contenedor
+                SONAR_HOST_IP = '172.25.0.3'                    // IP interna de Docker, debido a que SonarQube corre en un contenedor
                 SONAR_PORT = '9000'
                 SONAR_SRC = 'src/'
                 SONAR_ENCODING = 'UTF-8'
@@ -219,37 +219,38 @@ pipeline {
             }
         }
     }
-}
 
-post {
-    always {
-        // Desconexión de Docker
-        sh 'docker logout'
-
-
-        // Mensaje por correo
-        emailext(
-                to: "${CORREO_A_NOTIFICAR}",
-                subject: "[BuildResult][${currentBuild.currentResult}] - Job '${IDENTIFICADOR_UNICO_BUILD})",
-                body: '''${SCRIPT, template="email.groovy.template"}''',
-                attachLog: true
-        )
+    post {
+        always {
+            // Desconexión de Docker
+            sh 'docker logout'
 
 
-        // Almacena test de Maven. TODO: Probar si funciona
-        script {
-            junit 'target/surefire-reports/*.xml'
+            // Mensaje por correo
+            emailext(
+                    to: "${CORREO_A_NOTIFICAR}",
+                    subject: "[BuildResult][${currentBuild.currentResult}] - Job '${IDENTIFICADOR_UNICO_BUILD})",
+                    body: '''${SCRIPT, template="email.groovy.template"}''',
+                    attachLog: true
+            )
+
+
+            // Almacena test de Maven. TODO: Probar si funciona
+            script {
+                junit 'target/surefire-reports/*.xml'
+            }
+        }
+
+        success {
+            enviarMensajeSlack('general', "ÉXITO en el Job '${IDENTIFICADOR_UNICO_BUILD}'")
+        }
+
+        failure {
+            cleanWs()
+            enviarMensajeSlack('general', "FALLO en el Job '${IDENTIFICADOR_UNICO_BUILD}'")
         }
     }
 
-    success {
-        enviarMensajeSlack('general', "ÉXITO en el Job '${IDENTIFICADOR_UNICO_BUILD}'")
-    }
-
-    failure {
-        cleanWs()
-        enviarMensajeSlack('general', "FALLO en el Job '${IDENTIFICADOR_UNICO_BUILD}'")
-    }
 }
 
 
