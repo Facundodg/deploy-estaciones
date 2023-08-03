@@ -213,7 +213,7 @@ pipeline {
 
                     dir ("${CARPETA_DESPLIEGUE}"){
                         // Actualiza el archivo de despliegue
-                        withCredentials([sernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                             sh "sed -i 's+\$DOCKERHUB_USERNAME.*+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g' ${CARPETA_DESPLIEGUE}/general/monolito.yaml"
                         }
 
