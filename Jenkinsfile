@@ -27,7 +27,7 @@
 def ARTIFACT_ID
 def IDENTIFICADOR_PROYECTO
 def IDENTIFICADOR_UNICO_BUILD
-def BRANCH_TO_CLONE
+def RAMA_PARA_CLONAR
 
 pipeline {
     agent any
@@ -65,10 +65,10 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME){
-                        BRANCH_TO_CLONE = env.BRANCH_NAME
+                        RAMA_PARA_CLONAR = env.BRANCH_NAME
                     }
                     else{
-                        BRANCH_TO_CLONE = 'develop'
+                        RAMA_PARA_CLONAR = 'develop'
                     }
 
                     DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
@@ -79,7 +79,7 @@ pipeline {
                     sh "echo 'Docker version: ${DOCKER_VERSION}'"
                     sh "echo 'Java version: ${JAVA_VERSION}'"
                     sh "echo 'Maven version:  ${MAVEN_VERSION}'"
-                    sh "echo 'Rama a clonar:  ${BRANCH_TO_CLONE}'"
+                    sh "echo 'Rama a clonar:  ${RAMA_PARA_CLONAR}'"
                 }
             }
         }
@@ -88,7 +88,7 @@ pipeline {
             steps{
 
                 script {
-                    checkout scmGit(branches: [[name: "${BRANCH_TO_CLONE}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_APLICACION}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
+                    checkout scmGit(branches: [[name: "${RAMA_PARA_CLONAR}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_APLICACION}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
                 }
             }
         }
@@ -190,11 +190,13 @@ pipeline {
                 anyOf {
                     branch 'master'
                     branch 'develop'
+                    RAMA_PARA_CLONAR = 'develop'
+                    RAMA_PARA_CLONAR = 'master'
                 }
             }
 
             environment {
-                RECURSOS_YML = "${BRANCH_TO_CLONE} == 'master' ? 'prod' : 'dev'"
+                RECURSOS_YML = "${RAMA_PARA_CLONAR} == 'master' ? 'prod' : 'dev'"
                 KUBE_SERVIDOR = "172.20.255.15:8445"
             }
 
@@ -242,12 +244,14 @@ pipeline {
         }
 
         success {
-            enviarMensajeSlack('general', "ÉXITO en el Job '${IDENTIFICADOR_UNICO_BUILD}'")
+            // TODO: Configurrar
+            // enviarMensajeSlack('general', "ÉXITO en el Job '${IDENTIFICADOR_UNICO_BUILD}'")
         }
 
         failure {
             cleanWs()
-            enviarMensajeSlack('general', "FALLO en el Job '${IDENTIFICADOR_UNICO_BUILD}'")
+            // TODO: Configurrar
+            // enviarMensajeSlack('general', "FALLO en el Job '${IDENTIFICADOR_UNICO_BUILD}'")
         }
     }
 
