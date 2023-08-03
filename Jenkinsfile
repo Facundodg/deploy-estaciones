@@ -161,8 +161,14 @@ pipeline {
                 anyOf{
                     branch 'master'
                     branch 'develop'
-                    RAMA_PARA_CLONAR == 'develop'
-                    RAMA_PARA_CLONAR == 'master'
+                    
+                    expression{
+                        return RAMA_PARA_CLONAR == 'develop';
+                    }
+
+                    expression{
+                        return RAMA_PARA_CLONAR == 'master';
+                    }
                 }
             }
             steps {
@@ -192,8 +198,14 @@ pipeline {
                 anyOf {
                     branch 'master'
                     branch 'develop'
-                    RAMA_PARA_CLONAR == 'develop'
-                    RAMA_PARA_CLONAR == 'master'
+
+                    expression{
+                        return RAMA_PARA_CLONAR == 'develop';
+                    }
+
+                    expression{
+                        return RAMA_PARA_CLONAR == 'master';
+                    }
                 }
             }
 
