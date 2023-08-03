@@ -161,6 +161,8 @@ pipeline {
                 anyOf{
                     branch 'master'
                     branch 'develop'
+                    RAMA_PARA_CLONAR == 'develop'
+                    RAMA_PARA_CLONAR == 'master'
                 }
             }
             steps {
@@ -190,8 +192,8 @@ pipeline {
                 anyOf {
                     branch 'master'
                     branch 'develop'
-                    RAMA_PARA_CLONAR = 'develop'
-                    RAMA_PARA_CLONAR = 'master'
+                    RAMA_PARA_CLONAR == 'develop'
+                    RAMA_PARA_CLONAR == 'master'
                 }
             }
 
@@ -244,6 +246,7 @@ pipeline {
         }
 
         success {
+            echo "success"
             // TODO: Configurrar
             // enviarMensajeSlack('general', "ÉXITO en el Job '${IDENTIFICADOR_UNICO_BUILD}'")
         }
