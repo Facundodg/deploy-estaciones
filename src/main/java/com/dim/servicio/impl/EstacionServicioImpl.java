@@ -65,6 +65,12 @@ public class EstacionServicioImpl implements EstacionServicio {
         return estacionRepositorio.buscarEstacionesPropiedades();
     }
 
+    @Override
+    public boolean eliminarPorPuerto(Long puerto) {
+        return estacionRepositorio.borrarEstacionPorPuertoCompleta(puerto);
+    }
+
+
     //LLAMA A PROCEDIMIENTO ALMACENADO QUE TRAE TODAS LAS ESTACIONES
     public List<Respuestas> ejecutarProcedimiento() {
 

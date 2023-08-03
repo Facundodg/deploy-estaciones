@@ -4,6 +4,7 @@ import com.dim.dominio.dto.estacion.EstacionPropiedades;
 import com.dim.dominio.entidad.Estacion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -20,4 +21,8 @@ public interface EstacionRepositorio extends JpaRepository<Estacion, Long> {
 
     @Query(value = "select * from fn_buscar_estacion_por_usuario()", nativeQuery = true)
     Collection<EstacionPropiedades> buscarEstacionPorUsuario();
+
+    @Query(value = "select * from fn_borrar_estacion(:puerto)", nativeQuery = true)
+    Boolean borrarEstacionPorPuertoCompleta( @Param("puerto") Long puerto);
+
 }

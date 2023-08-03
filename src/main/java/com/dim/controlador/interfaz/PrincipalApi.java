@@ -30,7 +30,7 @@ public interface PrincipalApi {
             @Parameter(description = "Objeto de la estación que se desea registrar", required = true)
             @RequestBody @Valid final ConjuntoAlta conjuntoAlta) throws Exception;
 
-    @PostMapping("/perromono")
+    @PostMapping("/buscarPorPuertoCusiUsuario")
     @Operation(summary = "Búsqueda filtrada por tipo", description = "Retorna departamento, cusi o estación")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<?> filtrarBusqueda(

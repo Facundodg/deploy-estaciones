@@ -54,6 +54,11 @@ async function cargarEstaciones(estacion) {
     botonVerUsuario.className = "btn-options bg-blue-500 hover:bg-blue-800 focus:ring-4"
     botonVerUsuario.textContent = "Ver Usuario"
 
+    const botonEliminarEstacion = document.createElement('a')
+    botonEliminarEstacion.setAttribute("onclick",'eliminarEstacionCompleta(`' + estacion.puerto + '`)') //cambiar por el metodo de consulta
+    botonEliminarEstacion.className = "red-options bg-red-500 hover:bg-blue-800 focus:ring-4"
+    botonEliminarEstacion.textContent = "Eliminar"
+
     //+ ',' + estacion.puerto+
 
     body.append(row)
@@ -65,14 +70,11 @@ async function cargarEstaciones(estacion) {
     row.append(opciones)
     opciones.append(botonVerMas)
     opciones.append(botonVerUsuario)
+    opciones.append(botonEliminarEstacion)
 
 }
 
-//fn_borrar_usuario(puerto,id_usuario)
-
 async function cargarUsuarios(usuarios, puerto) {
-
-    alert(puerto)
 
    const body = document.querySelector(".tabla_usuario");
 
@@ -139,6 +141,30 @@ async function eliminarUsuario(id_usuario, puerto){
 }
 
 
+async function eliminarEstacionCompleta(puerto){
+
+    const confirmacion = window.confirm('¿Seguro que quieres Borrar Estacion? Recuerda que el borrar esto borrara tanto Cusi como monitor asociado...');
+
+    if (confirmacion) {
+
+          const request = await fetch('/estacion/'+puerto, {
+              method: 'DELETE',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              }
+
+          });
+          const estaciones = await request.json();
+          setTimeout(refresco, 1000);
+
+    } else {
+        console.log("no se elimino estacion (cancelado)")
+    }
+
+
+
+}
 
 async function mostrarDatosInicio(){
 
@@ -222,9 +248,9 @@ async function buscarUsuarioPorId(id_usuario, puerto){
 
         const usuarios = await request.json();
 
-        console.log("usuarios")
-        console.log(usuarios)
-        console.log("usuarios")
+        const body = document.querySelector(".tabla_usuario");
+
+        removerChildNodes(body)
 
         for (let usuario of usuarios) {
 
@@ -265,12 +291,12 @@ function cargarEstacionesEnModal(estacion){
     const modelo = document.getElementById('modelo_id');
     modelo.value = estacion.modelo || "NO DATOS";
     const numSerieId = document.getElementById('num_serie_id');
-    numSerieId.value = estacion.numero_serie || "NO DATOS";
+    numSerieId.value = estacion.numero_serie;
 
     // ----------- ESTACION --------------
 
     const puerto = document.getElementById('puerto_id');
-    puerto.value = estacion.puerto || "NO DATOS";
+    puerto.value = estacion.puerto;
     const hostName = document.getElementById('host_name_id');
     hostName.value = estacion.hostname || "NO DATOS";
     const mac = document.getElementById('mac_id');
@@ -311,7 +337,7 @@ async function mostrarDatosBuscadosPorCusiPuertoUsuario(){
          "Content-Type": "application/json"
         }
 
-        let request = await fetch("http://172.20.255.23:4040/main/buscadorCusiPuertoUsuario", {
+        let request = await fetch("http://172.20.255.23:4040/main/buscarPorPuertoCusiUsuario", {
           method: "POST",
           body: JSON.stringify({ buscarPor: selectElementBusqueda.value, buscar: value }),
           headers: headersList
@@ -401,6 +427,11 @@ function pepe(){
     alert("hola perro")
 
 }
+
+function refresco() {
+    location.reload();
+}
+
 
 mostrarDatosInicio();
 

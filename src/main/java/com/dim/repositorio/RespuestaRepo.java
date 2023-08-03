@@ -117,7 +117,6 @@ public class RespuestaRepo {
         });}
 
     //LLAMA A LA ESTACION POR NUMERO DE AFILIADO DEL USUARIO
-
     public List<Respuestas> ejecutarProcedimientoPorUsuario(long usuario) {
 
         String sql = "select * from fn_buscar_estacion_por_usuario("+usuario+")";
@@ -139,7 +138,6 @@ public class RespuestaRepo {
                 return entidadResultado;
             }
         });}
-
 
     //LLAMA A LA ESTACION POR PUERTO (PUERTO) PERO ES PARA EL VER MAS DEL BOTON
     public List<Puerto> VerMasPorPuerto(long puerto) {
@@ -194,7 +192,11 @@ public class RespuestaRepo {
         });}
 
 
-    //fn_borrar_usuario(puerto,id_usuario)
+
+
+
+    //fn_borrar_estacion(p_puerto_buscado bigint)
+
 
 
 }

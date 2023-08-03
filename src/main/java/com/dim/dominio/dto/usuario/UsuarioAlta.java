@@ -23,4 +23,7 @@ public class UsuarioAlta {
     private String clave;
 
     private Long numAfiliado;
+
+    private String departamento;
+
 }
