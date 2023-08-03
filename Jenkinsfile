@@ -126,7 +126,7 @@ pipeline {
             environment {
                 SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
                 SONAR_SERVER = 'SonarQube'
-                SONAR_HOST_IP = '172.25.0.3'                    // IP interna de Docker, debido a que SonarQube corre en un contenedor
+                SONAR_HOST_IP = '172.25.0.2'                    // IP interna de Docker, debido a que SonarQube corre en un contenedor
                 SONAR_PORT = '9000'
                 SONAR_SRC = 'src/'
                 SONAR_ENCODING = 'UTF-8'
