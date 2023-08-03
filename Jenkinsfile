@@ -27,7 +27,7 @@
 def ARTIFACT_ID
 def IDENTIFICADOR_PROYECTO
 def IDENTIFICADOR_UNICO_BUILD
-def RAMA_PARA_CLONAR
+def BRANCH_TO_CLONE
 
 pipeline {
     agent any
@@ -65,10 +65,10 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME){
-                        RAMA_PARA_CLONAR = env.BRANCH_NAME
+                        BRANCH_TO_CLONE = env.BRANCH_NAME
                     }
                     else{
-                        RAMA_PARA_CLONAR = 'develop'
+                        BRANCH_TO_CLONE = 'develop'
                     }
 
                     DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
@@ -79,7 +79,7 @@ pipeline {
                     sh "echo 'Docker version: ${DOCKER_VERSION}'"
                     sh "echo 'Java version: ${JAVA_VERSION}'"
                     sh "echo 'Maven version:  ${MAVEN_VERSION}'"
-                    sh "echo 'Rama a clonar:  ${RAMA_PARA_CLONAR}'"
+                    sh "echo 'Rama a clonar:  ${BRANCH_TO_CLONE}'"
                 }
             }
         }
@@ -88,7 +88,7 @@ pipeline {
             steps{
 
                 script {
-                    checkout scmGit(branches: [[name: "${RAMA_PARA_CLONAR}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_APLICACION}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
+                    checkout scmGit(branches: [[name: "${BRANCH_TO_CLONE}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_APLICACION}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
                 }
             }
         }
@@ -126,7 +126,7 @@ pipeline {
             environment {
                 SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
                 SONAR_SERVER = 'SonarQube'
-                SONAR_HOST_IP = '172.25.0.3'                    // IP interna de Docker, debido a que SonarQube corre en un contenedor
+                SONAR_HOST_IP = '172.25.0.2'                    // IP interna de Docker, debido a que SonarQube corre en un contenedor
                 SONAR_PORT = '9000'
                 SONAR_SRC = 'src/'
                 SONAR_ENCODING = 'UTF-8'
@@ -194,7 +194,7 @@ pipeline {
             }
 
             environment {
-                RECURSOS_YML = "${RAMA_PARA_CLONAR} == 'master' ? 'prod' : 'dev'"
+                RECURSOS_YML = "${BRANCH_TO_CLONE} == 'master' ? 'prod' : 'dev'"
                 KUBE_SERVIDOR = "172.20.255.15:8445"
             }
 
