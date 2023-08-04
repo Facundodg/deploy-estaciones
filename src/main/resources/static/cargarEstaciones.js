@@ -54,10 +54,19 @@ async function cargarEstaciones(estacion) {
     botonVerUsuario.className = "btn-options bg-blue-500 hover:bg-blue-800 focus:ring-4"
     botonVerUsuario.textContent = "Ver Usuario"
 
+    const imgEliminar = document.createElement('img');
+    imgEliminar.src = "../estilos/img/basurero.png"; // Ruta relativa al icono en tu carpeta
+    imgEliminar.width = 24; // Establecer el ancho deseado en píxeles
+    imgEliminar.height = 24; // Establecer el alto deseado en píxeles
+    imgEliminar.style.borderRadius = "50%"; // Puedes ajustar el valor según el grado de redondez que desees
+
+
+    const iconoEliminar = document.createElement('i');
+
     const botonEliminarEstacion = document.createElement('a')
     botonEliminarEstacion.setAttribute("onclick",'eliminarEstacionCompleta(`' + estacion.puerto + '`)') //cambiar por el metodo de consulta
     botonEliminarEstacion.className = "red-options bg-red-500 hover:bg-blue-800 focus:ring-4"
-    botonEliminarEstacion.textContent = "Eliminar"
+    //botonEliminarEstacion.textContent = "Eliminar"
 
     //+ ',' + estacion.puerto+
 
@@ -70,6 +79,9 @@ async function cargarEstaciones(estacion) {
     row.append(opciones)
     opciones.append(botonVerMas)
     opciones.append(botonVerUsuario)
+
+    iconoEliminar.append(imgEliminar)
+    botonEliminarEstacion.append(iconoEliminar)
     opciones.append(botonEliminarEstacion)
 
 }
@@ -301,10 +313,31 @@ function cargarEstacionesEnModal(estacion){
     hostName.value = estacion.hostname || "NO DATOS";
     const mac = document.getElementById('mac_id');
     mac.value = estacion.mac || "NO DATOS";
-    console.log(hostName)
+
+
+    cargarDataJsonEstacionModificar();
 
 
 }
+
+
+
+function cargarDataJsonEstacionModificar(){
+
+
+    var disco = document.getElementById('imput_disco_modificar');
+    estacion.cusi.disco = disco.value;
+    console.log(estacion.cusi.disco)
+
+}
+
+
+
+
+
+
+
+
 
 async function mostrarDatosBuscadosPorCusiPuertoUsuario(){
 

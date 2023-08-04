@@ -94,6 +94,8 @@ function subirMonitor() {
     estacion.monitor.modelo = modelo.value;
     estacion.monitor.numero_serie = numserie.value;
 
+    renderBotonesDataMonitoUsuario();
+
 
     console.log(estacion);
 
@@ -136,7 +138,7 @@ function subirUsuario() {
 
     actualizarTablaUsuariosAgrgados();
 
-    console.log(estacion);
+    renderBotonesDataMonitoUsuario()
 
         Swal.fire({
           position: 'top-end',
@@ -256,6 +258,34 @@ async function subirEstaciones() {
     })
 
     setTimeout(refresco, 1000);
+
+}
+
+function renderBotonesDataMonitoUsuario(){
+
+    const propiedadesMonitor = Object.keys(estacion.monitor);
+
+    console.log(propiedadesMonitor > 0)
+    console.log(propiedadesMonitor)
+
+    if(estacion.monitor.marca && estacion.monitor.marca && estacion.monitor.numero_serie !== ""){
+
+        const boton_monitor = document.querySelector("#btn_agregar_monitor");
+        boton_monitor.textContent = "Agregar Monitor " + "(add)"
+
+    }
+
+    if(estacion.usuario.length >= 1){
+
+        const boton_usuario = document.querySelector("#btn_agregar_usuario");
+
+        let numeUsuarios = (estacion.usuario.length).toString();
+
+        console.log(numeUsuarios);
+
+        boton_usuario.textContent = "Agregar Usuarios (" + numeUsuarios + ")";
+
+    }
 
 }
 
