@@ -22,6 +22,7 @@
     CONSIDERACIONES
     * Se debe configurar como multibranch pipeline
     * Deben existir las ramas master y develop
+    * Se debe configurar la cloud de kubernetes para el acceso al servidor
  */
 
 def ARTIFACT_ID
@@ -202,7 +203,9 @@ pipeline {
             }
 
             environment {
-                RECURSOS_YML = "${RAMA_PARA_CLONAR} == 'master' ? 'prod' : 'dev'"
+                CARPETA_MANIFIESTO = "${RAMA_PARA_CLONAR} == 'master' ? 'prod' : 'dev'"
+                DIRECCION_DESPLIEGUE = "${WORKSPACE}/${CARPETA_DESPLIEGUE}" 
+
                 KUBE_SERVIDOR = "172.20.255.15:8445"
             }
 
@@ -212,15 +215,17 @@ pipeline {
                     checkout scmGit(branches: [[name: 'master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}"]])
 
                     dir ("${CARPETA_DESPLIEGUE}"){
-                        // Actualiza el archivo de despliegue
                         withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                            sh "sed -i 's+\$DOCKERHUB_USERNAME.*+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g' ${WORKSPACE}/${CARPETA_DESPLIEGUE}/general/monolito.yaml"
+
+                            // Actualiza el archivo de despliegue con la última versión de la aplicación
+                            sh "sed -i 's+\$DOCKERHUB_USERNAME.*+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g' ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
                         }
 
                         withCredentials([string(credentialsId: "${KUBERNETES_CREDENCIALES}", variable: 'KUBE_TOKEN')]) {
                             // sh "kubectl --kubeconfig=$KUBE_CONFIG apply -f ${FOLDER}"
                             // sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
-                            sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${RECURSOS_YML}/"
+                            sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/basedatos"
+                            sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general"
                         }
                     }
                 }
