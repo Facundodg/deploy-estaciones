@@ -203,7 +203,7 @@ pipeline {
             }
 
             environment {
-                CARPETA_MANIFIESTO = "${RAMA_PARA_CLONAR} == 'master' ? 'prod' : 'dev'"
+                CARPETA_MANIFIESTO = RAMA_PARA_CLONAR == 'master' ? 'prod' : 'dev'
                 DIRECCION_DESPLIEGUE = "${WORKSPACE}/${CARPETA_DESPLIEGUE}" 
 
                 KUBE_SERVIDOR = "172.20.255.15:8445"
