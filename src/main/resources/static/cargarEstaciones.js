@@ -126,6 +126,12 @@ async function cargarUsuarios(usuarios, puerto) {
 
 }
 
+function eliminarUsuarioIngresoDeUsuario(nombreUsuario){
+
+
+
+}
+
 async function eliminarUsuario(id_usuario, puerto){
 
     console.log(puerto)

@@ -203,10 +203,9 @@ function renderTablaUsuarios(usuario){
 
       const botonEliminar = document.createElement('button')
       botonEliminar.setAttribute("href", "#modal"); // Reemplaza la URL con la dirección que desees
-      //botonEliminar.setAttribute("onclick",'eliminarUsuario(`'+ usuario.id_usuario +'`,`' + puerto + '`)')
+      botonEliminar.setAttribute("onclick",'eliminarUsuarioIngresoDeUsuario(`' + usuario.usuario + '`)')
       botonEliminar.className = "btn-options bg-red-500 hover:bg-red-800 focus:ring-4"
       botonEliminar.textContent = "Eliminar"
-
 
 
       row.append(departamento)
@@ -217,6 +216,44 @@ function renderTablaUsuarios(usuario){
       row.append(opciones)
       opciones.append(botonEliminar)
       body.append(row)
+
+}
+
+function eliminarUsuarioIngresoDeUsuario(nombreUsuario){
+
+    let posicionDeUsuario = buscarEnArray(nombreUsuario);
+
+    console.log("posicionDeUsuario")
+    console.log(posicionDeUsuario)
+    console.log("posicionDeUsuario")
+    console.log(estacion.usuario)
+    console.log("estacion.usuario")
+
+    estacion.usuario.splice(posicionDeUsuario, 1);
+
+    console.log(estacion.usuario)
+
+    const body = document.querySelector(".tabla_usuarios");
+
+    removerChildNodes(body)
+
+    let usuarios = estacion.usuario;
+
+    for (let usuario of usuarios) {
+
+           renderTablaUsuarios(usuario)
+
+    }
+
+    renderBotonesDataMonitoUsuario();
+
+}
+
+function buscarEnArray(nombreUsuario){
+
+    return estacion.usuario.findIndex(function(estacion) {
+         return estacion === nombreUsuario;
+    });
 
 }
 
@@ -284,6 +321,12 @@ function renderBotonesDataMonitoUsuario(){
         console.log(numeUsuarios);
 
         boton_usuario.textContent = "Agregar Usuarios (" + numeUsuarios + ")";
+
+    }else{
+
+        const boton_usuario = document.querySelector("#btn_agregar_usuario");
+        boton_usuario.textContent = "Agregar Usuarios";
+
 
     }
 
