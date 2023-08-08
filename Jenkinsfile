@@ -214,15 +214,14 @@ pipeline {
                     // Clona el repositorio de despliegue
                     checkout scmGit(branches: [[name: 'master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}"]])
 
+                    ARTIFACT_ID = "gestor-estaciones"
+                    IDENTIFICADOR_UNICO_BUILD = "0.0.4"
+                    
                     dir ("${CARPETA_DESPLIEGUE}"){
                         withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
 
                             // Actualiza el archivo de despliegue con la última versión de la aplicación
-                            // sh "sed -i s+\$DOCKERHUB_USERNAME.*+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
-
-                            // sh 'sed -i s+DOCKERHUB_USERNAME.*+DOCKERHUB_USERNAME/' + "${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
-
-                            sh script: "sed -i s+\$DOCKERHUB_USERNAME/gestor-estaciones:TAG+\$DOCKERHUB_USERNAME/" + "241234.2134+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
+                            sh "sed -i s+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:TAG+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
 
                             sh "cat ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
                         }
