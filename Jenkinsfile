@@ -220,8 +220,13 @@ pipeline {
                             // Actualiza el archivo de despliegue con la última versión de la aplicación
                             // sh "sed -i s+\$DOCKERHUB_USERNAME.*+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
 
-                            sh 'sed -i s+DOCKERHUB_USERNAME.*+DOCKERHUB_USERNAME/' + "${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
+                            // sh 'sed -i s+DOCKERHUB_USERNAME.*+DOCKERHUB_USERNAME/' + "${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
+
+                            sh 'sed -i s+DOCKERHUB_USERNAME.*+DOCKERHUB_USERNAME/' + "${DOCKER_VERSION}:${JAVA_VERSION}+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
+
+                            sh "cat ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
                         }
+
 
                         // withCredentials([string(credentialsId: "${KUBERNETES_CREDENCIALES}", variable: 'KUBE_TOKEN')]) {
                         //     // sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
