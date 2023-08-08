@@ -9,14 +9,15 @@ import com.dim.dominio.entidad.*;
 import com.dim.repositorio.RespuestaRepo;
 import com.dim.servicio.interfaz.DepartamentoServicio;
 import com.dim.servicio.interfaz.EstacionServicio;
+import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.webjars.NotFoundException;
 
 import java.util.*;
@@ -81,6 +82,15 @@ public class PrincipalControlador implements PrincipalApi {
         return verMasusuario.SobreUsuario(id_usuario);
     }
 
+    @PutMapping("/putEstacion/")
+    public ResponseEntity<List<EstacionPropiedades>> idk(
+            @NotNull
+            @Parameter(description = "Estaciones", required = true)
+            @RequestBody @Valid final Estacion estacion) throws Exception {
+
+        return null;
+    }
+
     @Override
     public ResponseEntity<?> filtrarBusqueda(BuscarEstacion buscarEstacion) throws Exception {
         final long idBuscado = Long.parseLong(buscarEstacion.getBuscar());
@@ -134,7 +144,7 @@ public class PrincipalControlador implements PrincipalApi {
             estacion.setMonitor(monitor);
         }
 
-        if(departamento != null){
+        if (departamento != null) {
             estacion.setDepartamento(departamento);
         }
 
