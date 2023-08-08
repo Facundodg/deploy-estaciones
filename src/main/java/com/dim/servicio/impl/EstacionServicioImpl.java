@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -62,8 +63,11 @@ public class EstacionServicioImpl implements EstacionServicio {
         return estacionRepositorio.buscarEstacionesPropiedades();
     }
 
-<<<<<<< HEAD
-=======
+    @Override
+    public Collection<EstacionPropiedades> buscarEstacionesSimplificadas() {
+        return null;
+    }
+
     @Override
     public boolean eliminarPorPuerto(Long puerto) {
         return estacionRepositorio.borrarEstacionPorPuertoCompleta(puerto);
@@ -94,7 +98,6 @@ public class EstacionServicioImpl implements EstacionServicio {
         });
     }
 
->>>>>>> a773bbbfe2dd277c0b81e920e2a9c2f7c34f8c11
     //LLAMA A LAS ESTACIONES RELACIONADAS A UN DEPARTAMENTO
     public Collection<EstacionPropiedades> buscarEstacionesPorDepartamento(final long numeroDepartamento) {
         return estacionRepositorio.buscarEstacionesPorDepartamento(numeroDepartamento);

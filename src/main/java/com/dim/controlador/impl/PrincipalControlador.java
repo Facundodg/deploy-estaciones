@@ -1,19 +1,14 @@
 package com.dim.controlador.impl;
 
 import com.dim.controlador.interfaz.PrincipalApi;
-import com.dim.dominio.dto.general.ConjuntoAlta;
-import com.dim.dominio.dto.general.BuscarEstacion;
 import com.dim.dominio.dto.estacion.EstacionPropiedades;
+import com.dim.dominio.dto.general.BuscarEstacion;
+import com.dim.dominio.dto.general.ConjuntoAlta;
 import com.dim.dominio.dto.usuario.UsuarioAlta;
 import com.dim.dominio.entidad.*;
 import com.dim.repositorio.RespuestaRepo;
 import com.dim.servicio.interfaz.DepartamentoServicio;
 import com.dim.servicio.interfaz.EstacionServicio;
-<<<<<<< HEAD
-=======
-import com.dim.servicio.interfaz.UsuarioServicio;
-import lombok.Data;
->>>>>>> a773bbbfe2dd277c0b81e920e2a9c2f7c34f8c11
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
