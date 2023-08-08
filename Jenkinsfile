@@ -222,7 +222,7 @@ pipeline {
 
                             // sh 'sed -i s+DOCKERHUB_USERNAME.*+DOCKERHUB_USERNAME/' + "${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
 
-                            sh 'sed -i s+DOCKERHUB_USERNAME.*+DOCKERHUB_USERNAME/' + "${DOCKER_VERSION}:${JAVA_VERSION}+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
+                            sh script: 'sed -i s+DOCKERHUB_USERNAME.*+DOCKERHUB_USERNAME/' + "241234.2134+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
 
                             sh "cat ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
                         }
