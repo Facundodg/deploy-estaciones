@@ -1,0 +1,181 @@
+
+  <div th:fragment="modal_usuario">
+
+    <div id="ModalUsuarios" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
+
+         class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <!-- Modal header -->
+          <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white underline">
+              Agregar Usuarios
+            </h3>
+            <button type="button"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    data-modal-hide="ModalUsuarios">
+              <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"></path>
+              </svg>
+              <span class="sr-only">Close modal</span>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div class="p-2 space-y-2">
+            <form class="mt-2 space-y-4 p-2 text-white items-center">
+
+              <!--TABLA-->
+
+              <div class="div-table-usuarios body-modal-usuario">
+
+                <table class="w-full text-sm text-left text-gray-900 dark:text-gray-800">
+                  <thead class="text-xs text-gray-900 uppercase bg-gray-300 dark:bg-gray-900 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" class="px-6 py-3">
+                      Departamento
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Nombre
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Apellido
+                    </th>
+
+                    <th scope="col" class="px-6 py-3">
+                      Usuario
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Contraseñas
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Opciones
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody class="tabla_usuarios">
+                  <!-- AQUI SE ESTAN CARGANDO LA FILA DE LOS USUARIOS-->
+                  </tbody>
+                </table>
+              </div>
+
+
+
+              <div class="flex flex-row justify-center items-center shadow-sm -space-y-px">
+                <div class="m-1 w-[50%]">
+
+                  <!--SELECTOR DEPARTAMENTO USUARIO-->
+
+
+                  <div>
+                    <label htmlFor="email-address" class="">
+                      Departamento
+                    </label>
+                    <select name="" class="select-departamentoappearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+            placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500
+            focus:border-indigo-500 focus:z-10 sm:text-sm" id="selectorDepartamentosUsuarios" autoComplete="current-password">
+
+                      <option value="1">Actividad Economica</option>
+                      <option value="2">Sub Direccion de informatica</option>
+                      <option value="3">Libre Deuda</option>
+                      <option value="4">Cesion de Haberes</option>
+                      <option value="5">Otros Tributos</option>
+                      <option value="6">Juridico</option>
+                      <option value="7">Contro Bancario</option>
+                      <option value="8">Administrativa</option>
+                      <option value="9">Personal</option>
+                      <option value="10">Fiscalizacion</option>
+                    </select>
+
+                  </div>
+
+                  <!--NOMBRE-->
+
+                  <div>
+                    <label htmlFor="email-address" class="">
+                      Nombre
+                    </label>
+                    <input type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                    placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500
+                    focus:border-indigo-500 focus:z-10 sm:text-sm" autoComplete="current-password" id="nombreInput"/>
+                  </div>
+
+                  <!--APELLIDO-->
+
+                  <div>
+                    <label htmlFor="email-address" class="">
+                      Apellido
+                    </label>
+                    <input type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                    placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500
+                    focus:border-indigo-500 focus:z-10 sm:text-sm" autoComplete="current-password" id="apellidoInput"/>
+                  </div>
+
+
+
+
+
+
+
+                  <!--USUARIO-->
+
+                  <div>
+                    <label htmlFor="email-address" class="">
+                      Usuario
+                    </label>
+                    <input type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                    placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500
+                    focus:border-indigo-500 focus:z-10 sm:text-sm" autoComplete="current-password" id="usuarioInput"/>
+                  </div>
+
+                  <!--CONTRASEÑA-->
+
+                  <div>
+                    <label htmlFor="cusi" class="">
+                      Contraseña
+                    </label>
+                    <div class="flex">
+                      <input type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500
+                      focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="" id="contraseñaInput"/>
+                    </div>
+                  </div>
+
+                  <!--NUMERO AFILIADO-->
+
+                  <div>
+                    <label htmlFor="cusi" class="">
+                      Numero de Afiliado
+                    </label>
+                    <div class="flex">
+                      <input type="number" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500
+                      focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="" id="numAfiliadoInput"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!--BOTONES-->
+
+              <div class="flex flex-col justify-center items-center">
+                <button
+                        class="group relative w-[50%] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onclick="subirUsuario()" type="button">
+                  Guardar
+                </button>
+                <button type="button" data-modal-hide="ModalUsuarios"
+                        class="group relative mt-2 w-[50%] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+

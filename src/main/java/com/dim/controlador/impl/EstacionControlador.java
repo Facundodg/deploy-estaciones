@@ -40,4 +40,10 @@ public class EstacionControlador implements EstacionApi {
         log.info("[EstacionControlador - BuscarTodos]");
         return ResponseEntity.ok(estacionServicio.buscarTodos());
     }
+
+    @Override
+    public Boolean eliminarEstacion(Long puerto) throws Exception {
+        log.info("[EstacionControlador - EliminaEstacionPorPuerto]");
+        return estacionServicio.eliminarPorPuerto(puerto);
+    }
 }

@@ -27,4 +27,8 @@ public class CorsConfig {
         filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return filterRegistrationBean;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> a773bbbfe2dd277c0b81e920e2a9c2f7c34f8c11

@@ -12,5 +12,6 @@ public class Respuestas {
     private long num_cusi;
     private String so;
     private String nombre_depto;
+    private String id_usuario;
 
 }

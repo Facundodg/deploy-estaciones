@@ -62,6 +62,39 @@ public class EstacionServicioImpl implements EstacionServicio {
         return estacionRepositorio.buscarEstacionesPropiedades();
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public boolean eliminarPorPuerto(Long puerto) {
+        return estacionRepositorio.borrarEstacionPorPuertoCompleta(puerto);
+    }
+
+
+    //LLAMA A PROCEDIMIENTO ALMACENADO QUE TRAE TODAS LAS ESTACIONES
+    public List<Respuestas> ejecutarProcedimiento() {
+
+        String sql = "select * from mostrar()";
+
+        return jdbcTemplate.query(sql, new RowMapper<Respuestas>() {
+            @Override
+            public Respuestas mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+
+
+                Respuestas entidadResultado = new Respuestas();
+                entidadResultado.setNombre(resultSet.getString("nombre"));
+                entidadResultado.setApellido(resultSet.getString("apellido"));
+                entidadResultado.setPuerto(resultSet.getLong("puerto"));
+                entidadResultado.setHostname(resultSet.getString("hostname"));
+                entidadResultado.setNum_cusi(resultSet.getLong("num_cusi"));
+                entidadResultado.setSo(resultSet.getString("so"));
+                entidadResultado.setNombre_depto(resultSet.getString("nombre_depto"));
+
+                return entidadResultado;
+            }
+        });
+    }
+
+>>>>>>> a773bbbfe2dd277c0b81e920e2a9c2f7c34f8c11
     //LLAMA A LAS ESTACIONES RELACIONADAS A UN DEPARTAMENTO
     public Collection<EstacionPropiedades> buscarEstacionesPorDepartamento(final long numeroDepartamento) {
         return estacionRepositorio.buscarEstacionesPorDepartamento(numeroDepartamento);

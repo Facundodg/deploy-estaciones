@@ -30,7 +30,7 @@ public interface PrincipalApi {
             @Parameter(description = "Objeto de la estación que se desea registrar", required = true)
             @RequestBody @Valid final ConjuntoAlta conjuntoAlta) throws Exception;
 
-    @GetMapping("/")
+    @PostMapping("/buscarPorPuertoCusiUsuario")
     @Operation(summary = "Búsqueda filtrada por tipo", description = "Retorna departamento, cusi o estación")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<?> filtrarBusqueda(
@@ -42,4 +42,16 @@ public interface PrincipalApi {
     @GetMapping("/test")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<Collection<EstacionPropiedades>> buscarEstacionesPropiedades() throws Exception;
+
+
+    @Operation(summary = "Modifica una estación completa", description = "Retorna la estación cargada")
+    @PutMapping(value = "",
+            consumes = {"application/json", "application/xml", "application/x-www-form-urlencoded"},
+            produces = {"application/json", "application/vnd.api+json"})
+    @ResponseStatus(HttpStatus.CREATED)
+    ResponseEntity<EstacionPropiedades> modificarEstacionCompleta(
+            @NotNull
+            @Parameter(description = "Objeto de la estación que se desea modificar", required = true)
+            @RequestBody @Valid final ConjuntoAlta conjuntoAlta) throws Exception;
+
 }

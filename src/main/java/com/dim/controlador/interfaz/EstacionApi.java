@@ -50,4 +50,10 @@ public interface EstacionApi {
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<Collection<Estacion>> buscarTodos() throws Exception;
+
+    @Operation(summary = "Borra toda la estacion (cusi,monitor)", description = "Borrar estacion")
+    @DeleteMapping(value = "/{puerto}", produces = {"application/json", "application/vnd.api+json"})
+    @ResponseStatus(HttpStatus.OK)
+    Boolean eliminarEstacion(@Parameter(description = "puerto", required = true)
+                             @PathVariable("puerto") @Min(1) final Long puerto) throws Exception;
 }
