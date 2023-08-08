@@ -132,7 +132,6 @@
             <version>3.1.1</version>
         </dependency>
 
-
     </dependencies>
 
     <build>
@@ -178,11 +177,7 @@
             </plugin>
         </plugins>
 
-<<<<<<< HEAD
-        <finalName>${artifactId}-${version}</finalName>
-
-=======
->>>>>>> a773bbbfe2dd277c0b81e920e2a9c2f7c34f8c11
+        <finalName>${project.artifactId}-${project.version}</finalName>
     </build>
 
 </project>
