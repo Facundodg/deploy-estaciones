@@ -1,3 +1,40 @@
+
+
+
+const estacion2 = {
+
+    "departamento": "",
+    "estacion": {
+        "puerto": ""
+    },
+    "cusi": {
+        "disco": "",
+        "micro": "",
+        "mother": "",
+        "so": "",
+        "ram": "",
+        "hostName": "",
+        "mac": "",
+        "ip": "",
+        "dvd": "",
+        "mouse": "",
+        "teclado": "",
+        "num_cusi": ""
+    },
+    "monitor": {
+        "marca": "",
+        "modelo": "",
+        "numero_serie": ""
+    },
+    "usuario": [
+
+
+
+    ]
+
+}
+
+
 async function cargarEstaciones(estacion) {
 
     const body = document.querySelector(".tablita");
@@ -320,22 +357,54 @@ function cargarEstacionesEnModal(estacion){
     const mac = document.getElementById('mac_id');
     mac.value = estacion.mac || "NO DATOS";
 
+    //btn_guarda_estacion_modificada
 
-    cargarDataJsonEstacionModificar();
+    //const btn_modificar_usuario = document.querySelector("#btn_guarda_estacion_modificada");
+
+     const body = document.querySelector(".btn_modificar_estacion");
+
+     const botonVerMas = document.createElement('a')
+     botonVerMas.setAttribute("onclick",'modificarEstacionPorPuerto(`'+estacion.puerto+'`)') //cambiar por el metodo de consulta
+     botonVerMas.className = "btn-options bg-blue-500 hover:bg-blue-800 focus:ring-4"
+     botonVerMas.textContent = "Guardar"
+
+     body.append(botonVerMas)
+}
+
+
+
+function modificarEstacionPorPuerto(puerto){
+
+
+     estacion2.cusi.disco = document.getElementById('disco_id').value;
+     estacion2.cusi.micro = document.getElementById('micro_id').value;
+     estacion2.cusi.mother = document.getElementById('mother_id').value;
+     estacion2.cusi.ram = document.getElementById('ram_id').value;
+     estacion2.cusi.so = document.getElementById('so_id').value;
+
+     estacion2.cusi.dvd = document.getElementById('dvd_id').value;
+     estacion2.cusi.mouse = document.getElementById('mouse_id').value;
+     estacion2.cusi.teclado = document.getElementById('teclado_id').value;
+
+     // -----2------ MONITOR --------------
+
+     estacion2.monitor.marca = document.getElementById('marca_id').value;
+     estacion2.monitor.modelo = document.getElementById('modelo_id').value;
+     estacion2.monitor.numero_serie = document.getElementById('num_serie_id').value;
+
+     // -----2------ ESTACION --------------
+
+     estacion2.estacion.puerto = document.getElementById('puerto_id').value;
+     estacion2.cusi.hostname = document.getElementById('host_name_id').value;
+     estacion2.cusi.mac = document.getElementById('mac_id').value;
+
+
+
 
 
 }
 
 
-
-function cargarDataJsonEstacionModificar(){
-
-
-    var disco = document.getElementById('imput_disco_modificar');
-    estacion.cusi.disco = disco.value;
-    console.log(estacion.cusi.disco)
-
-}
 
 
 
@@ -453,10 +522,6 @@ function perromono(){
         boton.textContent = "Ver Mas"
 
 
-
-
-    const perromono = document.querySelector(".perromono");
-    perromono.append(boton)
 
 
 }

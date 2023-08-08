@@ -123,4 +123,39 @@ public class PrincipalControlador implements PrincipalApi {
         return ResponseEntity.ok().body(modelMapper.map(estacionServicio.guardar(estacion), EstacionPropiedades.class));
     }
 
+    public ResponseEntity<EstacionPropiedades> modificarEstacionCompleta(ConjuntoAlta conjuntoAlta) throws Exception {
+        log.info("[PrincipalControlador - ModificarEstacionCompleta: Iniciada con {}]", conjuntoAlta);
+
+        final Estacion estacion = modelMapper.map(conjuntoAlta.getEstacion(), Estacion.class);
+        final Cusi cusi = modelMapper.map(conjuntoAlta.getCusi(), Cusi.class);
+        final Monitor monitor = modelMapper.map(conjuntoAlta.getMonitor(), Monitor.class);
+        final Collection<UsuarioAlta> usuarios = conjuntoAlta.getUsuario();
+
+        final Departamento departamento = departamentoServicio.buscarPorId(conjuntoAlta.getDepartamento());
+
+        final Collection<Usuario> usuariosFinales = new ArrayList<>();
+        for (UsuarioAlta usuario : usuarios) {
+            usuariosFinales.add(modelMapper.map(usuario, Usuario.class));
+        }
+
+        if (cusi != null) {
+            estacion.setCusi(cusi);
+        }
+
+        if (!usuarios.isEmpty()) {
+            estacion.setUsuarios(new HashSet<Usuario>(usuariosFinales));
+        }
+
+        if (monitor != null) {
+            estacion.setMonitor(monitor);
+        }
+
+        if(departamento != null){
+            estacion.setDepartamento(departamento);
+        }
+
+        return ResponseEntity.ok().body(modelMapper.map(estacionServicio.guardar(estacion), EstacionPropiedades.class));
+    }
+
+
 }

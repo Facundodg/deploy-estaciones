@@ -1,4 +1,4 @@
-const estacion = {
+const estacion3 = {
 
     "departamento": "",
     "estacion": {
