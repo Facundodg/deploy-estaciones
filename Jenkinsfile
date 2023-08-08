@@ -85,110 +85,110 @@ pipeline {
             }
         }
 
-        // stage('Git checkout') {
-        //     steps{
+        stage('Git checkout') {
+            steps{
 
-        //         script {
-        //             checkout scmGit(branches: [[name: "${RAMA_PARA_CLONAR}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_APLICACION}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
-        //         }
-        //     }
-        // }
+                script {
+                    checkout scmGit(branches: [[name: "${RAMA_PARA_CLONAR}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_APLICACION}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_MONOLITO_URL}"]])
+                }
+            }
+        }
 
-        // stage('Build Maven') {
-        //     steps {
-        //         dir("${CARPETA_APLICACION}"){
-        //             script {
-        //                 PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
-        //                 ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
-        //                 IDENTIFICADOR_PROYECTO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
-        //                 IDENTIFICADOR_UNICO_BUILD = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
+        stage('Build Maven') {
+            steps {
+                dir("${CARPETA_APLICACION}"){
+                    script {
+                        PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+                        ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
+                        IDENTIFICADOR_PROYECTO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
+                        IDENTIFICADOR_UNICO_BUILD = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
 
-        //                 sh "echo 'Versión Proyecto: ${PROYECTO_VERSION}'"
-        //                 sh "echo 'ArtifactID Proyecto: ${ARTIFACT_ID}'"
-        //                 sh "echo 'Identificador Proyecto: ${IDENTIFICADOR_PROYECTO}'"
-        //                 sh "echo 'Identificador Único Build: ${IDENTIFICADOR_UNICO_BUILD}'"
+                        sh "echo 'Versión Proyecto: ${PROYECTO_VERSION}'"
+                        sh "echo 'ArtifactID Proyecto: ${ARTIFACT_ID}'"
+                        sh "echo 'Identificador Proyecto: ${IDENTIFICADOR_PROYECTO}'"
+                        sh "echo 'Identificador Único Build: ${IDENTIFICADOR_UNICO_BUILD}'"
 
-        //                 sh 'mvn clean package -DskipTests'
-        //             }
-        //         }
-        //     }
-        // }
+                        sh 'mvn clean package -DskipTests'
+                    }
+                }
+            }
+        }
 
-        // stage('Test') {
-        //     steps {
-        //         dir("${CARPETA_APLICACION}"){
-        //             sh 'mvn test'
-        //             sh 'mvn integration-test'
-        //         }
-        //     }
-        // }
+        stage('Test') {
+            steps {
+                dir("${CARPETA_APLICACION}"){
+                    sh 'mvn test'
+                    sh 'mvn integration-test'
+                }
+            }
+        }
 
-        // stage('SonarQube Analysis') {
-        //     environment {
-        //         SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
-        //         SONAR_SERVER = 'SonarQube'
-        //         SONAR_HOST_IP = '172.25.0.2'                    // IP interna de Docker, debido a que SonarQube corre en un contenedor
-        //         SONAR_PORT = '9000'
-        //         SONAR_SRC = 'src/'
-        //         SONAR_ENCODING = 'UTF-8'
-        //     }
+        stage('SonarQube Analysis') {
+            environment {
+                SONAR_SCANNER_HOME = tool 'SonarQube 4.8.0'
+                SONAR_SERVER = 'SonarQube'
+                SONAR_HOST_IP = '172.25.0.2'                    // IP interna de Docker, debido a que SonarQube corre en un contenedor
+                SONAR_PORT = '9000'
+                SONAR_SRC = 'src/'
+                SONAR_ENCODING = 'UTF-8'
+            }
 
-        //     steps {
-        //         dir("${CARPETA_APLICACION}"){
-        //             withSonarQubeEnv(installationName: "${SONAR_SERVER}", credentialsId: "${SONARQUBE_CREDENCIALES}") {
-        //                 sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-        //                     -Dsonar.projectName=${ARTIFACT_ID} \
-        //                     -Dsonar.projectVersion=${PROYECTO_VERSION} \
-        //                     -Dsonar.projectKey=${IDENTIFICADOR_PROYECTO} \
-        //                     -Dsonar.host.url=http://${SONAR_HOST_IP}:${SONAR_PORT} \
-        //                     -Dsonar.sources=${SONAR_SRC} \
-        //                     -Dsonar.java.binaries=. \
-        //                     -Dsonar.sourceEncoding=${SONAR_ENCODING}"
-        //             }
-        //         }
-        //     }
-        // }
+            steps {
+                dir("${CARPETA_APLICACION}"){
+                    withSonarQubeEnv(installationName: "${SONAR_SERVER}", credentialsId: "${SONARQUBE_CREDENCIALES}") {
+                        sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
+                            -Dsonar.projectName=${ARTIFACT_ID} \
+                            -Dsonar.projectVersion=${PROYECTO_VERSION} \
+                            -Dsonar.projectKey=${IDENTIFICADOR_PROYECTO} \
+                            -Dsonar.host.url=http://${SONAR_HOST_IP}:${SONAR_PORT} \
+                            -Dsonar.sources=${SONAR_SRC} \
+                            -Dsonar.java.binaries=. \
+                            -Dsonar.sourceEncoding=${SONAR_ENCODING}"
+                    }
+                }
+            }
+        }
 
-        // stage('SonarQube Quality Gate') {
-        //     steps {
-        //         timeout(time: 1, unit: 'HOURS') {
-        //             waitForQualityGate abortPipeline: true
-        //         }
-        //     }
-        // }
+        stage('SonarQube Quality Gate') {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
 
-        // stage('Build and push to DockerHub') {
-        //     when{
-        //         anyOf{
-        //             branch 'master'
-        //             branch 'develop'
+        stage('Build and push to DockerHub') {
+            when{
+                anyOf{
+                    branch 'master'
+                    branch 'develop'
 
-        //             expression{
-        //                 return (RAMA_PARA_CLONAR == 'develop' || RAMA_PARA_CLONAR == 'master')
-        //             }
-        //         }
-        //     }
-        //     steps {
-        //         script {
-        //             dir ("${CARPETA_APLICACION}"){
-        //                 // Verifica si existe un archivo Dockerfile en la subcarpeta actual
-        //                 if (!fileExists("Dockerfile")) {
-        //                     error "Dockerfile not found"
-        //                 }
+                    expression{
+                        return (RAMA_PARA_CLONAR == 'develop' || RAMA_PARA_CLONAR == 'master')
+                    }
+                }
+            }
+            steps {
+                script {
+                    dir ("${CARPETA_APLICACION}"){
+                        // Verifica si existe un archivo Dockerfile en la subcarpeta actual
+                        if (!fileExists("Dockerfile")) {
+                            error "Dockerfile not found"
+                        }
 
-        //                 withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
 
-        //                     // Construye la imagen de Docker usando el nombre y la versión obtenidos
-        //                     sh "docker build -t \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD} ."
+                            // Construye la imagen de Docker usando el nombre y la versión obtenidos
+                            sh "docker build -t \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD} ."
 
-        //                     // Sube la imagen a DockerHub
-        //                     sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin'
-        //                     sh "docker push \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD}"
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+                            // Sube la imagen a DockerHub
+                            sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin'
+                            sh "docker push \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD}"
+                        }
+                    }
+                }
+            }
+        }
 
         stage('Deploy to Kubernetes') {
             when {
@@ -214,9 +214,7 @@ pipeline {
                     // Clona el repositorio de despliegue
                     checkout scmGit(branches: [[name: 'master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES}", url: "${GITHUB_DESPLIEGUE_URL}"]])
 
-                    ARTIFACT_ID = "gestor-estaciones"
-                    IDENTIFICADOR_UNICO_BUILD = "0.0.4"
-                    
+
                     dir ("${CARPETA_DESPLIEGUE}"){
                         withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
 
@@ -227,11 +225,11 @@ pipeline {
                         }
 
 
-                        // withCredentials([string(credentialsId: "${KUBERNETES_CREDENCIALES}", variable: 'KUBE_TOKEN')]) {
-                        //     // sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
-                        //     sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/basedatos"
-                        //     sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general"
-                        // }
+                        withCredentials([string(credentialsId: "${KUBERNETES_CREDENCIALES}", variable: 'KUBE_TOKEN')]) {
+                            // sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
+                            sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/basedatos"
+                            sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general"
+                        }
                     }
                 }
             }
