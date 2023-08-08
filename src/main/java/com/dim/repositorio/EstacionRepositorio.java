@@ -29,4 +29,5 @@ public interface EstacionRepositorio extends JpaRepository<Estacion, Long> {
     @Query(value = "select * from fn_borrar_estacion(:puerto)", nativeQuery = true)
     Boolean borrarEstacionPorPuertoCompleta( @Param("puerto") Long puerto);
 
+    boolean existsByPuerto(long puerto);
 }

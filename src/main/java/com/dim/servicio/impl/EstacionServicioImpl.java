@@ -69,6 +69,11 @@ public class EstacionServicioImpl implements EstacionServicio {
     }
 
     @Override
+    public boolean existePorPuerto(Long puerto) {
+        return estacionRepositorio.existsByPuerto(puerto);
+    }
+
+    @Override
     public boolean eliminarPorPuerto(Long puerto) {
         return estacionRepositorio.borrarEstacionPorPuertoCompleta(puerto);
     }
@@ -106,7 +111,7 @@ public class EstacionServicioImpl implements EstacionServicio {
     //LLAMA A LA ESTACION POR CUSI (NUMERO DE CUSI)
     public List<Respuestas> ejecutarProcedimientoPorCusi(long cusi) {
 
-        String sql = "select * from mostrarPorCusi("+cusi+")";
+        String sql = "select * from mostrarPorCusi(" + cusi + ")";
 
         return jdbcTemplate.query(sql, new RowMapper<Respuestas>() {
             @Override
@@ -130,7 +135,7 @@ public class EstacionServicioImpl implements EstacionServicio {
     //LLAMA A LA ESTACION POR PUERTO (PUERTO)
     public List<Respuestas> ejecutarProcedimientoPorPuerto(long puerto) {
 
-        String sql = "select * from mostrarPorPuerto("+puerto+")";
+        String sql = "select * from mostrarPorPuerto(" + puerto + ")";
 
         return jdbcTemplate.query(sql, new RowMapper<Respuestas>() {
             @Override
@@ -148,13 +153,14 @@ public class EstacionServicioImpl implements EstacionServicio {
 
                 return entidadResultado;
             }
-        });}
+        });
+    }
 
     //LLAMA A LA ESTACION POR NUMERO DE AFILIADO DEL USUARIO
 
     public List<Respuestas> ejecutarProcedimientoPorUsuario(long usuario) {
 
-        String sql = "select * from mostrarPorUsuario("+usuario+")";
+        String sql = "select * from mostrarPorUsuario(" + usuario + ")";
 
         return jdbcTemplate.query(sql, new RowMapper<Respuestas>() {
             @Override
@@ -172,6 +178,7 @@ public class EstacionServicioImpl implements EstacionServicio {
 
                 return entidadResultado;
             }
-        });}
+        });
+    }
 
 }

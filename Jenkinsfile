@@ -164,7 +164,7 @@ pipeline {
                     branch 'develop'
 
                     expression{
-                        return (RAMA_PARA_CLONAR == 'develop' || RAMA_PARA_CLONAR == 'master');
+                        return (RAMA_PARA_CLONAR == 'develop' || RAMA_PARA_CLONAR == 'master')
                     }
                 }
             }
@@ -197,7 +197,7 @@ pipeline {
                     branch 'develop'
 
                     expression{
-                        return (RAMA_PARA_CLONAR == 'develop' || RAMA_PARA_CLONAR == 'master');
+                        return (RAMA_PARA_CLONAR == 'develop' || RAMA_PARA_CLONAR == 'master')
                     }
                 }
             }

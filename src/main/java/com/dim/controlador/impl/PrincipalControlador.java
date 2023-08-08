@@ -1,6 +1,7 @@
 package com.dim.controlador.impl;
 
 import com.dim.controlador.interfaz.PrincipalApi;
+import com.dim.dominio.dto.estacion.EstacionAlta;
 import com.dim.dominio.dto.estacion.EstacionPropiedades;
 import com.dim.dominio.dto.general.BuscarEstacion;
 import com.dim.dominio.dto.general.ConjuntoAlta;
@@ -82,13 +83,34 @@ public class PrincipalControlador implements PrincipalApi {
         return verMasusuario.SobreUsuario(id_usuario);
     }
 
-    @PutMapping("/putEstacion/")
-    public ResponseEntity<List<EstacionPropiedades>> idk(
-            @NotNull
-            @Parameter(description = "Estaciones", required = true)
-            @RequestBody @Valid final Estacion estacion) throws Exception {
+    @PutMapping("/putEstacion/{puerto}")
+    public ResponseEntity<?> modificarEstacion(@PathVariable("puerto") long puerto,
+                                                                 @NotNull@Parameter(description = "Estaciones", required = true)
+                                                                 @RequestBody @Valid final ConjuntoAlta conjuntoAlta) throws Exception {
+        log.info("[PrincipalControlador - ModificarEstacion: Iniciada con {}]", conjuntoAlta);
 
-        return null;
+        final Estacion estacion = modelMapper.map(conjuntoAlta.getEstacion(), Estacion.class);
+        final Cusi cusi = modelMapper.map(conjuntoAlta.getCusi(), Cusi.class);
+        final Monitor monitor = modelMapper.map(conjuntoAlta.getMonitor(), Monitor.class);
+        final Collection<UsuarioAlta> usuarios = conjuntoAlta.getUsuario();
+        final Departamento departamento = departamentoServicio.buscarPorId(conjuntoAlta.getDepartamento());
+
+        if (!usuarios.isEmpty()) {
+            final Set<Usuario> usuariosFinales = usuarios.stream()
+                    .map(u -> modelMapper.map(u, Usuario.class))
+                    .collect(Collectors.toSet());
+            estacion.setUsuarios(new HashSet<>(usuariosFinales));
+        }
+
+        estacion.setCusi(cusi);
+        estacion.setMonitor(monitor);
+        estacion.setDepartamento(departamento);
+
+        if(!estacionServicio.existePorPuerto(puerto)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error");
+        }
+
+        return ResponseEntity.ok().body(modelMapper.map(estacionServicio.guardar(estacion), EstacionPropiedades.class));
     }
 
     @Override

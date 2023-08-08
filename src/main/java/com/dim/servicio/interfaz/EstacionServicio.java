@@ -11,5 +11,7 @@ public interface EstacionServicio extends ServicioCrud<Estacion> {
 
     Collection<EstacionPropiedades> buscarEstacionesSimplificadas();
 
+    boolean existePorPuerto(Long puerto);
+
     boolean eliminarPorPuerto(Long puerto);
 }
