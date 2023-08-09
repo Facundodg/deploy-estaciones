@@ -11,6 +11,7 @@
     - Java 20
     - Docker 24.0.2 (Cualquier versión que soporte --password-stdin)
     - Maven 3.9.3
+    - NodeJS 20.5.0
 
     PLUGINS NECESARIOS
     - Slack
@@ -41,6 +42,7 @@ pipeline {
         jdk 'Java 20'
         dockerTool 'Docker 24.0.2'
         maven 'Maven 3.9.3'
+        nodejs 'NodeJS 20.5.0'
     }
 
     environment {
