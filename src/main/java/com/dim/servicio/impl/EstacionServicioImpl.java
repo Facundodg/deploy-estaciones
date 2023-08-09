@@ -7,6 +7,7 @@ import com.dim.repositorio.EstacionRepositorio;
 import com.dim.servicio.interfaz.EstacionServicio;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,16 @@ public class EstacionServicioImpl implements EstacionServicio {
     @Override
     public Estacion guardar(Estacion entidad) {
         return estacionRepositorio.save(entidad);
+    }
+
+    @Override
+    public Estacion modificarPorPuerto(Long puerto, Estacion estacion) {
+        return estacionRepositorio.findByPuerto(puerto).map(u -> {
+            BeanUtils.copyProperties(estacion, u);
+            return u;
+        }).orElseThrow();
+
+//                u -> estacionRepositorio.save(entidad)).orElseThrow();
     }
 
     @Override

@@ -85,8 +85,8 @@ public class PrincipalControlador implements PrincipalApi {
 
     @PutMapping("/putEstacion/{puerto}")
     public ResponseEntity<?> modificarEstacion(@PathVariable("puerto") long puerto,
-                                             @NotNull@Parameter(description = "Estaciones", required = true)
-                                             @RequestBody final ConjuntoAlta conjuntoAlta) throws Exception {
+                                               @NotNull @Parameter(description = "Estaciones", required = true)
+                                               @RequestBody final ConjuntoAlta conjuntoAlta) throws Exception {
         log.info("[PrincipalControlador - ModificarEstacion: Iniciada con {}]", conjuntoAlta);
 
         final Estacion estacion = modelMapper.map(conjuntoAlta.getEstacion(), Estacion.class);
@@ -106,11 +106,11 @@ public class PrincipalControlador implements PrincipalApi {
         estacion.setMonitor(monitor);
         estacion.setDepartamento(departamento);
 
-        if(!estacionServicio.existePorPuerto(puerto)){
+        if (!estacionServicio.existePorPuerto(puerto)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error");
         }
 
-        return ResponseEntity.ok().body(modelMapper.map(estacionServicio.actualizar(estacion), EstacionPropiedades.class));
+        return ResponseEntity.ok().body(modelMapper.map(estacionServicio.modificarPorPuerto(puerto, estacion), EstacionPropiedades.class));
     }
 
     @Override
@@ -172,6 +172,4 @@ public class PrincipalControlador implements PrincipalApi {
 
         return ResponseEntity.ok().body(modelMapper.map(estacionServicio.guardar(estacion), EstacionPropiedades.class));
     }
-
-
 }

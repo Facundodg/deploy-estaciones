@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Repository
 public interface EstacionRepositorio extends JpaRepository<Estacion, Long> {
@@ -30,4 +31,6 @@ public interface EstacionRepositorio extends JpaRepository<Estacion, Long> {
     Boolean borrarEstacionPorPuertoCompleta( @Param("puerto") Long puerto);
 
     boolean existsByPuerto(long puerto);
+
+    Optional<Estacion> findByPuerto(long puerto);
 }
