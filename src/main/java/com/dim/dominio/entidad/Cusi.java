@@ -51,6 +51,9 @@ public class Cusi {
     @Column(name = "mac")
     private String mac;
 
+    @Column(name = "hostname")
+    private String hostname;
+
 //    @OneToOne(mappedBy = "cusi", fetch = FetchType.EAGER)
 //    @JoinTable(name = "estacion", inverseJoinColumns = {@JoinColumn(name="id_estacion")})
 //    private Estacion estacion;

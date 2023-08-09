@@ -19,7 +19,7 @@ public class CusiAlta {
 
     @Min(value = 1, message = "Número de Cusi no debe ser negativo")
     @NotNull(message = "Número de Cusi no debe ser nulo")
-    private Long numCusi;
+    private Long num_cusi;
 
     @NotNull(message = "Micro no debe ser nulo")
     @Size(min = 3, message = "Micro debe tener por lo menos 3 caracteres")

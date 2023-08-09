@@ -17,16 +17,28 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UsuarioAlta {
 
+    /*
     @Min(value = 1, message = "Numero de Afiliado no debe ser negativo")
+
     @NotNull(message = "Número de Afiliado no debe ser nulo")
+     */
     private Long numAfiliado;
 
-    @NotNull(message = "Cuenta no debe ser nulo")
-    @Size(min = 3, message = "Cuenta debe tener por lo menos 3 caracteres")
-    private String cuenta;
+    /*
+    @NotNull(message = "Usuario no debe ser nulo")
+    @Size(min = 3, message = "Usuario debe tener por lo menos 3 caracteres")
+    */
+    private String usuario;
+    private String apellido;
 
+    private String nombre;
+
+    /*
     @NotNull(message = "Clave no debe ser nulo")
+
     @Size(min = 3, message = "Clave debe tener por lo menos 3 caracteres")
+     */
     private String clave;
 
+    private String departamento;
 }

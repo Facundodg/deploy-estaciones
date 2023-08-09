@@ -8,4 +8,12 @@ import java.util.Collection;
 public interface EstacionServicio extends ServicioCrud<Estacion> {
 
     Collection<EstacionPropiedades> buscarTodosConPropiedades();
+
+    Collection<EstacionPropiedades> buscarEstacionesSimplificadas();
+
+    Estacion modificarPorPuerto(Long puerto, Estacion estacion);
+
+    boolean existePorPuerto(Long puerto);
+
+    boolean eliminarPorPuerto(Long puerto);
 }

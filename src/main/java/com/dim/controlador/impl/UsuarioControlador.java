@@ -23,11 +23,16 @@ public class UsuarioControlador {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity deleteStudent(@PathVariable ("id") Long id){
+    public ResponseEntity BorrarUsuario(@PathVariable ("id") Long id){
         servicioUsuario.eliminar(id);
         return ResponseEntity.ok(!servicioUsuario.existePorId(id));
     }
 
+    @DeleteMapping(value = "/{puerto}/{id_usuario}")
+    public ResponseEntity BorrarUsuarioPorPuertoIdusuario(@PathVariable ("puerto") Long puerto,@PathVariable ("id_usuario") Long id_usuario){
+        servicioUsuario.eliminarPorPuertoYidUsuario(puerto,id_usuario);
+        return ResponseEntity.ok(!servicioUsuario.existePorId(id_usuario));
+    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Usuario> findByIdUsuario(@PathVariable ("id") Long id){

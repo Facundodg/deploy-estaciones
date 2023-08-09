@@ -9,6 +9,12 @@
   
 }
 
+.pepe{
+
+  border: 2px solid width !important;
+  border-radius: 7px !important;
+
+}
 
 .conteiner-form{
   /* background-color: blue; */
@@ -19,6 +25,10 @@
 
 }
 
+.conteiner-form-modal-ver-mas{
+  /* background-color: blue; */
+  width: 60%;
+}
 
 
 .h2-filtrado{

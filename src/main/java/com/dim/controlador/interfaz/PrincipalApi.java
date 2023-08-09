@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-@Validated
 @RequestMapping("/main")
 @Tag(name = "Main", description = "Main API")
 public interface PrincipalApi {
@@ -28,18 +27,30 @@ public interface PrincipalApi {
     ResponseEntity<EstacionPropiedades> cargarEstacionCompleta(
             @NotNull
             @Parameter(description = "Objeto de la estación que se desea registrar", required = true)
-            @RequestBody @Valid final ConjuntoAlta conjuntoAlta) throws Exception;
+            @RequestBody final ConjuntoAlta conjuntoAlta) throws Exception;
 
-    @GetMapping("/")
+    @PostMapping("/buscarPorPuertoCusiUsuario")
     @Operation(summary = "Búsqueda filtrada por tipo", description = "Retorna departamento, cusi o estación")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<?> filtrarBusqueda(
             @NotNull
             @Parameter(description = "Objeto de búsqueda para filtrar", required = true)
-            @RequestBody @Valid final BuscarEstacion buscarEstacion) throws Exception;
+            @RequestBody final BuscarEstacion buscarEstacion) throws Exception;
 
     @Operation(summary = "Búsqueda general de estaciones con información genérica", description = "Retorna lista de información de estaciones")
     @GetMapping("/test")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<Collection<EstacionPropiedades>> buscarEstacionesPropiedades() throws Exception;
+
+
+    @Operation(summary = "Modifica una estación completa", description = "Retorna la estación cargada")
+    @PutMapping(value = "",
+            consumes = {"application/json", "application/xml", "application/x-www-form-urlencoded"},
+            produces = {"application/json", "application/vnd.api+json"})
+    @ResponseStatus(HttpStatus.CREATED)
+    ResponseEntity<EstacionPropiedades> modificarEstacionCompleta(
+            @NotNull
+            @Parameter(description = "Objeto de la estación que se desea modificar", required = true)
+            @RequestBody final ConjuntoAlta conjuntoAlta) throws Exception;
+
 }

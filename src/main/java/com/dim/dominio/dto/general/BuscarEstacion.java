@@ -19,11 +19,17 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class BuscarEstacion {
 
+    /*
     @NotNull(message = "BuscarPor no debe ser nulo")
     @Enumerated(EnumType.STRING)
+
+     */
     private TipoBusqueda buscarPor;
 
+    /*
     @NotNull(message = "Buscar no debe ser nulo")
     @Size(min = 1, max = 20, message = "Buscar debe tener entre 1 y 10 caracteres")
+
+     */
     private String buscar;
 }

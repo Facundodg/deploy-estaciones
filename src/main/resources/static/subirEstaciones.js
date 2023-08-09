@@ -23,11 +23,31 @@ const estacion = {
         "modelo": "",
         "numero_serie": ""
     },
-    "usuario": []
+    "usuario": [
+
+
+
+    ]
 
 }
 
+function removerChildNodes(parent){
 
+    while(parent.firstChild){
+        parent.removeChild(parent.firstChild)
+    }
+
+}
+
+var depto = document.getElementById('selector');
+
+depto.addEventListener('change', function () {
+
+    console.log('El valor seleccionado ha cambiado:', depto.value);
+
+    estacion.departamento = depto.value;
+
+});
 
 function subirCusi() {
 
@@ -54,8 +74,15 @@ function subirCusi() {
 
     console.log(estacion);
 
-}
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
 
+}
 
 function subirMonitor() {
 
@@ -67,8 +94,18 @@ function subirMonitor() {
     estacion.monitor.modelo = modelo.value;
     estacion.monitor.numero_serie = numserie.value;
 
+    renderBotonesDataMonitoUsuario();
+
 
     console.log(estacion);
+
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
 
 }
 
@@ -76,36 +113,154 @@ function subirUsuario() {
 
     var usuario = document.getElementById('usuarioInput');
     var contraseña = document.getElementById("contraseñaInput");
+    var num_afiliado = document.getElementById("numAfiliadoInput");
+
+    var nombre = document.getElementById('nombreInput');
+    var apellido = document.getElementById("apellidoInput");
+    var departamento = depto.value;
+
+    console.log("departamento")
+    console.log(departamento)
+    console.log("departamento")
 
     usuario = {
 
         "usuario": usuario.value,
-        "clave": contraseña.value
+        "clave": contraseña.value,
+        "num_afiliado":num_afiliado.value,
+        "nombre":nombre.value,
+        "apellido":apellido.value,
+        "departamento":departamento
 
     }
 
     estacion.usuario.push(usuario);
 
-    console.log(estacion);
+    actualizarTablaUsuariosAgrgados();
+
+    renderBotonesDataMonitoUsuario()
+
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
 
 }
 
+function actualizarTablaUsuariosAgrgados(){
 
-var depto = document.getElementById('selector');
+    let usuarios = estacion.usuario;
 
-depto.addEventListener('change', function () {
+    const body = document.querySelector(".tabla_usuarios");
 
-    console.log('El valor seleccionado ha cambiado:', depto.value);
+    removerChildNodes(body)
 
-    estacion.departamento = depto.value;
+    for (let usuario of usuarios) {
 
-});
+           renderTablaUsuarios(usuario)
+
+    }
+
+}
+
+function renderTablaUsuarios(usuario){
+
+      const body = document.querySelector(".tabla_usuarios");
+
+      const row = document.createElement('tr')
+      row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+
+      const departamento = document.createElement('td')
+      departamento.className = "px-6 py-4"
+      departamento.setAttribute("scope", "row");
+      departamento.textContent = usuario.departamento;
+
+       const nombre = document.createElement('td')
+       nombre.className = "px-6 py-4"
+       nombre.setAttribute("scope", "row");
+       nombre.textContent = usuario.nombre;
+
+      const apellido = document.createElement('td')
+      apellido.className = "px-6 py-4"
+      apellido.setAttribute("scope", "row");
+      apellido.textContent = usuario.apellido;
+
+       const usuarioRow = document.createElement('td')
+       usuarioRow.className = "px-6 py-4"
+       usuarioRow.setAttribute("scope", "row");
+       usuarioRow.textContent = usuario.usuario;
+
+
+       const contraseña = document.createElement('td')
+       contraseña.className = "px-6 py-4"
+       contraseña.textContent = usuario.clave;
+
+      const opciones = document.createElement('td')
+      opciones.className = "flex justify-center items-center px-1 py-1 space-x-2 whitespace-nowrap mt-1"
+
+      const botonEliminar = document.createElement('button')
+      botonEliminar.setAttribute("href", "#modal"); // Reemplaza la URL con la dirección que desees
+      botonEliminar.setAttribute("onclick",'eliminarUsuarioIngresoDeUsuario(`' + usuario.usuario + '`)')
+      botonEliminar.className = "btn-options bg-red-500 hover:bg-red-800 focus:ring-4"
+      botonEliminar.textContent = "Eliminar"
+
+
+      row.append(departamento)
+      row.append(nombre)
+      row.append(apellido)
+      row.append(usuarioRow)
+      row.append(contraseña)
+      row.append(opciones)
+      opciones.append(botonEliminar)
+      body.append(row)
+
+}
+
+function eliminarUsuarioIngresoDeUsuario(nombreUsuario){
+
+    let posicionDeUsuario = buscarEnArray(nombreUsuario);
+
+    console.log("posicionDeUsuario")
+    console.log(posicionDeUsuario)
+    console.log("posicionDeUsuario")
+    console.log(estacion.usuario)
+    console.log("estacion.usuario")
+
+    estacion.usuario.splice(posicionDeUsuario, 1);
+
+    console.log(estacion.usuario)
+
+    const body = document.querySelector(".tabla_usuarios");
+
+    removerChildNodes(body)
+
+    let usuarios = estacion.usuario;
+
+    for (let usuario of usuarios) {
+
+           renderTablaUsuarios(usuario)
+
+    }
+
+    renderBotonesDataMonitoUsuario();
+
+}
+
+function buscarEnArray(nombreUsuario){
+
+    return estacion.usuario.findIndex(function(estacion) {
+         return estacion === nombreUsuario;
+    });
+
+}
 
 async function subirEstaciones() {
 
     var puertoCusInput = document.getElementById('estacionInput');
     estacion.estacion.puerto = puertoCusInput.value;
-
 
     var numcusi = document.getElementById('cusiInput');
 
@@ -121,7 +276,7 @@ async function subirEstaciones() {
         "Content-Type": "application/json"
     }
 
-    let request = await fetch("http://localhost:4040/main", {
+    let request = await fetch("http://172.20.255.23:4040/main", {
         method: "POST",
         body: JSON.stringify(estacion),
         headers: headersList
@@ -131,4 +286,52 @@ async function subirEstaciones() {
 
     console.log(estacion)
 
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Your work has been saved',
+      showConfirmButton: false,
+      timer: 1500
+    })
+
+    setTimeout(refresco, 1000);
+
+}
+
+function renderBotonesDataMonitoUsuario(){
+
+    const propiedadesMonitor = Object.keys(estacion.monitor);
+
+    console.log(propiedadesMonitor > 0)
+    console.log(propiedadesMonitor)
+
+    if(estacion.monitor.marca && estacion.monitor.marca && estacion.monitor.numero_serie !== ""){
+
+        const boton_monitor = document.querySelector("#btn_agregar_monitor");
+        boton_monitor.textContent = "Agregar Monitor " + "(add)"
+
+    }
+
+    if(estacion.usuario.length >= 1){
+
+        const boton_usuario = document.querySelector("#btn_agregar_usuario");
+
+        let numeUsuarios = (estacion.usuario.length).toString();
+
+        console.log(numeUsuarios);
+
+        boton_usuario.textContent = "Agregar Usuarios (" + numeUsuarios + ")";
+
+    }else{
+
+        const boton_usuario = document.querySelector("#btn_agregar_usuario");
+        boton_usuario.textContent = "Agregar Usuarios";
+
+
+    }
+
+}
+
+function refresco() {
+    location.reload();
 }
