@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-@Validated
 @RequestMapping("/estacion")
 @Tag(name = "Estación", description = "Estación API")
 public interface EstacionApi {

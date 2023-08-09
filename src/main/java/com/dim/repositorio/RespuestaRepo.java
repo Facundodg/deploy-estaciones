@@ -166,6 +166,7 @@ public class RespuestaRepo {
                 puerto.setNumero_serie(resultSet.getLong("numero_serie"));
                 puerto.setId_estacion(resultSet.getLong("id_estacion"));
                 puerto.setPuerto(resultSet.getLong("puerto"));
+                puerto.setNum_cusi(resultSet.getLong("num_cusi"));
 
                 return puerto;
             }

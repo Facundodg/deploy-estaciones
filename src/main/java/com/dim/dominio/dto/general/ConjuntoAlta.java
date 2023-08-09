@@ -23,8 +23,11 @@ import java.util.Collection;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ConjuntoAlta {
 
+    /*
     @Min(value = 1, message = "Departamento no debe ser negativo")
     @NotNull(message = "Departamento no debe ser nulo")
+
+     */
     private long departamento;
 
     @Valid

@@ -17,16 +17,31 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MonitorAlta {
 
+    /*
     @Min(value = 1, message = "Numero de Serie no debe ser negativo")
     @NotNull(message = "Número de Serie no debe ser nulo")
+
+
+     */
     private Long numeroSerie;
 
+
+    /*
     @NotNull(message = "Marca no debe ser nulo")
     @Size(min = 3, message = "Marca debe tener por lo menos 3 caracteres")
+
+
+     */
     private String marca;
+
+    /*
+
 
     @NotNull(message = "Modelo no debe ser nulo")
     @Size(min = 3, message = "Modelo debe tener por lo menos 3 caracteres")
+
+     */
     private String modelo;
+
 
 }

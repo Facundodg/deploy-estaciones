@@ -18,8 +18,11 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class EstacionAlta {
 
+    /*
     @Min(value = 1, message = "Puerto no debe ser negativo")
     @NotNull(message = "Puerto no debe ser nulo")
+
+     */
     private Long puerto;
 
 }

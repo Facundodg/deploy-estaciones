@@ -19,6 +19,7 @@ public class Puerto {
     private long id_monitor;
     private String marca;
     private String modelo;
+    private long num_cusi;
     private long numero_serie;
     private long id_estacion;
     private long puerto;

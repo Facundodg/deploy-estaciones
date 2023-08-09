@@ -317,7 +317,17 @@ async function buscarUsuarioPorId(id_usuario, puerto){
 
 function cargarEstacionesEnModal(estacion){
 
-    console.log(estacion)
+    // ---------- CABEZERA INFORMACION DE PUERTO Y CUSI -----------------
+
+    const cabezeraInfo = document.querySelector(".info_cusi_puerto");
+    const InfoPuerto = document.createElement('p')
+    InfoPuerto.textContent = "Puerto: " + estacion.puerto
+
+    const InfoCusi = document.createElement('p')
+    InfoCusi.textContent = " CUSI: " + estacion.num_cusi
+
+    cabezeraInfo.append(InfoPuerto)
+    cabezeraInfo.append(InfoCusi)
 
     // ---------- CUSI -----------------
 
@@ -369,11 +379,13 @@ function cargarEstacionesEnModal(estacion){
      botonVerMas.textContent = "Guardar"
 
      body.append(botonVerMas)
+
+
 }
 
 
 
-function modificarEstacionPorPuerto(puerto){
+async function modificarEstacionPorPuerto(puerto){
 
 
      estacion2.cusi.disco = document.getElementById('disco_id').value;
@@ -382,25 +394,51 @@ function modificarEstacionPorPuerto(puerto){
      estacion2.cusi.ram = document.getElementById('ram_id').value;
      estacion2.cusi.so = document.getElementById('so_id').value;
 
-     estacion2.cusi.dvd = document.getElementById('dvd_id').value;
-     estacion2.cusi.mouse = document.getElementById('mouse_id').value;
-     estacion2.cusi.teclado = document.getElementById('teclado_id').value;
+     estacion2.cusi.dvd = document.getElementById('dvd_id').checked;
+     estacion2.cusi.mouse = document.getElementById('mouse_id').checked;
+     estacion2.cusi.teclado = document.getElementById('teclado_id').checked;
 
-     // -----2------ MONITOR --------------
+     // ----------- MONITOR --------------
 
      estacion2.monitor.marca = document.getElementById('marca_id').value;
      estacion2.monitor.modelo = document.getElementById('modelo_id').value;
      estacion2.monitor.numero_serie = document.getElementById('num_serie_id').value;
 
-     // -----2------ ESTACION --------------
+     // ----------- ESTACION --------------
 
      estacion2.estacion.puerto = document.getElementById('puerto_id').value;
-     estacion2.cusi.hostname = document.getElementById('host_name_id').value;
+     estacion2.cusi.hostName = document.getElementById('host_name_id').value;
      estacion2.cusi.mac = document.getElementById('mac_id').value;
 
+     estacion2.cusi.num_cusi = estacion.num_cusi;
+     estacion2.cusi.ip = "123123123";
+     estacion2.departamento = "1"
 
+    try{
 
+     const url = '/main/putEstacion/' + puerto;
 
+     const requestOptions = {
+       method: 'PUT',
+       headers: {
+         'Content-Type': 'application/json'
+       },
+       body: JSON.stringify(estacion2) // Convertir el objeto JSON a cadena
+     };
+
+     const response = await fetch(url, requestOptions);
+
+     const data = await response.json();
+
+     if (!response.ok) {
+       throw new Error('Error al realizar la solicitud: ' + response.status);
+     }
+
+    }catch(error){
+
+        console.error('Error:', error);
+
+    }
 
 }
 
