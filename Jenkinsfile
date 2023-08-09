@@ -11,7 +11,7 @@
     - Java 20
     - Docker 24.0.2 (Cualquier versión que soporte --password-stdin)
     - Maven 3.9.3
-    - NodeJS 20.5.0
+    - NodeJS 16.20.1
 
     PLUGINS NECESARIOS
     - Slack
@@ -42,7 +42,7 @@ pipeline {
         jdk 'Java 20'
         dockerTool 'Docker 24.0.2'
         maven 'Maven 3.9.3'
-        nodejs 'NodeJS 20.5.0'
+        nodejs 'NodeJS 16.20.1'
     }
 
     environment {
@@ -77,6 +77,7 @@ pipeline {
                     DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
                     JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
                     MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
+                    NODEJS_VERSION = sh(returnStdout: true, script: 'nodejs -v')
 
                     sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
                     sh "echo 'Docker version: ${DOCKER_VERSION}'"
