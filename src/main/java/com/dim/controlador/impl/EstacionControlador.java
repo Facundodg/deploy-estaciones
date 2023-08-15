@@ -25,7 +25,7 @@ public class EstacionControlador implements EstacionApi {
 
     @Override
     public ResponseEntity<Estacion> modificar(Long id, Estacion entidad) throws Exception {
-        log.info(("[EstacionControlador - Modificar: Iniciada con id_estacion={}"), entidad.getIdStacion());
+        log.info(("[EstacionControlador - Modificar: Iniciada con id_estacion={}"), entidad.getIdEstacion());
         return ResponseEntity.ok(estacionServicio.guardar(entidad));
     }
 

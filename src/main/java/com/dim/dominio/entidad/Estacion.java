@@ -18,7 +18,7 @@ public class Estacion {
     @Id
     @Column(name = "id_estacion", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idStacion;
+    private Long idEstacion;
 
     @Column(name = "puerto")
     private Long puerto;
@@ -46,11 +46,11 @@ public class Estacion {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Estacion estacion = (Estacion) o;
-        return idStacion.equals(estacion.idStacion);
+        return idEstacion.equals(estacion.idEstacion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idStacion);
+        return Objects.hash(idEstacion);
     }
 }

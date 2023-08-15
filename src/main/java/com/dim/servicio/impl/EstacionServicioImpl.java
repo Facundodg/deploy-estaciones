@@ -1,19 +1,27 @@
 package com.dim.servicio.impl;
 
 import com.dim.dominio.dto.estacion.EstacionPropiedades;
+import com.dim.dominio.dto.general.ConjuntoAlta;
+import com.dim.dominio.dto.general.ConjuntoAltaModificar;
+import com.dim.dominio.entidad.Cusi;
 import com.dim.dominio.entidad.Estacion;
+import com.dim.dominio.entidad.Monitor;
 import com.dim.dominio.entidad.Respuestas;
 import com.dim.repositorio.EstacionRepositorio;
 import com.dim.servicio.interfaz.EstacionServicio;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.ParameterMode;
+import jakarta.persistence.StoredProcedureQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
+
+import org.hibernate.Session;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,6 +30,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EstacionServicioImpl implements EstacionServicio {
     private final EstacionRepositorio estacionRepositorio;
+    private final EntityManager entityManager;
+
     private final JdbcTemplate jdbcTemplate;
 
     @Override
@@ -30,14 +40,28 @@ public class EstacionServicioImpl implements EstacionServicio {
     }
 
     @Override
-    public Estacion modificarPorPuerto(Long puerto, Estacion estacion) {
-        return estacionRepositorio.findByPuerto(puerto).map(u -> {
-            BeanUtils.copyProperties(estacion, u);
-            return u;
-        }).orElseThrow();
-
-//                u -> estacionRepositorio.save(entidad)).orElseThrow();
+    public boolean modificarPorPuerto(Estacion estacion, Cusi cusi, Monitor monitor) {
+        return moficarOcatavio(estacion,cusi,monitor);
     }
+
+
+    public boolean moficarOcatavio(Estacion estacion, Cusi cusi, Monitor monitor) {
+        Session session = entityManager.unwrap(Session.class);
+        session.doWork(connection -> {
+            final CallableStatement callable = connection.prepareCall("select fun_modificar_estacion_completa(?, ?, ?)");
+
+            callable.setObject(1, estacion, JDBCType.valueOf("estacion"));
+            callable.setObject(2, cusi, JDBCType.valueOf("cusi"));
+            callable.setObject(3, monitor, JDBCType.valueOf("monitor"));
+            callable.execute();});
+
+        return true;
+    }
+
+
+
+
+
 
     @Override
     public Estacion actualizar(Long id, Estacion entidad) {
@@ -88,6 +112,8 @@ public class EstacionServicioImpl implements EstacionServicio {
     public boolean eliminarPorPuerto(Long puerto) {
         return estacionRepositorio.borrarEstacionPorPuertoCompleta(puerto);
     }
+
+
 
 
     //LLAMA A PROCEDIMIENTO ALMACENADO QUE TRAE TODAS LAS ESTACIONES

@@ -119,10 +119,6 @@ function subirUsuario() {
     var apellido = document.getElementById("apellidoInput");
     var departamento = depto.value;
 
-    console.log("departamento")
-    console.log(departamento)
-    console.log("departamento")
-
     usuario = {
 
         "usuario": usuario.value,

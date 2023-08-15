@@ -1,7 +1,11 @@
 package com.dim.repositorio;
 
+import com.dim.dominio.dto.estacion.EstacionAltaModificar;
 import com.dim.dominio.dto.estacion.EstacionPropiedades;
+import com.dim.dominio.dto.general.ConjuntoAltaModificar;
+import com.dim.dominio.entidad.Cusi;
 import com.dim.dominio.entidad.Estacion;
+import com.dim.dominio.entidad.Monitor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,5 +36,10 @@ public interface EstacionRepositorio extends JpaRepository<Estacion, Long> {
 
     boolean existsByPuerto(long puerto);
 
+
+    @Query(value = "select * from fn_modificar_estacion_completa(:estacion,:cusi,:monitor)", nativeQuery = true)
+    boolean modificarFacundo(@Param("estacion") Estacion estacion,@Param("cusi") Cusi cusi, @Param("monitor") Monitor monitor);
+
     Optional<Estacion> findByPuerto(long puerto);
+
 }

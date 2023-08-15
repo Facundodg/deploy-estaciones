@@ -1,18 +1,19 @@
 package com.dim.repositorio;
 
-import com.dim.dominio.entidad.DataUsuario;
-import com.dim.dominio.entidad.Puerto;
-import com.dim.dominio.entidad.Respuestas;
+import com.dim.dominio.entidad.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
+@Slf4j
 @Component
-public class RespuestaRepo {
+public class RespuestaRepo extends Conexion{
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -187,20 +188,77 @@ public class RespuestaRepo {
                 dataUsuario.setId_usuario(resultSet.getLong("id_usuario"));
                 dataUsuario.setUsuario(resultSet.getString("usuario"));
                 dataUsuario.setClave(resultSet.getString("clave"));
+                dataUsuario.setNombre(resultSet.getString("nombre"));
+                dataUsuario.setApellido(resultSet.getString("apellido"));
+                dataUsuario.setIdDepartamento(resultSet.getLong("id_departamento"));
 
                 return dataUsuario;
             }
         });}
 
+    public boolean modificFACUNDO(Estacion estacion, Cusi cusi, Monitor monitor) {
+
+        PreparedStatement ps = null;
+        Connection con = getConnection(); // Obtener la conexión a la base de datos
+        CallableStatement cs = null;
+
+        // fn_modificar_estacion_completa(modificaciones modificacion_estaciones)
+
+        try {
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            String estacionString = objectMapper.writeValueAsString(estacion);
+            String cusiString = objectMapper.writeValueAsString(cusi);
+            String monitorString = objectMapper.writeValueAsString(monitor);
+
+            String sql = "{ call fn_modificar_estacion_completa(?::jsonb, ?::jsonb, ?::jsonb) }";
+            CallableStatement callableStatement = con.prepareCall(sql);
+
+            log.info("[estacion = {}]", estacionString);
+            log.info("[cusi = {}]", cusiString);
+            log.info("[monitor = {}]", monitorString);
+
+            //callableStatement = con.prepareCall(sql);
+            callableStatement.registerOutParameter(1, Types.BOOLEAN); // Registro del parámetro de retorno
+            callableStatement.setString(2, estacionString);
+            callableStatement.setString(3, cusiString);
+            callableStatement.setString(4, monitorString);
+
+            callableStatement.execute();
+
+            boolean resultado = callableStatement.getBoolean(1);
+
+            callableStatement.close();
+            con.close();
+
+            return resultado;
 
 
+        } catch (SQLException e) {
 
+            System.out.println(e);
 
-    //fn_borrar_estacion(p_puerto_buscado bigint)
+            return false;
 
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        } finally {
 
+            try {
+
+                con.close();
+
+            } catch (SQLException e) {
+
+                System.out.println(e);
+
+            }
+        }
+    }
 
 }
+
 
 
 

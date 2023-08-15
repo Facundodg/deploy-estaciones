@@ -52,7 +52,7 @@ public class Cusi {
     private String mac;
 
     @Column(name = "hostname")
-    private String hostname;
+    private String hostName;
 
 //    @OneToOne(mappedBy = "cusi", fetch = FetchType.EAGER)
 //    @JoinTable(name = "estacion", inverseJoinColumns = {@JoinColumn(name="id_estacion")})
@@ -71,3 +71,39 @@ public class Cusi {
         return getId().hashCode();
     }
 }
+
+
+/*
+
+
+{
+    "departamento": "1",
+    "estacion": {
+        "id_estacion": "1",
+        "puerto": "12345"
+    },
+    "cusi": {
+        "id_cusi": "1",
+        "disco": "dasdad",
+        "micro": "micro",
+        "mother": "dasdasdsa",
+        "so": "dasdsadsa",
+        "ram": "dsadasdsa",
+        "hostName": "dasdsadsadsa",
+        "mac": "NO DATOS",
+        "ip": "123123123",
+        "dvd": false,
+        "mouse": true,
+        "teclado": true
+    },
+    "monitor": {
+        "id_monitor": "1",
+        "marca": "sadasd",
+        "modelo": "sadasd",
+        "numero_serie": "12312312"
+    },
+    "usuario": []
+}
+
+
+*/

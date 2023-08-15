@@ -5,6 +5,7 @@ import com.dim.dominio.dto.estacion.EstacionAlta;
 import com.dim.dominio.dto.estacion.EstacionPropiedades;
 import com.dim.dominio.dto.general.BuscarEstacion;
 import com.dim.dominio.dto.general.ConjuntoAlta;
+import com.dim.dominio.dto.general.ConjuntoAltaModificar;
 import com.dim.dominio.dto.usuario.UsuarioAlta;
 import com.dim.dominio.entidad.*;
 import com.dim.repositorio.RespuestaRepo;
@@ -83,6 +84,8 @@ public class PrincipalControlador implements PrincipalApi {
         return verMasusuario.SobreUsuario(id_usuario);
     }
 
+    /*
+
     @PutMapping("/putEstacion/{puerto}")
     public ResponseEntity<?> modificarEstacion(@PathVariable("puerto") long puerto,
                                                @NotNull @Parameter(description = "Estaciones", required = true)
@@ -110,8 +113,11 @@ public class PrincipalControlador implements PrincipalApi {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error");
         }
 
-        return ResponseEntity.ok().body(modelMapper.map(estacionServicio.modificarPorPuerto(puerto, estacion), EstacionPropiedades.class));
+        return ResponseEntity.ok().body(modelMapper.map(estacionServicio.modificarPorPuerto(puerto , conjuntoAlta), EstacionPropiedades.class));
     }
+
+    */
+
 
     @Override
     public ResponseEntity<?> filtrarBusqueda(BuscarEstacion buscarEstacion) throws Exception {
@@ -139,37 +145,65 @@ public class PrincipalControlador implements PrincipalApi {
         return ResponseEntity.ok(estacionServicio.buscarTodosConPropiedades());
     }
 
+    @Override
     public ResponseEntity<EstacionPropiedades> modificarEstacionCompleta(ConjuntoAlta conjuntoAlta) throws Exception {
-        log.info("[PrincipalControlador - ModificarEstacionCompleta: Iniciada con {}]", conjuntoAlta);
+        return null;
+    }
 
-        final Estacion estacion = modelMapper.map(conjuntoAlta.getEstacion(), Estacion.class);
-        final Cusi cusi = modelMapper.map(conjuntoAlta.getCusi(), Cusi.class);
-        final Monitor monitor = modelMapper.map(conjuntoAlta.getMonitor(), Monitor.class);
-        final Collection<UsuarioAlta> usuarios = conjuntoAlta.getUsuario();
+    /*
+    @PutMapping("/putEstacion/{puerto}")
+    public ResponseEntity<?> modificarEstacion(@PathVariable("puerto") long puerto,
+                                               @NotNull @Parameter(description = "Estaciones", required = true)
+                                               @RequestBody final ConjuntoAltaModificar conjuntoAltaModificar) throws Exception {
 
-        final Departamento departamento = departamentoServicio.buscarPorId(conjuntoAlta.getDepartamento());
+        log.info("[PrincipalControlador - ModificarEstacion: Iniciada con {}]", conjuntoAltaModificar);
 
-        final Collection<Usuario> usuariosFinales = new ArrayList<>();
-        for (UsuarioAlta usuario : usuarios) {
-            usuariosFinales.add(modelMapper.map(usuario, Usuario.class));
-        }
+        final Estacion estacion = modelMapper.map(conjuntoAltaModificar.getEstacion(), Estacion.class);
+        final Cusi cusi = modelMapper.map(conjuntoAltaModificar.getCusi(), Cusi.class);
+        final Monitor monitor = modelMapper.map(conjuntoAltaModificar.getMonitor(), Monitor.class);
+
+        log.info("[PrincipalControlador - Estacion: {}]", estacion.toString());
+        log.info("[PrincipalControlador - Cusi {}]", cusi.toString());
+        log.info("[PrincipalControlador - Monitor {}]", monitor.toString());
 
         if (cusi != null) {
             estacion.setCusi(cusi);
-        }
-
-        if (!usuarios.isEmpty()) {
-            estacion.setUsuarios(new HashSet<Usuario>(usuariosFinales));
         }
 
         if (monitor != null) {
             estacion.setMonitor(monitor);
         }
 
-        if (departamento != null) {
-            estacion.setDepartamento(departamento);
+        return ResponseEntity.ok().body(estacionServicio.modificarPorPuerto(estacion,cusi,monitor));
+    }
+
+
+     */
+
+    //modificFACUNDO
+
+    @PutMapping("/putEstacion/{puerto}")
+    public ResponseEntity<?> modificarEstacion(@PathVariable("puerto") long puerto,
+                                               @NotNull @Parameter(description = "Estaciones", required = true)
+                                               @RequestBody final ConjuntoAltaModificar conjuntoAltaModificar) throws Exception {
+
+        log.info("[PrincipalControlador - ModificarEstacion: Iniciada con {}]", conjuntoAltaModificar);
+
+        final Estacion estacion = modelMapper.map(conjuntoAltaModificar.getEstacion(), Estacion.class);
+        final Cusi cusi = modelMapper.map(conjuntoAltaModificar.getCusi(), Cusi.class);
+        final Monitor monitor = modelMapper.map(conjuntoAltaModificar.getMonitor(), Monitor.class);
+
+        if (cusi != null) {
+            estacion.setCusi(cusi);
         }
 
-        return ResponseEntity.ok().body(modelMapper.map(estacionServicio.guardar(estacion), EstacionPropiedades.class));
+        if (monitor != null) {
+            estacion.setMonitor(monitor);
+        }
+
+        return ResponseEntity.ok().body(repositorio.modificFACUNDO(estacion,cusi,monitor));
     }
+
+
+
 }

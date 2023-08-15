@@ -1,19 +1,19 @@
 
-
-
 const estacion2 = {
 
     "departamento": "",
     "estacion": {
+        "id_stacion":"",
         "puerto": ""
     },
     "cusi": {
+        "id":"",
         "disco": "",
         "micro": "",
         "mother": "",
         "so": "",
         "ram": "",
-        "hostName": "",
+        "host_name": "",
         "mac": "",
         "ip": "",
         "dvd": "",
@@ -22,13 +22,12 @@ const estacion2 = {
         "num_cusi": ""
     },
     "monitor": {
+        "id_monitor":"",
         "marca": "",
         "modelo": "",
         "numero_serie": ""
     },
     "usuario": [
-
-
 
     ]
 
@@ -80,7 +79,7 @@ async function cargarEstaciones(estacion) {
     const botonVerMas = document.createElement('a')
     botonVerMas.setAttribute("href", "#modal"); // Reemplaza la URL con la dirección que desees
     botonVerMas.setAttribute("id", "show-modal"); // Reemplaza "mi-boton" con el id que desees
-    botonVerMas.setAttribute("onclick",'buscarEstacionPorPuerto(`'+estacion.puerto+'`)') //cambiar por el metodo de consulta
+    botonVerMas.setAttribute("onclick",'buscarEstacionPorPuerto(`' + estacion.puerto + '`)') //cambiar por el metodo de consulta
     botonVerMas.className = "btn-options bg-blue-500 hover:bg-blue-800 focus:ring-4"
     botonVerMas.textContent = "Ver Mas"
 
@@ -123,7 +122,46 @@ async function cargarEstaciones(estacion) {
 
 }
 
+
+
+
+
+
+const usuarioObj = {
+
+    "EnBd":true
+
+};
+
+
+function subirUsuario() {
+
+    var usuario = document.getElementById('input-usuario-agregar-modal');
+    var contraseña = document.getElementById("input-contraseña-agregar-modal");
+    var nombre = document.getElementById("input-nombre-agregar-modal");
+    var apellido = document.getElementById("input-apellido-agregar-modal");
+    var depto = document.getElementById("selector-departamento-usuario-agregar-modal");
+    var departamento = depto.value;
+
+    usuario = {
+
+        "usuario": usuario,
+        "clave": contraseña,
+        "num_afiliado":"123",
+        "nombre":nombre,
+        "apellido":apellido,
+        "departamento":departamento,
+        "EnBd":false
+
+    }
+
+    usuarioObj.push(usuario)
+
+}
+
 async function cargarUsuarios(usuarios, puerto) {
+
+    usuarioObj.push = usuarios;
 
    const body = document.querySelector(".tabla_usuario");
 
@@ -163,11 +201,6 @@ async function cargarUsuarios(usuarios, puerto) {
 
 }
 
-function eliminarUsuarioIngresoDeUsuario(nombreUsuario){
-
-
-
-}
 
 async function eliminarUsuario(id_usuario, puerto){
 
@@ -321,13 +354,41 @@ function cargarEstacionesEnModal(estacion){
 
     const cabezeraInfo = document.querySelector(".info_cusi_puerto");
     const InfoPuerto = document.createElement('p')
-    InfoPuerto.textContent = "Puerto: " + estacion.puerto
+    InfoPuerto.textContent = "PUERTO: " + estacion.puerto
+    InfoPuerto.style.marginRight  = "10px"; // Cambia el valor del margen según tus necesidades
+    InfoPuerto.style.fontSize = "12px"; // Cambia el valor según el tamaño de fuente deseado
+    InfoPuerto.className = "Puerto-modal"
 
     const InfoCusi = document.createElement('p')
     InfoCusi.textContent = " CUSI: " + estacion.num_cusi
+    InfoCusi.style.marginRight  = "10px"; // Cambia el valor del margen según tus necesidades
+    InfoCusi.style.fontSize = "12px"; // Cambia el valor según el tamaño de fuente deseado
+    InfoPuerto.className = "Cusi-modal"
+
+    const id_cusi = document.createElement('p')
+    id_cusi.textContent = " ID-CUSI: " + estacion.id_cusi
+    id_cusi.style.marginRight  = "10px"; // Cambia el valor del margen según tus necesidades
+    id_cusi.style.fontSize = "12px"; // Cambia el valor según el tamaño de fuente deseado
+    id_cusi.id = "id-cusi-modal"
+
+    const id_stacion = document.createElement('p')
+    id_stacion.textContent = " ID-ESTACION: " + estacion.id_estacion
+    id_stacion.style.marginRight  = "10px"; // Cambia el valor del margen según tus necesidades
+    id_stacion.style.fontSize = "12px"; // Cambia el valor según el tamaño de fuente deseado
+    id_stacion.id = "id-estacion-modal"
+
+    const id_monitor = document.createElement('p')
+    id_monitor.textContent = " ID-MONITOR: " + estacion.id_monitor
+    id_monitor.style.marginRight  = "10px"; // Cambia el valor del margen según tus necesidades
+    id_monitor.style.fontSize = "12px"; // Cambia el valor según el tamaño de fuente deseado
+    id_monitor.id = "id-monitor-modal"
+
 
     cabezeraInfo.append(InfoPuerto)
     cabezeraInfo.append(InfoCusi)
+    cabezeraInfo.append(id_cusi)
+    cabezeraInfo.append(id_stacion)
+    cabezeraInfo.append(id_monitor)
 
     // ---------- CUSI -----------------
 
@@ -383,8 +444,6 @@ function cargarEstacionesEnModal(estacion){
 
 }
 
-
-
 async function modificarEstacionPorPuerto(puerto){
 
 
@@ -407,12 +466,37 @@ async function modificarEstacionPorPuerto(puerto){
      // ----------- ESTACION --------------
 
      estacion2.estacion.puerto = document.getElementById('puerto_id').value;
-     estacion2.cusi.hostName = document.getElementById('host_name_id').value;
+     estacion2.cusi.host_name = document.getElementById('host_name_id').value;
      estacion2.cusi.mac = document.getElementById('mac_id').value;
+
+     // ----------- PRUEBA --------------
+
+     var id_cusi = document.getElementById('id-cusi-modal').textContent;
+     var id_monitor = document.getElementById('id-monitor-modal').textContent;
+     var id_stacion = document.getElementById('id-estacion-modal').textContent;
+
+     id_cusi = id_cusi.split(" ");
+     id_monitor = id_monitor.split(" ");
+     id_stacion = id_stacion.split(" ");
+
+    console.log(id_cusi[2])
+    console.log(id_monitor[2])
+    console.log(id_stacion[2])
+
+    estacion2.estacion.id_stacion = id_stacion[2]
+    estacion2.cusi.id = id_cusi[2]
+    estacion2.cusi.num_cusi = "1233"
+    estacion2.monitor.id_monitor = id_monitor[2]
+
+     // ----------- CAMBIAR --------------
 
      estacion2.cusi.num_cusi = estacion.num_cusi;
      estacion2.cusi.ip = "123123123";
      estacion2.departamento = "1"
+
+    console.log("estacion2")
+    console.log(estacion2)
+    console.log("estacion2")
 
     try{
 
@@ -441,16 +525,6 @@ async function modificarEstacionPorPuerto(puerto){
     }
 
 }
-
-
-
-
-
-
-
-
-
-
 
 async function mostrarDatosBuscadosPorCusiPuertoUsuario(){
 
