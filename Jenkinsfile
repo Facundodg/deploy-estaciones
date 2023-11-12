@@ -19,6 +19,8 @@ agent any
         KUBERNETES_CREDENCIALES = "k8s-jenkins-account-15"
         SONARQUBE_CREDENCIALES = 'sonarqube'
 
+        IDENTIFICADOR_UNICO_BUILD = 'gestor-estaciones-monolito' //agregado a mano, ver si se hace de otra manera
+
         CANAL_SLACK = "#canal-slack"            // TODO: Por reemplazar
         CORREO_A_NOTIFICAR = "dim@gmail.com"    // TODO: Por reemplazar
 
