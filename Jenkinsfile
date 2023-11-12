@@ -7,17 +7,13 @@ agent any
     }
 
    stages {
-
-      stage('prueba') { 
-
-         sh "echo prueba"
-         
-      }
       
       stage('Build Package') {  
                
           steps{
-                      
+
+                      sh "echo prueba"
+
              // check maven version 
              sh "mvn -version"
              // Run Maven on a Unix agent.
