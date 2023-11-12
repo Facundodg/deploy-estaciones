@@ -81,34 +81,38 @@ agent any
                         sh "docker push \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD}"
                     }
                 }
-                
+
             }
         }
           
      }
 
-    stage('SECURITY-IMAGE-SCANNER'){
-       
-         steps {
-           sh 'echo scan image for security'
-        }
-       
-    }
 
-    stage('Pull-image-server') {
+
+
+
+    // stage('SECURITY-IMAGE-SCANNER'){
        
-         steps {
-            sh 'echo pulling image ...'
-          }
+    //      steps {
+    //        sh 'echo scan image for security'
+    //     }
        
-    }
+    // }
+
+    // stage('Pull-image-server') {
+       
+    //      steps {
+    //         sh 'echo pulling image ...'
+    //       }
+       
+    // }
     
-    stage('DAST') {
+    // stage('DAST') {
        
-      steps  {
-         sh 'echo dast scan for security'
-        }
+    //   steps  {
+    //      sh 'echo dast scan for security'
+    //     }
        
-    }
+    // }
  }
 }
