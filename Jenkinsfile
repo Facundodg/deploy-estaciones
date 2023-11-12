@@ -22,7 +22,7 @@ agent any
         CANAL_SLACK = "#canal-slack"            // TODO: Por reemplazar
         CORREO_A_NOTIFICAR = "dim@gmail.com"    // TODO: Por reemplazar
 
-        CARPETA_APLICACION = 'monolito'
+        CARPETA_APLICACION = ''
 
     }
 
