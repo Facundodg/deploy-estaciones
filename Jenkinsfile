@@ -60,32 +60,32 @@ agent any
          
       }
 
-     stage('Build and push to DockerHub') {
+    //  stage('Build and push to DockerHub') {
           
-        steps {
-            script {
+    //     steps {
+    //         script {
 
-                dir ("${CARPETA_APLICACION}"){
-                    // Verifica si existe un archivo Dockerfile en la subcarpeta actual
-                    if (!fileExists("Dockerfile")) {
-                        error "Dockerfile not found"
-                    }
+    //             dir ("${CARPETA_APLICACION}"){
+    //                 // Verifica si existe un archivo Dockerfile en la subcarpeta actual
+    //                 if (!fileExists("Dockerfile")) {
+    //                     error "Dockerfile not found"
+    //                 }
 
-                    withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+    //                 withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
 
-                        // Construye la imagen de Docker usando el nombre y la versión obtenidos
-                        sh "docker build -t \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD} ."
+    //                     // Construye la imagen de Docker usando el nombre y la versión obtenidos
+    //                     sh "docker build -t \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD} ."
 
-                        // Sube la imagen a DockerHub
-                        sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin'
-                        sh "docker push \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD}"
-                    }
-                }
+    //                     // Sube la imagen a DockerHub
+    //                     sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin'
+    //                     sh "docker push \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD}"
+    //                 }
+    //             }
 
-            }
-        }
+    //         }
+    //     }
           
-     }
+    //  }
 
 
 
