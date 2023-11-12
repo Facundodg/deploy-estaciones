@@ -36,7 +36,7 @@ agent any
                   DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
                   JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
                   MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
-                  NODEJS_VERSION = sh(returnStdout: true, script: 'npm -v')
+                  //NODEJS_VERSION = sh(returnStdout: true, script: 'npm -v')
 
                   sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
                   sh "echo 'Docker version: ${DOCKER_VERSION}'"
