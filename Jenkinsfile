@@ -7,6 +7,12 @@ agent any
     }
 
    stages {
+
+      stage('prueba') { 
+
+         sh "echo prueba"
+         
+      }
       
       stage('Build Package') {  
                
