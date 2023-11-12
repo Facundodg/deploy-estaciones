@@ -14,7 +14,7 @@ agent any
                sh 'Githup repo'
             }
             }
-    }
+  
     stage('SAST'){
       steps{
         sh 'echo SAST stage'
@@ -59,4 +59,4 @@ agent any
         }
     }
  }
-
+}
