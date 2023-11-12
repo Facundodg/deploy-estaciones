@@ -11,8 +11,8 @@ agent any
         stage('Clone Source Code') {
             steps {
                 // Get some code from a GitHub repository
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/trainmefordevsecops/sample-maven-deployment.git']]])
-                  }
+               sh 'Githup repo'
+            }
             }
     }
     stage('SAST'){
@@ -22,13 +22,18 @@ agent any
     }
 
     
-    stage('Build-and-Tag') {
-    /* This builds the actual image; synonymous to
-         * docker build on the command line */
-      steps{    
-        sh 'echo Build and Tag'
-          }
-    }
+   stage('Build Package') {  
+            
+    steps{
+                
+                // check maven version 
+                sh "mvn -version"
+                   // Run Maven on a Unix agent.
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+                // To run Maven on a Windows agent, use
+                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
+         }
+   }
 
     stage('Post-to-dockerhub') {
      steps {
