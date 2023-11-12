@@ -1,15 +1,19 @@
 pipeline {
 agent any 
 
+   tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "maven3.6.3"
+    }
+
    stages {
 
-    stage('Cloning Git') {
-
-      steps
-        {
-        /* Let's make sure we have the repository cloned to our workspace */
-       checkout scm
-        }  
+        stage('Clone Source Code') {
+            steps {
+                // Get some code from a GitHub repository
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/trainmefordevsecops/sample-maven-deployment.git']]])
+                  }
+            }
     }
     stage('SAST'){
       steps{
