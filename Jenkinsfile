@@ -19,8 +19,10 @@ agent any
         HORA_DESPLIEGUE = sh(returnStdout: true, script: "date '+%A %W %Y %X'").trim()
 
         GITHUB_MONOLITO_URL = "https://github.com/Facundodg/deploy-estaciones.git"
+        GITHUB_DESPLIEGUE_URL = "https://github.com/dim-desarrollo/gestor-estaciones-despliegue.git"
 
         GITHUB_CREDENCIALES = "github-test-1"
+        GITHUB_CREDENCIALES_DEPLOY = "dim-desarrollo"
         DOCKERHUB_CREDENCIALES = "dockerhub"
         KUBERNETES_CREDENCIALES = "k8s-jenkins-account-15"
         SONARQUBE_CREDENCIALES = 'sonarqube'
@@ -173,9 +175,23 @@ agent any
             }
         }
 
+        environment {
+
+            CARPETA_MANIFIESTO = "${RAMA_PARA_CLONAR == 'master' ? 'prod' : 'dev'}"
+            DIRECCION_DESPLIEGUE = "${WORKSPACE}/${CARPETA_DESPLIEGUE}" 
+
+            //para exponer el cluster a este puerto tenes que tirar el siguiente comando en el servidor
+            //kubectl proxy --accept-hosts '^.*' --address '0.0.0.0' --port 8445
+            KUBE_SERVIDOR = "172.20.255.15:8445" //IP DEL SERVIDOR D ONDE ESTAS DESPLEGADO EL CLUSTER, PUERTO POR DEFECTO
+
+        }
+
+
         steps {
 
-            sh "entre"
+            //checkout scmGit(branches: [[name: 'master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES_DEPLOY}", url: "${GITHUB_DESPLIEGUE_URL}"]])
+
+            discordSend description: "Deploy de estaciones echo!!!", footer: "Footer Text", link: env.BUILD_URL, result: currentBuild.currentResult, title: "JOB_NAME", webhookURL: "https://discord.com/api/webhooks/1173648912838561922/iB8YUryvKbcj66EWQa2e6161BDuygkfaMx57VUalxPnDAMvoRHcYKxJTaxV4nfBEdoxi"
 
         }
 
