@@ -33,6 +33,7 @@ agent any
 
 
     stage('SonarQube Analysis') {
+
     environment {
         SONAR_SCANNER_HOME = tool 'SonarQube Scanner 5.0.1.3006'
         SONAR_SERVER = 'sonarqube2'
@@ -42,6 +43,22 @@ agent any
         SONAR_ENCODING = 'UTF-8'
     }
 
+
+    steps {
+            dir("${CARPETA_APLICACION}"){
+                withSonarQubeEnv(installationName: "${SONAR_SERVER}", credentialsId: "${SONARQUBE_CREDENCIALES}") {
+                    sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectName=${ARTIFACT_ID} \
+                        -Dsonar.projectVersion=${PROYECTO_VERSION} \
+                        -Dsonar.projectKey=${IDENTIFICADOR_PROYECTO} \
+                        -Dsonar.host.url=http://${SONAR_HOST_IP}:${SONAR_PORT} \
+                        -Dsonar.sources=${SONAR_SRC} \
+                        -Dsonar.java.binaries=. \
+                        -Dsonar.sourceEncoding=${SONAR_ENCODING}"
+                }
+            }
+        }
+    }   
 
       stage('Tools initialization') {
           steps {
