@@ -37,7 +37,7 @@ agent any
     environment {
 
         SONAR_SCANNER_HOME = tool 'sonarScaner' //nombre en la configuracion de las tools de jenkins 
-        SONAR_SERVER = 'sonarScaner' 
+        SONAR_SERVER = 'sonarqube' 
         SONAR_HOST_IP = '172.25.0.2' // IP interna de Docker, debido a que SonarQube corre en un contenedor
         SONAR_PORT = '9000' //puerto donde esta trabajando el contenedor
         SONAR_SRC = 'src/'
