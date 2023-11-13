@@ -31,24 +31,6 @@ agent any
 
    stages {
 
-      // stage('Tools initialization') {
-      //     steps {
-      //         script {
-
-                  // DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
-                  // JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
-                  // MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
-                  // NODEJS_VERSION = sh(returnStdout: true, script: 'npm -v')
-
-                  // sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
-                  // sh "echo 'Docker version: ${DOCKER_VERSION}'"
-                  // sh "echo 'Java version: ${JAVA_VERSION}'"
-                  // sh "echo 'Maven version:  ${MAVEN_VERSION}'"
-                  // sh "echo 'Rama a clonar:  ${RAMA_PARA_CLONAR}'"
-      //         }
-      //     }
-      // }
-
       stage('Tools initialization') {
           steps {
               script {
@@ -73,7 +55,6 @@ agent any
             sh "echo 'Java version: ${JAVA_VERSION}'"
             sh "echo 'Maven version:  ${MAVEN_VERSION}'"
 
-            sh "echo prueba"
             sh "mvn -version"
             sh "mvn clean package -DskipTests"
 
