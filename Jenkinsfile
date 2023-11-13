@@ -35,16 +35,16 @@ agent any
       //     steps {
       //         script {
 
-      //             DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
-      //             JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
-      //             MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
-      //             NODEJS_VERSION = sh(returnStdout: true, script: 'npm -v')
+                  // DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
+                  // JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
+                  // MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
+                  // NODEJS_VERSION = sh(returnStdout: true, script: 'npm -v')
 
-      //             sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
-      //             sh "echo 'Docker version: ${DOCKER_VERSION}'"
-      //             sh "echo 'Java version: ${JAVA_VERSION}'"
-      //             sh "echo 'Maven version:  ${MAVEN_VERSION}'"
-      //             sh "echo 'Rama a clonar:  ${RAMA_PARA_CLONAR}'"
+                  // sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
+                  // sh "echo 'Docker version: ${DOCKER_VERSION}'"
+                  // sh "echo 'Java version: ${JAVA_VERSION}'"
+                  // sh "echo 'Maven version:  ${MAVEN_VERSION}'"
+                  // sh "echo 'Rama a clonar:  ${RAMA_PARA_CLONAR}'"
       //         }
       //     }
       // }
@@ -54,9 +54,20 @@ agent any
                
           steps{
 
-             sh "echo prueba"
-             sh "mvn -version"
-             sh "mvn clean package -DskipTests"
+            DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
+            JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
+            MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
+            NODEJS_VERSION = sh(returnStdout: true, script: 'npm -v')
+
+            sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
+            sh "echo 'Docker version: ${DOCKER_VERSION}'"
+            sh "echo 'Java version: ${JAVA_VERSION}'"
+            sh "echo 'Maven version:  ${MAVEN_VERSION}'"
+            sh "echo 'Rama a clonar:  ${RAMA_PARA_CLONAR}'"
+
+            sh "echo prueba"
+            sh "mvn -version"
+            sh "mvn clean package -DskipTests"
 
             }
          
@@ -79,6 +90,7 @@ agent any
                         sh "docker build -t \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD} ."
 
                         // Sube la imagen a DockerHub
+                        sh 'echo $DOCKERHUB_USERNAME'
                         sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin'
                         sh "docker push \$DOCKERHUB_USERNAME/${IDENTIFICADOR_UNICO_BUILD}"
                     }
@@ -90,31 +102,5 @@ agent any
      }
 
 
-
-
-
-    // stage('SECURITY-IMAGE-SCANNER'){
-       
-    //      steps {
-    //        sh 'echo scan image for security'
-    //     }
-       
-    // }
-
-    // stage('Pull-image-server') {
-       
-    //      steps {
-    //         sh 'echo pulling image ...'
-    //       }
-       
-    // }
-    
-    // stage('DAST') {
-       
-    //   steps  {
-    //      sh 'echo dast scan for security'
-    //     }
-       
-    // }
  }
 }
