@@ -54,10 +54,19 @@ agent any
                
           steps{
 
-            DOCKER_VERSION = sh(returnStdout: true, script: 'docker version')
-            JAVA_VERSION = sh(returnStdout: true, script: 'java -version')
-            MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v')
-            NODEJS_VERSION = sh(returnStdout: true, script: 'npm -v')
+            script {
+
+                DOCKER_VERSION = sh(returnStdout: true, script: 'docker version').trim()
+                JAVA_VERSION = sh(returnStdout: true, script: 'java -version').trim()
+                MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v').trim()
+                NODEJS_VERSION = sh(returnStdout: true, script: 'npm -v').trim()
+
+                echo "Docker version: ${DOCKER_VERSION}"
+                echo "Java version: ${JAVA_VERSION}"
+                echo "Maven version: ${MAVEN_VERSION}"
+                echo "Node.js version: ${NODEJS_VERSION}"
+                
+            }
 
             sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
             sh "echo 'Docker version: ${DOCKER_VERSION}'"
