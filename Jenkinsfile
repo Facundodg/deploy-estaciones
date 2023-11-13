@@ -4,6 +4,7 @@ def IDENTIFICADOR_UNICO_BUILD
 def RAMA_PARA_CLONAR
 
 pipeline {
+
 agent any 
 
    tools {
@@ -91,6 +92,7 @@ agent any
                      script {
 
                         PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+                        sh "echo pase"
                         ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
                         IDENTIFICADOR_PROYECTO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
                         IDENTIFICADOR_UNICO_BUILD = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
