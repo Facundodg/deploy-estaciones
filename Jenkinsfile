@@ -92,6 +92,19 @@ agent any
       stage('Tools initialization') {
           steps {
               script {
+
+                    if (env.BRANCH_NAME){
+
+                        RAMA_PARA_CLONAR = env.BRANCH_NAME
+
+                    }
+                    else{
+
+                        RAMA_PARA_CLONAR = 'develop'
+                        
+                    }
+
+
                   DOCKER_VERSION = sh(returnStdout: true, script: 'docker version').trim()
                   JAVA_VERSION = sh(returnStdout: true, script: 'java -version').trim()
                   MAVEN_VERSION = sh(returnStdout: true, script: 'mvn -v').trim()
@@ -144,6 +157,23 @@ agent any
         }
           
      }
+
+
+    stage('Deploy to Kubernetes') {
+
+        when { //when: Es una directiva condicional que controla cuándo debe ejecutarse este stage
+            anyOf { // anyOf: significa que el stage se ejecutará si al menos una de estas condiciones es verdadera
+
+                branch 'master'
+                branch 'develop'
+
+                expression{
+                    return (RAMA_PARA_CLONAR == 'develop' || RAMA_PARA_CLONAR == 'master') // condicional
+                }
+            }
+        }
+
+    }
 
    }
 
