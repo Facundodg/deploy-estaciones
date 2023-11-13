@@ -1,3 +1,8 @@
+def ARTIFACT_ID
+def IDENTIFICADOR_PROYECTO
+def IDENTIFICADOR_UNICO_BUILD
+def RAMA_PARA_CLONAR
+
 pipeline {
 agent any 
 
@@ -77,17 +82,30 @@ agent any
       }
 
       
-      stage('Build Package') {  
+      stage('Build Maven') {  
                
-          steps{
+            steps{
 
-            sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
-            sh "echo 'Docker version: ${DOCKER_VERSION}'"
-            sh "echo 'Java version: ${JAVA_VERSION}'"
-            sh "echo 'Maven version:  ${MAVEN_VERSION}'"
+                dir("${CARPETA_APLICACION}"){
 
-            sh "mvn -version"
-            sh "mvn clean package -DskipTests"
+                     script {
+
+                        PROYECTO_VERSION = sh(returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+                        ARTIFACT_ID = sh(script: "mvn help:evaluate -Dexpression=project.artifactId -f pom.xml -q -DforceStdout", returnStdout: true).trim()
+                        IDENTIFICADOR_PROYECTO = "${ARTIFACT_ID}:${PROYECTO_VERSION}"
+                        IDENTIFICADOR_UNICO_BUILD = "${IDENTIFICADOR_PROYECTO}.${BUILD_NUMBER}"
+
+                        sh "echo 'Hora despliegue: ${HORA_DESPLIEGUE}'"
+                        sh "echo 'Docker version: ${DOCKER_VERSION}'"
+                        sh "echo 'Java version: ${JAVA_VERSION}'"
+                        sh "echo 'Maven version:  ${MAVEN_VERSION}'"
+
+                        sh "mvn -version"
+                        sh "mvn clean package -DskipTests"
+
+                     }
+
+                }
 
             }
          
