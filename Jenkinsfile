@@ -36,7 +36,7 @@ agent any
 
     environment {
         SONAR_SCANNER_HOME = tool 'sonarScaner'
-        SONAR_SERVER = 'sonarqube2'
+        SONAR_SERVER = 'SonarQube'
         SONAR_HOST_IP = '172.25.0.2'                    // IP interna de Docker, debido a que SonarQube corre en un contenedor
         SONAR_PORT = '9000'
         SONAR_SRC = 'src/'
