@@ -101,7 +101,7 @@ agent any
                     else{
 
                         RAMA_PARA_CLONAR = 'develop'
-                        
+
                     }
 
 
@@ -171,6 +171,12 @@ agent any
                     return (RAMA_PARA_CLONAR == 'develop' || RAMA_PARA_CLONAR == 'master') // condicional
                 }
             }
+        }
+
+        steps {
+
+            sh "entre"
+
         }
 
     }
