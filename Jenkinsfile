@@ -115,7 +115,7 @@ agent any
 
             }
          
-      }
+      
 
      stage('Build and push to DockerHub') {
           
@@ -144,6 +144,8 @@ agent any
         }
           
      }
+
+   }
 
 
  }
