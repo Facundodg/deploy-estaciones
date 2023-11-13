@@ -35,7 +35,7 @@ agent any
     stage('SonarQube Analysis') {
 
     environment {
-        SONAR_SCANNER_HOME = tool 'SonarQube Scanner 5.0.1.3006'
+        SONAR_SCANNER_HOME = tool 'SonarQube 5.0.1.3006'
         SONAR_SERVER = 'sonarqube2'
         SONAR_HOST_IP = '172.25.0.2'                    // IP interna de Docker, debido a que SonarQube corre en un contenedor
         SONAR_PORT = '9000'
