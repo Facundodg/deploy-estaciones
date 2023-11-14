@@ -39,6 +39,20 @@ agent any
 
    stages {
 
+
+    stage('Message start deploy') {
+
+        steps {
+
+            //checkout scmGit(branches: [[name: 'master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES_DEPLOY}", url: "${GITHUB_DESPLIEGUE_URL}"]])
+
+            discordSend description: "Deploy de estaciones echo!!!", footer: "Inicado", link: env.BUILD_URL, result: currentBuild.currentResult, title: "Deploy Estaciones", webhookURL: "https://discord.com/api/webhooks/1173648912838561922/iB8YUryvKbcj66EWQa2e6161BDuygkfaMx57VUalxPnDAMvoRHcYKxJTaxV4nfBEdoxi"
+
+        }
+
+    }
+
+
     stage('Iniciando variables') {
 
         steps {
@@ -161,7 +175,7 @@ agent any
      }
 
 
-    stage('Deploy to Kubernetes') {
+    stage('Message finish deploy') {
 
         when { //when: Es una directiva condicional que controla cuándo debe ejecutarse este stage
             anyOf { // anyOf: significa que el stage se ejecutará si al menos una de estas condiciones es verdadera
@@ -191,7 +205,9 @@ agent any
 
             //checkout scmGit(branches: [[name: 'master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES_DEPLOY}", url: "${GITHUB_DESPLIEGUE_URL}"]])
 
-            discordSend description: "Deploy de estaciones echo!!!", footer: "Footer Text", link: env.BUILD_URL, result: currentBuild.currentResult, title: "JOB_NAME", webhookURL: "https://discord.com/api/webhooks/1173648912838561922/iB8YUryvKbcj66EWQa2e6161BDuygkfaMx57VUalxPnDAMvoRHcYKxJTaxV4nfBEdoxi"
+            sh "echo ${HORA_DESPLIEGUE}"
+
+            discordSend description: "Deploy de estaciones echo!!!", footer: "Hora de inicio de despliegue: ${HORA_DESPLIEGUE} ", link: env.BUILD_URL, result: currentBuild.currentResult, title: "Deploy Estaciones", webhookURL: "https://discord.com/api/webhooks/1173648912838561922/iB8YUryvKbcj66EWQa2e6161BDuygkfaMx57VUalxPnDAMvoRHcYKxJTaxV4nfBEdoxi"
 
         }
 
