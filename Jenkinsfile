@@ -1,3 +1,29 @@
+/*
+    CREDENCIALES NECESARIAS
+    - SonarQube     (Token de acceso)
+    - Github        (Usuario y clave)
+    - DockerHub     (Usuario y clave)
+    - Kubernetes    (Token del service account de Jenkins)
+
+    HERRAMIENTAS NECESARIAS
+    - Java 20
+    - Docker 24.0.2 (Cualquier versión que soporte --password-stdin)
+    - Maven 3.9.3
+    - NodeJS 16.20.1
+
+    PLUGINS NECESARIOS
+    - Slack
+    - Docker
+    - Kubernetes
+    - JUnit
+    - EmailText
+
+    CONSIDERACIONES
+    * Se debe configurar como multibranch pipeline
+    * Deben existir las ramas master y develop
+    * Se debe configurar la cloud de kubernetes para el acceso al servidor
+ */
+ 
 def ARTIFACT_ID
 def IDENTIFICADOR_PROYECTO
 def IDENTIFICADOR_UNICO_BUILD
@@ -33,6 +59,8 @@ agent any
         CORREO_A_NOTIFICAR = "dim@gmail.com"    // TODO: Por reemplazar
 
         CARPETA_APLICACION = './'
+        CARPETA_DESPLIEGUE = 'despliegue'
+
 
     }
 
@@ -44,9 +72,7 @@ agent any
 
         steps {
 
-            //checkout scmGit(branches: [[name: 'master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES_DEPLOY}", url: "${GITHUB_DESPLIEGUE_URL}"]])
-
-            discordSend description: "Deploy de estaciones echo!!!", footer: "Inicado", link: env.BUILD_URL, result: currentBuild.currentResult, title: "Deploy Estaciones", webhookURL: "https://discord.com/api/webhooks/1173648912838561922/iB8YUryvKbcj66EWQa2e6161BDuygkfaMx57VUalxPnDAMvoRHcYKxJTaxV4nfBEdoxi"
+            discordSend description: "Inicio de deploy!!!", footer: "Inicado", link: env.BUILD_URL, result: currentBuild.currentResult, title: "Deploy Estaciones", webhookURL: "https://discord.com/api/webhooks/1173648912838561922/iB8YUryvKbcj66EWQa2e6161BDuygkfaMx57VUalxPnDAMvoRHcYKxJTaxV4nfBEdoxi"
 
         }
 
@@ -175,7 +201,7 @@ agent any
      }
 
 
-    stage('Message finish deploy') {
+    stage('Deploy kubernetes'){
 
         when { //when: Es una directiva condicional que controla cuándo debe ejecutarse este stage
             anyOf { // anyOf: significa que el stage se ejecutará si al menos una de estas condiciones es verdadera
@@ -200,10 +226,37 @@ agent any
 
         }
 
-
         steps {
 
-            //checkout scmGit(branches: [[name: 'master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES_DEPLOY}", url: "${GITHUB_DESPLIEGUE_URL}"]])
+            checkout scmGit(branches: [[name: 'master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${CARPETA_DESPLIEGUE}"]], userRemoteConfigs: [[credentialsId: "${GITHUB_CREDENCIALES_DEPLOY}", url: "${GITHUB_DESPLIEGUE_URL}"]])
+
+            dir ("${CARPETA_DESPLIEGUE}"){
+                
+                withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENCIALES}", usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+
+                    // Actualiza el archivo de despliegue con la última versión de la aplicación
+                    sh "sed -i s+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:TAG+\$DOCKERHUB_USERNAME/${ARTIFACT_ID}:${IDENTIFICADOR_UNICO_BUILD}+g ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
+
+                    sh "cat ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general/monolito.yaml"
+                }
+
+
+                withCredentials([string(credentialsId: "${KUBERNETES_CREDENCIALES}", variable: 'KUBE_TOKEN')]) {
+                    // sh 'kubectl --token $KUBE_TOKEN --server ${SEVER} --insecure-skip-lts-verify=true apply -f ${FOLDER}'
+                    sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/basedatos"
+                    sh "kubectl --token \$KUBE_TOKEN --server ${KUBE_SERVIDOR} apply -R -f ${DIRECCION_DESPLIEGUE}/${CARPETA_MANIFIESTO}/general"
+                }
+            }
+
+        }
+
+    }
+
+
+    stage('Message finish deploy') {
+
+
+        steps {
 
             sh "echo ${HORA_DESPLIEGUE}"
 
